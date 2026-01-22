@@ -6,7 +6,7 @@ Tranh thủ đợt niên luận cơ sở này, viết để sau này xài luôn 
 
 ---
 # Hệ thống quản lý nhà trọ
-**Một chủ trọ** cần quản lý **dãy nhà trọ** của mình, mỗi phòng chỉ đủ cho **1 người ở**. Một người cùng lúc chỉ có thể thuê 1 phòng. ****Nhà trọ này chỉ tính tiền phòng, điện và nước, các dịch vụ khác đều là miễn phí. Trong trường hợp phải quản lý số lượng phòng trọ quá lớn, việc quản lý, ghi chép, tính toán truyền thống tỏ ra không còn mấy hiệu quả. Vì lý do đó, hệ thống này được sinh ra nhằm mục đích hỗ trợ, giảm công sức của người quản lý trọ. Hệ thống quản lý nhà trọ cho phép chủ trọ có thể quản lý (thêm, sửa, xóa) phòng trọ, post, người thuê, hợp đồng và hóa đơn. Hệ thống sẽ có *trang tổng hợp số liệu,* ví dụ: số phòng trống, hợp đồng sắp hết hạn,…
+**Một chủ trọ** cần quản lý **dãy nhà trọ** của mình, mỗi phòng chỉ đủ cho **1 người ở**. Một người cùng lúc chỉ có thể thuê 1 phòng. Nhà trọ này chỉ tính tiền phòng, điện và nước, các dịch vụ khác đều là miễn phí. Trong trường hợp phải quản lý số lượng phòng trọ quá lớn, việc quản lý, ghi chép, tính toán truyền thống tỏ ra không còn mấy hiệu quả. Vì lý do đó, hệ thống này được sinh ra nhằm mục đích hỗ trợ, giảm công sức của người quản lý trọ. Hệ thống quản lý nhà trọ cho phép chủ trọ có thể quản lý (thêm, sửa, xóa) phòng trọ, post, người thuê, hợp đồng và hóa đơn. Hệ thống sẽ có *trang tổng hợp số liệu,* ví dụ: số phòng trống, hợp đồng sắp hết hạn,…
 
 Entities chính sẽ là phòng và người thuê.
 
@@ -23,9 +23,10 @@ Mỗi ***phòng*** có **mã số phòng**, **giá** thuê mỗi tháng, **diệ
 Người thuê sẽ ***thanh toán***, và hệ thống sẽ lưu trữ gồm **mã thanh toán**, **mã hóa đơn**, **số tiền**, **phương pháp thanh toán** (tiền mặt, chuyển khoản), và **thời gian trả**. Người thuê phải thanh toán đủ tiền.
 
 # ERD
-![alt text](ERD.drawio.png)
+![alt text](image/ERD.drawio.png)
 
 # Công nghệ
 - Frontend: Vue, TypeScript
 - Backend: Go
 - Database: MongoDB
+![alt text](image/SAD.drawio.png)
