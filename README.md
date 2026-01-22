@@ -28,5 +28,6 @@ Người thuê sẽ ***thanh toán***, và hệ thống sẽ lưu trữ gồm **
 # Công nghệ
 - Frontend: Vue, TypeScript
 - Backend: Go
-- Database: MongoDB
+- Database: MongoDB   
+
 ![alt text](image/SAD.drawio.png)
