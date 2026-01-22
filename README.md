@@ -6,30 +6,7 @@ Tranh thủ đợt niên luận cơ sở này, viết để sau này xài luôn 
 
 ---
 # Hệ thống quản lý nhà trọ
-Trong trường hợp phải quản lý số lượng phòng trọ quá lớn, việc quản lý, ghi chép, tính toán truyền thống tỏ ra không còn mấy hiệu quả. Vì lý do đó, hệ thống này được sinh ra nhằm mục đích hỗ trợ, giảm công sức của người quản lý trọ.
-
-**Người có nhu cầu thuê phòng trọ** thì có khả năng kiểm tra, xem phòng, xem giá, đặt cọc. **Người đã thuê trọ** thì sẽ được người quản lý cấp tài khoản, có khả năng báo cáo sự cố (hư bóng đèn,…) và sẽ nhận được hóa đơn cần được thanh toán hàng tháng. Yêu cầu người thuê trọ phải cập nhật thông tin cá nhân một cách đầy đủ và chính xác.
-
-**Người quản lý** sẽ có khả năng tạo, quản lý tài khoản, tạo, sửa bài cho thuê phòng. Xem tổng kết doanh thu tháng, số phòng còn trống. Tính tiền phòng (bao gồm điện, nước, dịch vụ,…) và xuất, gửi hóa đơn cho tài khoản của người đang thuê phòng.
-
-# Yêu cầu
-## Chức năng chính
-![alt text](use_case.drawio.png)
-
-## Phi chức năng
-Bảo vệ (mã hóa,...) dữ liệu của người thuê trọ
-
-# Công nghệ
-- Frontend: Vue, TypeScript
-- Backend: Go
-- Database: MongoDB
-
----
-**Một chủ trọ** cần quản lý **dãy nhà trọ** của mình, mỗi phòng chỉ đủ cho **1 người ở**. Một người cùng lúc chỉ có thể thuê 1 phòng. ****Nhà trọ này chỉ tính tiền phòng, điện và nước, các dịch vụ khác đều là miễn phí.
-
-Hệ thống quản lý nhà trọ cho phép chủ trọ có thể quản lý (thêm, sửa, xóa) phòng trọ, post, người thuê, hợp đồng và hóa đơn. Hệ thống sẽ có *trang tổng hợp số liệu,* ví dụ: số phòng trống, hợp đồng sắp hết hạn,…
-
----
+**Một chủ trọ** cần quản lý **dãy nhà trọ** của mình, mỗi phòng chỉ đủ cho **1 người ở**. Một người cùng lúc chỉ có thể thuê 1 phòng. ****Nhà trọ này chỉ tính tiền phòng, điện và nước, các dịch vụ khác đều là miễn phí. Trong trường hợp phải quản lý số lượng phòng trọ quá lớn, việc quản lý, ghi chép, tính toán truyền thống tỏ ra không còn mấy hiệu quả. Vì lý do đó, hệ thống này được sinh ra nhằm mục đích hỗ trợ, giảm công sức của người quản lý trọ. Hệ thống quản lý nhà trọ cho phép chủ trọ có thể quản lý (thêm, sửa, xóa) phòng trọ, post, người thuê, hợp đồng và hóa đơn. Hệ thống sẽ có *trang tổng hợp số liệu,* ví dụ: số phòng trống, hợp đồng sắp hết hạn,…
 
 Entities chính sẽ là phòng và người thuê.
 
@@ -44,3 +21,11 @@ Mỗi ***phòng*** có **mã số phòng**, **giá** thuê mỗi tháng, **diệ
 ***Hóa đơn*** có **mã số hóa đơn**, **mã số hợp đồng, tổng số tiền, ngày tạo** và **trạng thái** (đã thanh toán hay chưa?). ***Chi tiết hóa đơn*** bao gồm **mã số hóa đơn**, **loại** (tiền thuê/tiền điện/tiền nước), **số khối** (điện, nước), **số tiền mỗi khối** và **tổng tiền.** Cứ mỗi tháng, tùy vào ngày tạo hợp đồng, hóa đơn sẽ được tự động tạo mới cho mỗi phòng. Hóa đơn chỉ còn thiếu phần chỉ số điện tháng này và chỉ số nước tháng sẽ được nhập bởi chủ trọ. Sau khi chủ trọ hoàn thành việc nhập chỉ số điện và nước, hóa đơn sẽ tự động tính tổng tiền và gửi hóa đơn vào tài khoản của người thuê (*trang* *hóa đơn chưa thanh toán*).
 
 Người thuê sẽ ***thanh toán***, và hệ thống sẽ lưu trữ gồm **mã thanh toán**, **mã hóa đơn**, **số tiền**, **phương pháp thanh toán** (tiền mặt, chuyển khoản), và **thời gian trả**. Người thuê phải thanh toán đủ tiền.
+
+# ERD
+![alt text](ERD.drawio.png)
+
+# Công nghệ
+- Frontend: Vue, TypeScript
+- Backend: Go
+- Database: MongoDB
