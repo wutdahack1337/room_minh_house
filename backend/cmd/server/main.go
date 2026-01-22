@@ -9,7 +9,7 @@ import (
 )
 
 func main() {
-	app := cli.App("run", "Minh's rooming house website")
+	app := cli.App("capstone", "Minh's rooming house website")
 
 	app.Command("server", "start Minh's rooming house server", serverCmd)
 
