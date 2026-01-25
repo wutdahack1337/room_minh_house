@@ -9,7 +9,7 @@ import (
 
 	log "github.com/InjectiveLabs/suplog"
 	cli "github.com/jawher/mow.cli"
-	"github.com/wutdahack1337/introductory_capstone/backend/internal/config"
+	"github.com/wutdahack1337/introductory_capstone/backend/cmd/config"
 )
 
 type Config struct {
