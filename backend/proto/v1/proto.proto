@@ -1,7 +1,10 @@
 syntax = "proto3";
+
 package v1;
+option go_package = "github.com/wutdahack1337/introductory-capstone";
 
 import "google/api/annotations.proto";
+import "gogoproto/gogo.proto";
 
 service Query {
     rpc Health(HealthRequest) returns (HealthResponse) {
