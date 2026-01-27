@@ -3,7 +3,7 @@ set -eo pipefail
 
 echo "Generating gogo proto code"
 
-cd backend/proto
+cd proto
 buf mod update
 proto_dirs=$(find ./ -path -prune -o -name '*.proto' -print0 | xargs -0 -n1 dirname | sort | uniq)
 for dir in $proto_dirs; do
@@ -17,6 +17,6 @@ done
 cd ..
 
 # move proto files to the right places
-rm -rf types/proto && mkdir -p types/proto
-cp -r github.com/wutdahack1337/introductory-capstone/* types/proto
+rm -rf backend/pkg/pb && mkdir -p backend/pkg/pb
+cp -r github.com/wutdahack1337/introductory-capstone/* backend/pkg/pb
 rm -rf github.com
