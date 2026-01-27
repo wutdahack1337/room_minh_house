@@ -10,6 +10,7 @@ import (
 	log "github.com/InjectiveLabs/suplog"
 	gateway "github.com/cosmos/gogogateway"
 	"github.com/grpc-ecosystem/grpc-gateway/runtime"
+	"github.com/wutdahack1337/introductory_capstone/backend/internal/database"
 	types "github.com/wutdahack1337/introductory_capstone/backend/pkg/pb"
 	"go.elastic.co/apm/module/apmgrpc"
 	"google.golang.org/grpc"
@@ -67,10 +68,12 @@ func streamLogStackTraceOnPanic(logger log.Logger) grpc.StreamServerInterceptor 
 	}
 }
 
-func StartServer(grpcAddr string, httpAddr string) {
+func StartServer(grpcAddr string, httpAddr string, dbService database.DatabaseService) {
 	ctx := context.Background()
 	server := NewServer("apis")
-	service := &Service{}
+	service := &Service{
+		dbService: dbService,
+	}
 	types.RegisterQueryServer(server, service)
 
 	mux := runtime.NewServeMux(
