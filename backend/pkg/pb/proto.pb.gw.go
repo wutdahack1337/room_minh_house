@@ -2,11 +2,11 @@
 // source: v1/proto.proto
 
 /*
-Package introductory_capstone is a reverse proxy.
+Package pb is a reverse proxy.
 
 It translates gRPC into RESTful JSON APIs.
 */
-package introductory_capstone
+package pb
 
 import (
 	"context"

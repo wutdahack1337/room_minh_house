@@ -1,5 +1,5 @@
 version: v1
-name: buf.build/wutdahack1337/introductory-capstone
+name: buf.build/wutdahack1337/introductory_capstone
 deps:
   - buf.build/googleapis/googleapis
   - buf.build/cosmos/gogo-proto

@@ -23,11 +23,11 @@ Mỗi ***phòng*** có **mã số phòng**, **giá** thuê mỗi tháng, **diệ
 Người thuê sẽ ***thanh toán***, và hệ thống sẽ lưu trữ gồm **mã thanh toán**, **mã hóa đơn**, **số tiền**, **phương pháp thanh toán** (tiền mặt, chuyển khoản), và **thời gian trả**. Người thuê phải thanh toán đủ tiền.
 
 # ERD
-![alt text](image/ERD.drawio.png)
+![alt text](./.ender_chest/image/ERD.drawio.png)
 
 # Công nghệ
 - Frontend: Vue, TypeScript
 - Backend: Go
 - Database: MongoDB   
 
-![alt text](image/SAD.drawio.png)
+![alt text](./.ender_chest/image/SAD.drawio.png)

@@ -16,15 +16,12 @@ func main() {
 
 	app.Command("api", "start Minh's rooming house api", apiCmd)
 
-	err := app.Run(os.Args)
-	if err != nil {
-		log.Errorf("got err grom app.Run: %v", err)
-	}
+	app.Run(os.Args)
 }
 
 func readEnv() {
-	if envdata, _ := os.ReadFile(".env"); len(envdata) > 0 {
-		s := bufio.NewScanner(bytes.NewReader(envdata))
+	if envData, _ := os.ReadFile(".env"); len(envData) > 0 {
+		s := bufio.NewScanner(bytes.NewReader(envData))
 		for s.Scan() {
 			txt := s.Text()
 			valIdx := strings.IndexByte(txt, '=')
