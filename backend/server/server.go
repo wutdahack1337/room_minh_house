@@ -10,7 +10,7 @@ import (
 	log "github.com/InjectiveLabs/suplog"
 	gateway "github.com/cosmos/gogogateway"
 	"github.com/grpc-ecosystem/grpc-gateway/runtime"
-	querytypes "github.com/wutdahack1337/introductory_capstone/backend/types/proto"
+	types "github.com/wutdahack1337/introductory_capstone/backend/pkg/pb"
 	"go.elastic.co/apm/module/apmgrpc"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
@@ -71,7 +71,7 @@ func StartServer(grpcAddr string, httpAddr string) {
 	ctx := context.Background()
 	server := NewServer("apis")
 	service := &Service{}
-	querytypes.RegisterQueryServer(server, service)
+	types.RegisterQueryServer(server, service)
 
 	mux := runtime.NewServeMux(
 		runtime.WithMarshalerOption(runtime.MIMEWildcard, &gateway.JSONPb{
@@ -82,7 +82,7 @@ func StartServer(grpcAddr string, httpAddr string) {
 		}),
 	)
 
-	if err := querytypes.RegisterQueryHandlerFromEndpoint(ctx, mux, grpcAddr, []grpc.DialOption{
+	if err := types.RegisterQueryHandlerFromEndpoint(ctx, mux, grpcAddr, []grpc.DialOption{
 		grpc.WithTransportCredentials(insecure.NewCredentials()),
 		grpc.WithDefaultCallOptions(grpc.MaxCallRecvMsgSize(100_000000)),
 	}); err != nil {

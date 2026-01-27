@@ -3,16 +3,15 @@ package server
 import (
 	"context"
 
-	querytypes "github.com/wutdahack1337/introductory_capstone/backend/types/proto"
-	v1 "github.com/wutdahack1337/introductory_capstone/backend/types/proto"
+	types "github.com/wutdahack1337/introductory_capstone/backend/pkg/pb"
 )
 
 type Service struct {
-	v1.UnimplementedQueryServer
+	types.UnimplementedQueryServer
 }
 
-func (s *Service) Health(ctx context.Context, request *querytypes.HealthRequest) (*querytypes.HealthResponse, error) {
-	return &querytypes.HealthResponse{
+func (s *Service) Health(ctx context.Context, request *types.HealthRequest) (*types.HealthResponse, error) {
+	return &types.HealthResponse{
 		Status: "ok",
 	}, nil
 }
