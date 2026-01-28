@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package v1;
+package api;
 option go_package = "github.com/wutdahack1337/introductory_capstone;pb";
 
 import "google/api/annotations.proto";
@@ -8,7 +8,7 @@ import "gogoproto/gogo.proto";
 
 service Query {
     rpc Health(HealthRequest) returns (HealthResponse) {
-        option (google.api.http).get = "/v1/health";
+        option (google.api.http).get = "/api/health";
     }
 }
 
