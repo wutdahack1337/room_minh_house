@@ -1,0 +1,10 @@
+services:
+  mongo:
+    container_name: mongo
+    image: mongo:5.0.14
+    restart: always
+    command: mongod --quiet --dbpath /data/db --port 27017 --bind_ip 0.0.0.0
+    ports:
+      - 27017:27017
+    volumes:
+      - ~/docker-volume/mongo:/data/db

@@ -10,6 +10,8 @@ import (
 	log "github.com/InjectiveLabs/suplog"
 	gateway "github.com/cosmos/gogogateway"
 	"github.com/grpc-ecosystem/grpc-gateway/runtime"
+	"github.com/rs/cors"
+	"github.com/wutdahack1337/introductory_capstone/backend/internal/database"
 	types "github.com/wutdahack1337/introductory_capstone/backend/pkg/pb"
 	"go.elastic.co/apm/module/apmgrpc"
 	"google.golang.org/grpc"
@@ -67,10 +69,12 @@ func streamLogStackTraceOnPanic(logger log.Logger) grpc.StreamServerInterceptor 
 	}
 }
 
-func StartServer(grpcAddr string, httpAddr string) {
+func StartServer(grpcAddr string, httpAddr string, dbService database.DatabaseService) {
 	ctx := context.Background()
 	server := NewServer("apis")
-	service := &Service{}
+	service := &Service{
+		dbService: dbService,
+	}
 	types.RegisterQueryServer(server, service)
 
 	mux := runtime.NewServeMux(
@@ -81,6 +85,21 @@ func StartServer(grpcAddr string, httpAddr string) {
 			AnyResolver:  nil,
 		}),
 	)
+
+	corsHandler := cors.New(cors.Options{
+		AllowedOrigins: []string{
+			"http://localhost:3000",
+			"http://localhost:5173",
+		},
+		AllowedMethods: []string{
+			"GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS",
+		},
+		AllowedHeaders: []string{
+			"Content-Type", "Authorization", "Accept", "Origin", "X-Requested-With",
+		},
+		AllowCredentials: true,
+		MaxAge:           86400,
+	}).Handler(mux)
 
 	if err := types.RegisterQueryHandlerFromEndpoint(ctx, mux, grpcAddr, []grpc.DialOption{
 		grpc.WithTransportCredentials(insecure.NewCredentials()),
@@ -96,7 +115,7 @@ func StartServer(grpcAddr string, httpAddr string) {
 	go server.Serve(listen)
 	go func() {
 		fmt.Println("serving http request:", httpAddr)
-		err := http.ListenAndServe(httpAddr, mux)
+		err := http.ListenAndServe(httpAddr, corsHandler)
 		if err != nil {
 			panic(err)
 		}
