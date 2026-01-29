@@ -4,6 +4,16 @@ Tranh thủ đợt niên luận cơ sở này, viết để sau này xài luôn 
 - [Notes](https://www.notion.so/Ni-n-lu-n-c-s-ng-nh-KHMT-CT201-2e3d7839804a804383d0d76b004c5f2b)
 - [Github](https://github.com/wutdahack1337/introductory-capstone)
 
+```
+cd backend/cmd
+go run . api
+```
+
+```
+cd frontend
+npm run dev
+```
+
 ---
 # Hệ thống quản lý nhà trọ
 **Một chủ trọ** cần quản lý **dãy nhà trọ** của mình, mỗi phòng chỉ đủ cho **1 người ở**. Một người cùng lúc chỉ có thể thuê 1 phòng. Nhà trọ này chỉ tính tiền phòng, điện và nước, các dịch vụ khác đều là miễn phí. Trong trường hợp phải quản lý số lượng phòng trọ quá lớn, việc quản lý, ghi chép, tính toán truyền thống tỏ ra không còn mấy hiệu quả. Vì lý do đó, hệ thống này được sinh ra nhằm mục đích hỗ trợ, giảm công sức của người quản lý trọ. Hệ thống quản lý nhà trọ cho phép chủ trọ có thể quản lý (thêm, sửa, xóa) phòng trọ, post, người thuê, hợp đồng và hóa đơn. Hệ thống sẽ có *trang tổng hợp số liệu,* ví dụ: số phòng trống, hợp đồng sắp hết hạn,…

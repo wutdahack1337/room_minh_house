@@ -9,6 +9,7 @@ import (
 )
 
 type Service struct {
+	types.UnimplementedQueryServer
 	dbService database.DatabaseService
 }
 
@@ -16,7 +17,7 @@ func (s *Service) Health(ctx context.Context, request *types.HealthRequest) (*ty
 	if err := s.dbService.Health(ctx); err != nil {
 		return &types.HealthResponse{
 			Status: fmt.Sprintf("database error: %v", err),
-		}, nil
+		}, err
 	}
 
 	return &types.HealthResponse{
