@@ -5,13 +5,12 @@ Tranh thủ đợt niên luận cơ sở này, viết để sau này xài luôn 
 - [Github](https://github.com/wutdahack1337/introductory-capstone)
 
 ```
-cd backend/cmd
-go run . api
+docker compose up -d
+cd backend/cmd && go run . api
 ```
 
 ```
-cd frontend
-npm run dev
+cd frontend && npm run dev
 ```
 
 ---
