@@ -18,5 +18,5 @@ cd ..
 
 # move proto files to the right places
 rm -rf backend/pkg/pb && mkdir -p backend/pkg/pb
-cp -r github.com/wutdahack1337/introductory_capstone/* backend/pkg/pb
+cp -r github.com/wutdahack1337/room_minh_house/* backend/pkg/pb
 rm -rf github.com

@@ -7,9 +7,9 @@ import (
 	"syscall"
 
 	cli "github.com/jawher/mow.cli"
-	"github.com/wutdahack1337/introductory_capstone/backend/config"
-	"github.com/wutdahack1337/introductory_capstone/backend/internal/database"
-	"github.com/wutdahack1337/introductory_capstone/backend/server"
+	"github.com/wutdahack1337/room_minh_house/backend/config"
+	"github.com/wutdahack1337/room_minh_house/backend/internal/database"
+	"github.com/wutdahack1337/room_minh_house/backend/server"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )

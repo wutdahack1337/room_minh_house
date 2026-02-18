@@ -1,4 +1,4 @@
-module github.com/wutdahack1337/introductory_capstone
+module github.com/wutdahack1337/room_minh_house
 
 go 1.25.5
 

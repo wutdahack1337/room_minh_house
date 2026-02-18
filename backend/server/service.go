@@ -4,8 +4,8 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/wutdahack1337/introductory_capstone/backend/internal/database"
-	types "github.com/wutdahack1337/introductory_capstone/backend/pkg/pb"
+	"github.com/wutdahack1337/room_minh_house/backend/internal/database"
+	types "github.com/wutdahack1337/room_minh_house/backend/pkg/pb"
 )
 
 type Service struct {
