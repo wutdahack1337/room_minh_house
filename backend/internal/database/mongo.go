@@ -7,6 +7,8 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/readpref"
 )
 
+const roomsCollection = "rooms"
+
 type MongoService struct {
 	database *mongo.Database
 }

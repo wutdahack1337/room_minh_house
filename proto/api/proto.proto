@@ -7,10 +7,6 @@ import "google/api/annotations.proto";
 import "gogoproto/gogo.proto";
 
 service Query {
-    rpc Health(HealthRequest) returns (HealthResponse) {
-        option (google.api.http).get = "/api/health";
-    }
-
     rpc CreateRoom(CreateRoomRequest) returns (CreateRoomResponse) {
         option (google.api.http) = {
             post: "/api/rooms"
@@ -32,19 +28,17 @@ service Query {
     rpc ListRooms(ListRoomsRequest) returns (ListRoomsResponse) {
         option (google.api.http).get = "/api/rooms";
     }
-}
 
-message HealthRequest {}
-message HealthResponse {
-    string status = 1;
+    rpc Health(HealthRequest) returns (HealthResponse) {
+        option (google.api.http).get = "/api/health";
+    }
 }
 
 message Room {
     string id = 1; // mongo ObjectId as hex string
-    string name = 2;
-    double price = 3;
-    double area = 4;
-    bool is_available = 5;
+    double price = 2;
+    double area = 3;
+    bool is_available = 4;
 }
 
 message CreateRoomRequest {
@@ -78,4 +72,9 @@ message GetRoomResponse {
 message ListRoomsRequest {}
 message ListRoomsResponse {
     repeated Room rooms = 1;
+}
+
+message HealthRequest {}
+message HealthResponse {
+    string status = 1;
 }
