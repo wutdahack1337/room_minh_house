@@ -4,6 +4,13 @@ Tranh thủ đợt niên luận cơ sở này, viết để sau này xài luôn 
 - [Notes](https://www.notion.so/Ni-n-lu-n-c-s-ng-nh-KHMT-CT201-2e3d7839804a804383d0d76b004c5f2b)
 - [Github](https://github.com/wutdahack1337/introductory-capstone)
 
+# Commands
+
+```
+make proto
+```
+
+## Run
 ```
 docker compose up -d
 cd backend/cmd && go run . api
