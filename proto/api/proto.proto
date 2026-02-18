@@ -1,7 +1,7 @@
 syntax = "proto3";
 
 package api;
-option go_package = "github.com/wutdahack1337/introductory_capstone;pb";
+option go_package = "github.com/wutdahack1337/room_minh_house;pb";
 
 import "google/api/annotations.proto";
 import "gogoproto/gogo.proto";
@@ -10,10 +10,72 @@ service Query {
     rpc Health(HealthRequest) returns (HealthResponse) {
         option (google.api.http).get = "/api/health";
     }
+
+    rpc CreateRoom(CreateRoomRequest) returns (CreateRoomResponse) {
+        option (google.api.http) = {
+            post: "/api/rooms"
+            body: "room"
+        };
+    }
+    rpc UpdateRoom(UpdateRoomRequest) returns (UpdateRoomResponse) {
+        option (google.api.http) = {
+            put: "/api/rooms/{room.id}"
+            body: "room"
+        };
+    }
+    rpc DeleteRoom(DeleteRoomRequest) returns (DeleteRoomResponse) {
+        option (google.api.http).delete = "/api/rooms/{id}";
+    }
+    rpc GetRoom(GetRoomRequest) returns (GetRoomResponse) {
+        option (google.api.http).get = "/api/rooms/{id}";
+    }
+    rpc ListRooms(ListRoomsRequest) returns (ListRoomsResponse) {
+        option (google.api.http).get = "/api/rooms";
+    }
 }
 
 message HealthRequest {}
-
 message HealthResponse {
     string status = 1;
+}
+
+message Room {
+    string id = 1; // mongo ObjectId as hex string
+    string name = 2;
+    double price = 3;
+    double area = 4;
+    bool is_available = 5;
+}
+
+message CreateRoomRequest {
+    Room room = 1; // omit id
+}
+message CreateRoomResponse {
+    string id = 1;
+}
+
+message UpdateRoomRequest {
+    Room room = 1; // must include id
+}
+message UpdateRoomResponse {
+    Room room = 1;
+}
+
+message DeleteRoomRequest {
+    string id = 1;
+}
+message DeleteRoomResponse {
+    bool ok = 1;
+}
+
+message GetRoomRequest {
+    string id = 1;
+}
+message GetRoomResponse {
+    Room room = 1;
+}
+
+message ListRoomsRequest {}
+message ListRoomsResponse {
+    repeated Room rooms = 1;
 }
