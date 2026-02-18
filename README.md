@@ -27,10 +27,10 @@ cd frontend && npm install && npm run dev
 # Hệ thống quản lý nhà trọ
 [Đặc tả hệ thống](ender_chest/documents/Đặc%20tả%20hệ%20thống%20quản%20lý%20phòng%20trọ.docx)
 
-# CDM
+## CDM
 ![alt text](ender_chest/images/CDM.drawio.png)
 
-# Tech
+## Tech
 - Frontend: Vue, TypeScript
 - Backend: Go
 - Database: MongoDB   
