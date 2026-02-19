@@ -16,9 +16,7 @@ docker exec -it mongo mongosh
 ```
 docker compose up -d
 cd backend/cmd && go run . api
-```
 
-```
 cd frontend && npm install && npm run dev
 ```
 
