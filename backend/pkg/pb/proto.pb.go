@@ -31,10 +31,9 @@ var _ = math.Inf
 const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 
 type Room struct {
-	Id          string  `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
-	Price       float64 `protobuf:"fixed64,2,opt,name=price,proto3" json:"price,omitempty"`
-	Area        float64 `protobuf:"fixed64,3,opt,name=area,proto3" json:"area,omitempty"`
-	IsAvailable bool    `protobuf:"varint,4,opt,name=is_available,json=isAvailable,proto3" json:"is_available,omitempty"`
+	RoomNumber  int32   `protobuf:"varint,1,opt,name=room_number,json=roomNumber,proto3" json:"room_number,omitempty" bson:"room_number"`
+	Price       float64 `protobuf:"fixed64,2,opt,name=price,proto3" json:"price,omitempty" bson:"price"`
+	IsAvailable bool    `protobuf:"varint,3,opt,name=is_available,json=isAvailable,proto3" json:"is_available,omitempty" bson:"is_available"`
 }
 
 func (m *Room) Reset()         { *m = Room{} }
@@ -70,23 +69,16 @@ func (m *Room) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_Room proto.InternalMessageInfo
 
-func (m *Room) GetId() string {
+func (m *Room) GetRoomNumber() int32 {
 	if m != nil {
-		return m.Id
+		return m.RoomNumber
 	}
-	return ""
+	return 0
 }
 
 func (m *Room) GetPrice() float64 {
 	if m != nil {
 		return m.Price
-	}
-	return 0
-}
-
-func (m *Room) GetArea() float64 {
-	if m != nil {
-		return m.Area
 	}
 	return 0
 }
@@ -143,7 +135,7 @@ func (m *CreateRoomRequest) GetRoom() *Room {
 }
 
 type CreateRoomResponse struct {
-	Id string `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	Room *Room `protobuf:"bytes,1,opt,name=room,proto3" json:"room,omitempty"`
 }
 
 func (m *CreateRoomResponse) Reset()         { *m = CreateRoomResponse{} }
@@ -179,11 +171,11 @@ func (m *CreateRoomResponse) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_CreateRoomResponse proto.InternalMessageInfo
 
-func (m *CreateRoomResponse) GetId() string {
+func (m *CreateRoomResponse) GetRoom() *Room {
 	if m != nil {
-		return m.Id
+		return m.Room
 	}
-	return ""
+	return nil
 }
 
 type UpdateRoomRequest struct {
@@ -275,7 +267,7 @@ func (m *UpdateRoomResponse) GetRoom() *Room {
 }
 
 type DeleteRoomRequest struct {
-	Id string `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	RoomNumber int32 `protobuf:"varint,1,opt,name=room_number,json=roomNumber,proto3" json:"room_number,omitempty"`
 }
 
 func (m *DeleteRoomRequest) Reset()         { *m = DeleteRoomRequest{} }
@@ -311,15 +303,14 @@ func (m *DeleteRoomRequest) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_DeleteRoomRequest proto.InternalMessageInfo
 
-func (m *DeleteRoomRequest) GetId() string {
+func (m *DeleteRoomRequest) GetRoomNumber() int32 {
 	if m != nil {
-		return m.Id
+		return m.RoomNumber
 	}
-	return ""
+	return 0
 }
 
 type DeleteRoomResponse struct {
-	Ok bool `protobuf:"varint,1,opt,name=ok,proto3" json:"ok,omitempty"`
 }
 
 func (m *DeleteRoomResponse) Reset()         { *m = DeleteRoomResponse{} }
@@ -355,15 +346,8 @@ func (m *DeleteRoomResponse) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_DeleteRoomResponse proto.InternalMessageInfo
 
-func (m *DeleteRoomResponse) GetOk() bool {
-	if m != nil {
-		return m.Ok
-	}
-	return false
-}
-
 type GetRoomRequest struct {
-	Id string `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	RoomNumber int32 `protobuf:"varint,1,opt,name=room_number,json=roomNumber,proto3" json:"room_number,omitempty"`
 }
 
 func (m *GetRoomRequest) Reset()         { *m = GetRoomRequest{} }
@@ -399,11 +383,11 @@ func (m *GetRoomRequest) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_GetRoomRequest proto.InternalMessageInfo
 
-func (m *GetRoomRequest) GetId() string {
+func (m *GetRoomRequest) GetRoomNumber() int32 {
 	if m != nil {
-		return m.Id
+		return m.RoomNumber
 	}
-	return ""
+	return 0
 }
 
 type GetRoomResponse struct {
@@ -530,21 +514,21 @@ func (m *ListRoomsResponse) GetRooms() []*Room {
 	return nil
 }
 
-type HealthRequest struct {
+type CheckHealthRequest struct {
 }
 
-func (m *HealthRequest) Reset()         { *m = HealthRequest{} }
-func (m *HealthRequest) String() string { return proto.CompactTextString(m) }
-func (*HealthRequest) ProtoMessage()    {}
-func (*HealthRequest) Descriptor() ([]byte, []int) {
+func (m *CheckHealthRequest) Reset()         { *m = CheckHealthRequest{} }
+func (m *CheckHealthRequest) String() string { return proto.CompactTextString(m) }
+func (*CheckHealthRequest) ProtoMessage()    {}
+func (*CheckHealthRequest) Descriptor() ([]byte, []int) {
 	return fileDescriptor_be498c345e55ac46, []int{11}
 }
-func (m *HealthRequest) XXX_Unmarshal(b []byte) error {
+func (m *CheckHealthRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *HealthRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *CheckHealthRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_HealthRequest.Marshal(b, m, deterministic)
+		return xxx_messageInfo_CheckHealthRequest.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -554,34 +538,34 @@ func (m *HealthRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error
 		return b[:n], nil
 	}
 }
-func (m *HealthRequest) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_HealthRequest.Merge(m, src)
+func (m *CheckHealthRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_CheckHealthRequest.Merge(m, src)
 }
-func (m *HealthRequest) XXX_Size() int {
+func (m *CheckHealthRequest) XXX_Size() int {
 	return m.Size()
 }
-func (m *HealthRequest) XXX_DiscardUnknown() {
-	xxx_messageInfo_HealthRequest.DiscardUnknown(m)
+func (m *CheckHealthRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_CheckHealthRequest.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_HealthRequest proto.InternalMessageInfo
+var xxx_messageInfo_CheckHealthRequest proto.InternalMessageInfo
 
-type HealthResponse struct {
+type CheckHealthResponse struct {
 	Status string `protobuf:"bytes,1,opt,name=status,proto3" json:"status,omitempty"`
 }
 
-func (m *HealthResponse) Reset()         { *m = HealthResponse{} }
-func (m *HealthResponse) String() string { return proto.CompactTextString(m) }
-func (*HealthResponse) ProtoMessage()    {}
-func (*HealthResponse) Descriptor() ([]byte, []int) {
+func (m *CheckHealthResponse) Reset()         { *m = CheckHealthResponse{} }
+func (m *CheckHealthResponse) String() string { return proto.CompactTextString(m) }
+func (*CheckHealthResponse) ProtoMessage()    {}
+func (*CheckHealthResponse) Descriptor() ([]byte, []int) {
 	return fileDescriptor_be498c345e55ac46, []int{12}
 }
-func (m *HealthResponse) XXX_Unmarshal(b []byte) error {
+func (m *CheckHealthResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *HealthResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *CheckHealthResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_HealthResponse.Marshal(b, m, deterministic)
+		return xxx_messageInfo_CheckHealthResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -591,19 +575,19 @@ func (m *HealthResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, erro
 		return b[:n], nil
 	}
 }
-func (m *HealthResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_HealthResponse.Merge(m, src)
+func (m *CheckHealthResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_CheckHealthResponse.Merge(m, src)
 }
-func (m *HealthResponse) XXX_Size() int {
+func (m *CheckHealthResponse) XXX_Size() int {
 	return m.Size()
 }
-func (m *HealthResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_HealthResponse.DiscardUnknown(m)
+func (m *CheckHealthResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_CheckHealthResponse.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_HealthResponse proto.InternalMessageInfo
+var xxx_messageInfo_CheckHealthResponse proto.InternalMessageInfo
 
-func (m *HealthResponse) GetStatus() string {
+func (m *CheckHealthResponse) GetStatus() string {
 	if m != nil {
 		return m.Status
 	}
@@ -622,50 +606,52 @@ func init() {
 	proto.RegisterType((*GetRoomResponse)(nil), "api.GetRoomResponse")
 	proto.RegisterType((*ListRoomsRequest)(nil), "api.ListRoomsRequest")
 	proto.RegisterType((*ListRoomsResponse)(nil), "api.ListRoomsResponse")
-	proto.RegisterType((*HealthRequest)(nil), "api.HealthRequest")
-	proto.RegisterType((*HealthResponse)(nil), "api.HealthResponse")
+	proto.RegisterType((*CheckHealthRequest)(nil), "api.CheckHealthRequest")
+	proto.RegisterType((*CheckHealthResponse)(nil), "api.CheckHealthResponse")
 }
 
 func init() { proto.RegisterFile("api/proto.proto", fileDescriptor_be498c345e55ac46) }
 
 var fileDescriptor_be498c345e55ac46 = []byte{
-	// 570 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x94, 0x94, 0x4d, 0x8f, 0xd2, 0x5e,
-	0x14, 0xc6, 0xa7, 0x0c, 0x33, 0xff, 0x99, 0xc3, 0x0c, 0xfc, 0x39, 0x20, 0xd3, 0x34, 0x63, 0xc5,
-	0x3a, 0x0b, 0xa2, 0x09, 0x28, 0x98, 0x98, 0xe8, 0xca, 0x77, 0x17, 0x6a, 0x62, 0x13, 0x35, 0x71,
-	0x43, 0x2e, 0x70, 0x43, 0x6f, 0x78, 0xb9, 0xb5, 0xb7, 0xd5, 0x18, 0xe3, 0x66, 0x3e, 0x81, 0x89,
-	0x5f, 0xca, 0xe5, 0x24, 0x6e, 0x5c, 0x1a, 0xf0, 0x83, 0x98, 0x9e, 0x5e, 0x86, 0x96, 0x26, 0xbe,
-	0x6c, 0xe0, 0xf6, 0xb9, 0xe7, 0xfc, 0x9e, 0x03, 0xcf, 0x49, 0xa1, 0xc2, 0x7c, 0xd1, 0xf1, 0x03,
-	0x19, 0xca, 0x36, 0x7d, 0xe2, 0x36, 0xf3, 0x85, 0x75, 0x3c, 0x96, 0x72, 0x3c, 0xe5, 0x9d, 0xf8,
-	0x92, 0xcd, 0xe7, 0x32, 0x64, 0xa1, 0x90, 0x73, 0x95, 0x94, 0x58, 0xf5, 0xb1, 0x1c, 0x4b, 0x3a,
-	0x76, 0xe2, 0x53, 0xa2, 0x3a, 0x43, 0x28, 0xba, 0x52, 0xce, 0xb0, 0x0c, 0x05, 0x31, 0x32, 0x8d,
-	0xa6, 0xd1, 0xda, 0x77, 0x0b, 0x62, 0x84, 0x75, 0xd8, 0xf1, 0x03, 0x31, 0xe4, 0x66, 0xa1, 0x69,
-	0xb4, 0x0c, 0x37, 0x79, 0x40, 0x84, 0x22, 0x0b, 0x38, 0x33, 0xb7, 0x49, 0xa4, 0x33, 0x5e, 0x86,
-	0x03, 0xa1, 0xfa, 0xec, 0x1d, 0x13, 0x53, 0x36, 0x98, 0x72, 0xb3, 0xd8, 0x34, 0x5a, 0x7b, 0x6e,
-	0x49, 0xa8, 0xbb, 0x2b, 0xc9, 0xe9, 0x42, 0xf5, 0x7e, 0xc0, 0x59, 0xc8, 0x63, 0x2b, 0x97, 0xbf,
-	0x8d, 0xb8, 0x0a, 0xf1, 0x22, 0x14, 0x03, 0x29, 0x67, 0xe4, 0x59, 0xea, 0xee, 0xb7, 0x99, 0x2f,
-	0xda, 0x74, 0x4f, 0xb2, 0x73, 0x02, 0x98, 0xee, 0x51, 0xbe, 0x9c, 0x2b, 0xbe, 0x39, 0x66, 0x4c,
-	0x7e, 0xe9, 0x8f, 0xfe, 0x8d, 0xdc, 0x03, 0x4c, 0xf7, 0x68, 0xf2, 0x1f, 0x9a, 0xae, 0x40, 0xf5,
-	0x01, 0x9f, 0xf2, 0xac, 0xd1, 0xe6, 0x34, 0x27, 0x80, 0xe9, 0xa2, 0xf5, 0xcc, 0x72, 0x42, 0x55,
-	0x7b, 0x6e, 0x41, 0x4e, 0x9c, 0x26, 0x94, 0x1f, 0xf3, 0xf0, 0x77, 0x9c, 0xeb, 0x50, 0x39, 0xaf,
-	0xf8, 0xbb, 0xf1, 0x10, 0xfe, 0x7f, 0x2a, 0x14, 0xb5, 0x28, 0x4d, 0x75, 0x6e, 0x42, 0x35, 0xa5,
-	0x69, 0xce, 0x25, 0xd8, 0x89, 0x1b, 0x94, 0x69, 0x34, 0xb7, 0xb3, 0xa0, 0x44, 0x77, 0x2a, 0x70,
-	0xf8, 0x84, 0xb3, 0x69, 0xe8, 0xad, 0x30, 0x2d, 0x28, 0xaf, 0x04, 0xcd, 0x68, 0xc0, 0xae, 0x0a,
-	0x59, 0x18, 0x29, 0x3d, 0xb2, 0x7e, 0xea, 0x9e, 0x16, 0x61, 0xe7, 0x45, 0xc4, 0x83, 0x0f, 0xf8,
-	0x1a, 0x60, 0x1d, 0x1e, 0x36, 0xc8, 0x24, 0xb7, 0x01, 0xd6, 0x51, 0x4e, 0x4f, 0x0c, 0x1c, 0xf3,
-	0xf4, 0xdb, 0xcf, 0x2f, 0x05, 0xbc, 0x9d, 0xfc, 0x36, 0xa0, 0x85, 0xa6, 0xe9, 0x90, 0x01, 0xac,
-	0xb3, 0xd3, 0xe0, 0xdc, 0x02, 0x68, 0x70, 0x3e, 0x64, 0xc7, 0x21, 0xf0, 0x71, 0x02, 0xb6, 0xea,
-	0x6b, 0x70, 0xe7, 0x63, 0xfc, 0xd5, 0x16, 0xa3, 0x4f, 0xf8, 0x0a, 0x60, 0x1d, 0xa2, 0xb6, 0xc8,
-	0x45, 0xaf, 0x2d, 0xf2, 0x69, 0x3b, 0x47, 0x64, 0x51, 0xbd, 0x5a, 0x49, 0xc3, 0x63, 0xee, 0x33,
-	0xf8, 0x4f, 0x87, 0x8a, 0x35, 0x6a, 0xce, 0x2e, 0x81, 0x55, 0xcf, 0x8a, 0x59, 0x1c, 0xe6, 0x70,
-	0xcf, 0x61, 0xff, 0x3c, 0x5d, 0xbc, 0x40, 0xbd, 0x9b, 0x1b, 0x60, 0x35, 0x36, 0x65, 0x0d, 0x45,
-	0x82, 0x1e, 0x60, 0xfa, 0x9f, 0x7d, 0x04, 0xbb, 0x49, 0xcc, 0x88, 0xd4, 0x95, 0x59, 0x02, 0xab,
-	0x96, 0xd1, 0x34, 0xa6, 0x46, 0x98, 0x43, 0x2c, 0x11, 0xc6, 0xa3, 0xcb, 0x7b, 0x0f, 0xbf, 0x2e,
-	0x6c, 0xe3, 0x6c, 0x61, 0x1b, 0x3f, 0x16, 0xb6, 0xf1, 0x79, 0x69, 0x6f, 0x9d, 0x2d, 0xed, 0xad,
-	0xef, 0x4b, 0x7b, 0xeb, 0xcd, 0xb5, 0xb1, 0x08, 0xbd, 0x68, 0xd0, 0x1e, 0xca, 0x59, 0xe7, 0x7d,
-	0x14, 0x8e, 0x98, 0xc7, 0x86, 0x93, 0x1b, 0xbd, 0xde, 0x2d, 0x9a, 0xa0, 0x3f, 0x13, 0x73, 0xaf,
-	0xef, 0xc9, 0x48, 0xf1, 0x3b, 0xfe, 0x60, 0xb0, 0x4b, 0xaf, 0xa7, 0xde, 0xaf, 0x00, 0x00, 0x00,
-	0xff, 0xff, 0xe8, 0x74, 0x80, 0xc0, 0xea, 0x04, 0x00, 0x00,
+	// 607 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x94, 0x94, 0x41, 0x8f, 0xd2, 0x40,
+	0x14, 0xc7, 0xe9, 0x02, 0xab, 0x3c, 0xd0, 0x5d, 0x06, 0x64, 0x9b, 0xc6, 0x2d, 0xa4, 0x89, 0x86,
+	0xb8, 0x11, 0x5c, 0x30, 0xd9, 0x04, 0x4f, 0xb2, 0x1a, 0x3d, 0x98, 0x4d, 0x6c, 0xb2, 0x9a, 0x78,
+	0x21, 0x53, 0x76, 0x42, 0xeb, 0x42, 0xa7, 0x76, 0xa6, 0x1a, 0x63, 0xbc, 0xf8, 0x09, 0x4c, 0xfc,
+	0x08, 0x5e, 0xfd, 0x20, 0x1e, 0x37, 0xf1, 0xe2, 0x89, 0x18, 0xf0, 0x13, 0xf0, 0x09, 0x4c, 0xa7,
+	0x23, 0xb4, 0x74, 0x8d, 0xbb, 0x17, 0xe8, 0x7b, 0xaf, 0xef, 0xf7, 0x7f, 0x33, 0xef, 0x0f, 0xb0,
+	0x85, 0x3d, 0xa7, 0xed, 0xf9, 0x94, 0xd3, 0x96, 0xf8, 0x44, 0x59, 0xec, 0x39, 0xda, 0xcd, 0x11,
+	0xa5, 0xa3, 0x31, 0x69, 0x87, 0x45, 0xec, 0xba, 0x94, 0x63, 0xee, 0x50, 0x97, 0x45, 0xaf, 0x68,
+	0xd5, 0x11, 0x1d, 0x51, 0xf1, 0xd8, 0x0e, 0x9f, 0xa2, 0xac, 0xf1, 0x55, 0x81, 0x9c, 0x49, 0xe9,
+	0x04, 0x1d, 0x40, 0xd1, 0xa7, 0x74, 0x32, 0x70, 0x83, 0x89, 0x45, 0x7c, 0x55, 0x69, 0x28, 0xcd,
+	0x7c, 0xbf, 0xb6, 0x98, 0xd6, 0x91, 0xc5, 0xa8, 0xdb, 0x33, 0x62, 0x45, 0xc3, 0x84, 0x30, 0x3a,
+	0x12, 0x01, 0xba, 0x0d, 0x79, 0xcf, 0x77, 0x86, 0x44, 0xdd, 0x68, 0x28, 0x4d, 0xa5, 0xbf, 0xbd,
+	0x98, 0xd6, 0x4b, 0x51, 0x8b, 0x48, 0x1b, 0x66, 0x54, 0x46, 0x3d, 0x28, 0x39, 0x6c, 0x80, 0xdf,
+	0x62, 0x67, 0x8c, 0xad, 0x31, 0x51, 0xb3, 0x0d, 0xa5, 0x79, 0xb5, 0xbf, 0xb3, 0x98, 0xd6, 0x2b,
+	0xd1, 0xeb, 0xf1, 0xaa, 0x61, 0x16, 0x1d, 0xf6, 0x70, 0x19, 0x75, 0xa0, 0x7c, 0xe8, 0x13, 0xcc,
+	0x49, 0x38, 0xaa, 0x49, 0xde, 0x04, 0x84, 0x71, 0xb4, 0x0b, 0xb9, 0x70, 0x0c, 0x31, 0x6a, 0xb1,
+	0x53, 0x68, 0x61, 0xcf, 0x69, 0x89, 0xba, 0x48, 0x1b, 0x5d, 0x40, 0xf1, 0x1e, 0xe6, 0x51, 0x97,
+	0x91, 0xff, 0x35, 0x75, 0xa0, 0x7c, 0xec, 0x9d, 0x5c, 0x5a, 0x28, 0xde, 0x73, 0x31, 0xa1, 0xfb,
+	0x50, 0x7e, 0x44, 0xc6, 0x24, 0x29, 0x54, 0x3f, 0x67, 0x07, 0xf1, 0xbb, 0x36, 0xaa, 0x80, 0xe2,
+	0x5d, 0x91, 0x94, 0xb1, 0x0f, 0xd7, 0x9f, 0x10, 0x7e, 0x29, 0xd0, 0x3d, 0xd8, 0x5a, 0xb6, 0x5c,
+	0x6c, 0x60, 0x04, 0xdb, 0xcf, 0x1c, 0x26, 0x5a, 0x98, 0x94, 0x09, 0x0f, 0x11, 0xcb, 0x49, 0x4e,
+	0x1d, 0xf2, 0x61, 0x03, 0x53, 0x95, 0x46, 0x36, 0x09, 0x8a, 0xf2, 0xe1, 0x21, 0x0e, 0x6d, 0x32,
+	0x3c, 0x7d, 0x4a, 0xf0, 0x98, 0xdb, 0x7f, 0x59, 0x77, 0xa1, 0x92, 0xc8, 0x4a, 0x5a, 0x0d, 0x36,
+	0x19, 0xc7, 0x3c, 0x60, 0x62, 0xae, 0x82, 0x29, 0xa3, 0xce, 0xb7, 0x1c, 0xe4, 0x9f, 0x07, 0xc4,
+	0x7f, 0x8f, 0x5e, 0x02, 0xac, 0xf6, 0x8c, 0x6a, 0x42, 0x2e, 0x65, 0x16, 0x6d, 0x27, 0x95, 0x97,
+	0x97, 0xa7, 0x7e, 0xfa, 0xf1, 0xfb, 0xcb, 0x06, 0xea, 0x45, 0xa7, 0x04, 0xf1, 0xe3, 0x11, 0x73,
+	0xa2, 0xd7, 0x00, 0xab, 0xbd, 0x4a, 0x70, 0xca, 0x1c, 0x12, 0x9c, 0x36, 0x80, 0xb1, 0x27, 0xc0,
+	0xb7, 0x22, 0xb0, 0xb6, 0xbb, 0x02, 0xb7, 0x3f, 0x84, 0x5f, 0xad, 0xd8, 0x82, 0x3e, 0xa2, 0x01,
+	0xc0, 0x6a, 0xb1, 0x52, 0x2b, 0xe5, 0x0f, 0xa9, 0x75, 0x8e, 0x03, 0x1a, 0x42, 0x4b, 0xbb, 0xa3,
+	0xae, 0xab, 0x2c, 0x05, 0x5e, 0xc0, 0x15, 0xb9, 0x70, 0x54, 0x11, 0x94, 0xa4, 0x63, 0xb4, 0x6a,
+	0x32, 0x99, 0xe4, 0xa2, 0x7f, 0x73, 0x8f, 0xa0, 0xb0, 0xb4, 0x00, 0xba, 0x21, 0x20, 0xeb, 0x36,
+	0xd1, 0x6a, 0xeb, 0x69, 0x49, 0x47, 0x82, 0x5e, 0x42, 0xf1, 0x4b, 0x3f, 0x86, 0x62, 0xcc, 0x06,
+	0x48, 0xae, 0x2d, 0x65, 0x17, 0x4d, 0x4d, 0x17, 0x24, 0xb5, 0x22, 0xa8, 0xd7, 0x50, 0x51, 0x50,
+	0x6d, 0x51, 0xec, 0x3f, 0xfe, 0x3e, 0xd3, 0x95, 0xb3, 0x99, 0xae, 0xfc, 0x9a, 0xe9, 0xca, 0xe7,
+	0xb9, 0x9e, 0x39, 0x9b, 0xeb, 0x99, 0x9f, 0x73, 0x3d, 0xf3, 0x6a, 0x6f, 0xe4, 0x70, 0x3b, 0xb0,
+	0x5a, 0x43, 0x3a, 0x69, 0xbf, 0x0b, 0xf8, 0x09, 0xb6, 0xf1, 0xf0, 0x74, 0xbf, 0xdb, 0x3d, 0x10,
+	0x03, 0x0d, 0x26, 0x8e, 0x6b, 0x0f, 0x6c, 0x1a, 0x30, 0xf2, 0xc0, 0xb3, 0xac, 0x4d, 0xf1, 0xa7,
+	0xd9, 0xfd, 0x13, 0x00, 0x00, 0xff, 0xff, 0x76, 0xa7, 0xf1, 0xd2, 0x80, 0x05, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -685,7 +671,7 @@ type QueryClient interface {
 	DeleteRoom(ctx context.Context, in *DeleteRoomRequest, opts ...grpc.CallOption) (*DeleteRoomResponse, error)
 	GetRoom(ctx context.Context, in *GetRoomRequest, opts ...grpc.CallOption) (*GetRoomResponse, error)
 	ListRooms(ctx context.Context, in *ListRoomsRequest, opts ...grpc.CallOption) (*ListRoomsResponse, error)
-	Health(ctx context.Context, in *HealthRequest, opts ...grpc.CallOption) (*HealthResponse, error)
+	CheckHealth(ctx context.Context, in *CheckHealthRequest, opts ...grpc.CallOption) (*CheckHealthResponse, error)
 }
 
 type queryClient struct {
@@ -741,9 +727,9 @@ func (c *queryClient) ListRooms(ctx context.Context, in *ListRoomsRequest, opts 
 	return out, nil
 }
 
-func (c *queryClient) Health(ctx context.Context, in *HealthRequest, opts ...grpc.CallOption) (*HealthResponse, error) {
-	out := new(HealthResponse)
-	err := c.cc.Invoke(ctx, "/api.Query/Health", in, out, opts...)
+func (c *queryClient) CheckHealth(ctx context.Context, in *CheckHealthRequest, opts ...grpc.CallOption) (*CheckHealthResponse, error) {
+	out := new(CheckHealthResponse)
+	err := c.cc.Invoke(ctx, "/api.Query/CheckHealth", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -757,7 +743,7 @@ type QueryServer interface {
 	DeleteRoom(context.Context, *DeleteRoomRequest) (*DeleteRoomResponse, error)
 	GetRoom(context.Context, *GetRoomRequest) (*GetRoomResponse, error)
 	ListRooms(context.Context, *ListRoomsRequest) (*ListRoomsResponse, error)
-	Health(context.Context, *HealthRequest) (*HealthResponse, error)
+	CheckHealth(context.Context, *CheckHealthRequest) (*CheckHealthResponse, error)
 }
 
 // UnimplementedQueryServer can be embedded to have forward compatible implementations.
@@ -779,8 +765,8 @@ func (*UnimplementedQueryServer) GetRoom(ctx context.Context, req *GetRoomReques
 func (*UnimplementedQueryServer) ListRooms(ctx context.Context, req *ListRoomsRequest) (*ListRoomsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListRooms not implemented")
 }
-func (*UnimplementedQueryServer) Health(ctx context.Context, req *HealthRequest) (*HealthResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Health not implemented")
+func (*UnimplementedQueryServer) CheckHealth(ctx context.Context, req *CheckHealthRequest) (*CheckHealthResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CheckHealth not implemented")
 }
 
 func RegisterQueryServer(s grpc1.Server, srv QueryServer) {
@@ -877,20 +863,20 @@ func _Query_ListRooms_Handler(srv interface{}, ctx context.Context, dec func(int
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Query_Health_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(HealthRequest)
+func _Query_CheckHealth_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CheckHealthRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(QueryServer).Health(ctx, in)
+		return srv.(QueryServer).CheckHealth(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/api.Query/Health",
+		FullMethod: "/api.Query/CheckHealth",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(QueryServer).Health(ctx, req.(*HealthRequest))
+		return srv.(QueryServer).CheckHealth(ctx, req.(*CheckHealthRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -920,8 +906,8 @@ var _Query_serviceDesc = grpc.ServiceDesc{
 			Handler:    _Query_ListRooms_Handler,
 		},
 		{
-			MethodName: "Health",
-			Handler:    _Query_Health_Handler,
+			MethodName: "CheckHealth",
+			Handler:    _Query_CheckHealth_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
@@ -956,13 +942,7 @@ func (m *Room) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 			dAtA[i] = 0
 		}
 		i--
-		dAtA[i] = 0x20
-	}
-	if m.Area != 0 {
-		i -= 8
-		encoding_binary.LittleEndian.PutUint64(dAtA[i:], uint64(math.Float64bits(float64(m.Area))))
-		i--
-		dAtA[i] = 0x19
+		dAtA[i] = 0x18
 	}
 	if m.Price != 0 {
 		i -= 8
@@ -970,12 +950,10 @@ func (m *Room) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 		i--
 		dAtA[i] = 0x11
 	}
-	if len(m.Id) > 0 {
-		i -= len(m.Id)
-		copy(dAtA[i:], m.Id)
-		i = encodeVarintProto(dAtA, i, uint64(len(m.Id)))
+	if m.RoomNumber != 0 {
+		i = encodeVarintProto(dAtA, i, uint64(m.RoomNumber))
 		i--
-		dAtA[i] = 0xa
+		dAtA[i] = 0x8
 	}
 	return len(dAtA) - i, nil
 }
@@ -1035,10 +1013,15 @@ func (m *CreateRoomResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	_ = i
 	var l int
 	_ = l
-	if len(m.Id) > 0 {
-		i -= len(m.Id)
-		copy(dAtA[i:], m.Id)
-		i = encodeVarintProto(dAtA, i, uint64(len(m.Id)))
+	if m.Room != nil {
+		{
+			size, err := m.Room.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintProto(dAtA, i, uint64(size))
+		}
 		i--
 		dAtA[i] = 0xa
 	}
@@ -1135,12 +1118,10 @@ func (m *DeleteRoomRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	_ = i
 	var l int
 	_ = l
-	if len(m.Id) > 0 {
-		i -= len(m.Id)
-		copy(dAtA[i:], m.Id)
-		i = encodeVarintProto(dAtA, i, uint64(len(m.Id)))
+	if m.RoomNumber != 0 {
+		i = encodeVarintProto(dAtA, i, uint64(m.RoomNumber))
 		i--
-		dAtA[i] = 0xa
+		dAtA[i] = 0x8
 	}
 	return len(dAtA) - i, nil
 }
@@ -1165,16 +1146,6 @@ func (m *DeleteRoomResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	_ = i
 	var l int
 	_ = l
-	if m.Ok {
-		i--
-		if m.Ok {
-			dAtA[i] = 1
-		} else {
-			dAtA[i] = 0
-		}
-		i--
-		dAtA[i] = 0x8
-	}
 	return len(dAtA) - i, nil
 }
 
@@ -1198,12 +1169,10 @@ func (m *GetRoomRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	_ = i
 	var l int
 	_ = l
-	if len(m.Id) > 0 {
-		i -= len(m.Id)
-		copy(dAtA[i:], m.Id)
-		i = encodeVarintProto(dAtA, i, uint64(len(m.Id)))
+	if m.RoomNumber != 0 {
+		i = encodeVarintProto(dAtA, i, uint64(m.RoomNumber))
 		i--
-		dAtA[i] = 0xa
+		dAtA[i] = 0x8
 	}
 	return len(dAtA) - i, nil
 }
@@ -1303,7 +1272,7 @@ func (m *ListRoomsResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
-func (m *HealthRequest) Marshal() (dAtA []byte, err error) {
+func (m *CheckHealthRequest) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -1313,12 +1282,12 @@ func (m *HealthRequest) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *HealthRequest) MarshalTo(dAtA []byte) (int, error) {
+func (m *CheckHealthRequest) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *HealthRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *CheckHealthRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -1326,7 +1295,7 @@ func (m *HealthRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
-func (m *HealthResponse) Marshal() (dAtA []byte, err error) {
+func (m *CheckHealthResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -1336,12 +1305,12 @@ func (m *HealthResponse) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *HealthResponse) MarshalTo(dAtA []byte) (int, error) {
+func (m *CheckHealthResponse) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *HealthResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *CheckHealthResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -1373,14 +1342,10 @@ func (m *Room) Size() (n int) {
 	}
 	var l int
 	_ = l
-	l = len(m.Id)
-	if l > 0 {
-		n += 1 + l + sovProto(uint64(l))
+	if m.RoomNumber != 0 {
+		n += 1 + sovProto(uint64(m.RoomNumber))
 	}
 	if m.Price != 0 {
-		n += 9
-	}
-	if m.Area != 0 {
 		n += 9
 	}
 	if m.IsAvailable {
@@ -1408,8 +1373,8 @@ func (m *CreateRoomResponse) Size() (n int) {
 	}
 	var l int
 	_ = l
-	l = len(m.Id)
-	if l > 0 {
+	if m.Room != nil {
+		l = m.Room.Size()
 		n += 1 + l + sovProto(uint64(l))
 	}
 	return n
@@ -1447,9 +1412,8 @@ func (m *DeleteRoomRequest) Size() (n int) {
 	}
 	var l int
 	_ = l
-	l = len(m.Id)
-	if l > 0 {
-		n += 1 + l + sovProto(uint64(l))
+	if m.RoomNumber != 0 {
+		n += 1 + sovProto(uint64(m.RoomNumber))
 	}
 	return n
 }
@@ -1460,9 +1424,6 @@ func (m *DeleteRoomResponse) Size() (n int) {
 	}
 	var l int
 	_ = l
-	if m.Ok {
-		n += 2
-	}
 	return n
 }
 
@@ -1472,9 +1433,8 @@ func (m *GetRoomRequest) Size() (n int) {
 	}
 	var l int
 	_ = l
-	l = len(m.Id)
-	if l > 0 {
-		n += 1 + l + sovProto(uint64(l))
+	if m.RoomNumber != 0 {
+		n += 1 + sovProto(uint64(m.RoomNumber))
 	}
 	return n
 }
@@ -1516,7 +1476,7 @@ func (m *ListRoomsResponse) Size() (n int) {
 	return n
 }
 
-func (m *HealthRequest) Size() (n int) {
+func (m *CheckHealthRequest) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -1525,7 +1485,7 @@ func (m *HealthRequest) Size() (n int) {
 	return n
 }
 
-func (m *HealthResponse) Size() (n int) {
+func (m *CheckHealthResponse) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -1574,10 +1534,10 @@ func (m *Room) Unmarshal(dAtA []byte) error {
 		}
 		switch fieldNum {
 		case 1:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Id", wireType)
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field RoomNumber", wireType)
 			}
-			var stringLen uint64
+			m.RoomNumber = 0
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
 					return ErrIntOverflowProto
@@ -1587,24 +1547,11 @@ func (m *Room) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
+				m.RoomNumber |= int32(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
 			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthProto
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthProto
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.Id = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
 		case 2:
 			if wireType != 1 {
 				return fmt.Errorf("proto: wrong wireType = %d for field Price", wireType)
@@ -1617,17 +1564,6 @@ func (m *Room) Unmarshal(dAtA []byte) error {
 			iNdEx += 8
 			m.Price = float64(math.Float64frombits(v))
 		case 3:
-			if wireType != 1 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Area", wireType)
-			}
-			var v uint64
-			if (iNdEx + 8) > l {
-				return io.ErrUnexpectedEOF
-			}
-			v = uint64(encoding_binary.LittleEndian.Uint64(dAtA[iNdEx:]))
-			iNdEx += 8
-			m.Area = float64(math.Float64frombits(v))
-		case 4:
 			if wireType != 0 {
 				return fmt.Errorf("proto: wrong wireType = %d for field IsAvailable", wireType)
 			}
@@ -1785,9 +1721,9 @@ func (m *CreateRoomResponse) Unmarshal(dAtA []byte) error {
 		switch fieldNum {
 		case 1:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Id", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field Room", wireType)
 			}
-			var stringLen uint64
+			var msglen int
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
 					return ErrIntOverflowProto
@@ -1797,23 +1733,27 @@ func (m *CreateRoomResponse) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
+				msglen |= int(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
 			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
+			if msglen < 0 {
 				return ErrInvalidLengthProto
 			}
-			postIndex := iNdEx + intStringLen
+			postIndex := iNdEx + msglen
 			if postIndex < 0 {
 				return ErrInvalidLengthProto
 			}
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Id = string(dAtA[iNdEx:postIndex])
+			if m.Room == nil {
+				m.Room = &Room{}
+			}
+			if err := m.Room.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
 			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
@@ -2038,10 +1978,10 @@ func (m *DeleteRoomRequest) Unmarshal(dAtA []byte) error {
 		}
 		switch fieldNum {
 		case 1:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Id", wireType)
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field RoomNumber", wireType)
 			}
-			var stringLen uint64
+			m.RoomNumber = 0
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
 					return ErrIntOverflowProto
@@ -2051,24 +1991,11 @@ func (m *DeleteRoomRequest) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
+				m.RoomNumber |= int32(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
 			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthProto
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthProto
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.Id = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
 			skippy, err := skipProto(dAtA[iNdEx:])
@@ -2119,26 +2046,6 @@ func (m *DeleteRoomResponse) Unmarshal(dAtA []byte) error {
 			return fmt.Errorf("proto: DeleteRoomResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
-		case 1:
-			if wireType != 0 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Ok", wireType)
-			}
-			var v int
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowProto
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				v |= int(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			m.Ok = bool(v != 0)
 		default:
 			iNdEx = preIndex
 			skippy, err := skipProto(dAtA[iNdEx:])
@@ -2190,10 +2097,10 @@ func (m *GetRoomRequest) Unmarshal(dAtA []byte) error {
 		}
 		switch fieldNum {
 		case 1:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Id", wireType)
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field RoomNumber", wireType)
 			}
-			var stringLen uint64
+			m.RoomNumber = 0
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
 					return ErrIntOverflowProto
@@ -2203,24 +2110,11 @@ func (m *GetRoomRequest) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
+				m.RoomNumber |= int32(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
 			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthProto
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthProto
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.Id = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
 			skippy, err := skipProto(dAtA[iNdEx:])
@@ -2462,7 +2356,7 @@ func (m *ListRoomsResponse) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *HealthRequest) Unmarshal(dAtA []byte) error {
+func (m *CheckHealthRequest) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -2485,10 +2379,10 @@ func (m *HealthRequest) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: HealthRequest: wiretype end group for non-group")
+			return fmt.Errorf("proto: CheckHealthRequest: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: HealthRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: CheckHealthRequest: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		default:
@@ -2512,7 +2406,7 @@ func (m *HealthRequest) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *HealthResponse) Unmarshal(dAtA []byte) error {
+func (m *CheckHealthResponse) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -2535,10 +2429,10 @@ func (m *HealthResponse) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: HealthResponse: wiretype end group for non-group")
+			return fmt.Errorf("proto: CheckHealthResponse: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: HealthResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: CheckHealthResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:

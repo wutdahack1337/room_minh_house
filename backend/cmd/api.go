@@ -32,7 +32,10 @@ func apiCmd(c *cli.Cmd) {
 		}
 		defer db.Client().Disconnect(context.Background())
 
-		dbService := database.NewMongoService(db)
+		dbService, err := database.NewMongoService(db)
+		if err != nil {
+			panic(err)
+		}
 
 		server.StartServer(
 			"0.0.0.0:8000",

@@ -10,6 +10,8 @@ Tranh thủ đợt niên luận cơ sở này, viết để sau này xài luôn 
 make proto
 
 docker exec -it mongo mongosh
+
+go test backend/server -v
 ```
 
 ## Run
