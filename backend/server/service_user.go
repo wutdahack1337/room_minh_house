@@ -18,6 +18,23 @@ func (s *Service) CreateUser(ctx context.Context, request *types.CreateUserReque
 		return nil, fmt.Errorf("CreateUser error: pid is required")
 	}
 
+	card := request.User.IdCard
+	if card == nil {
+		return nil, fmt.Errorf("CreateUser error: id card is required")
+	}
+	if card.Name == "" {
+		return nil, fmt.Errorf("CreateUser error: id card name is required")
+	}
+	if card.Sex == "" {
+		return nil, fmt.Errorf("CreateUser error: id card sex is required")
+	}
+	if card.DateOfBirth == "" {
+		return nil, fmt.Errorf("CreateUser error: id card date of birth is required")
+	}
+	if card.PlaceOfBirth == "" {
+		return nil, fmt.Errorf("CreateUser error: id card place of birth is required")
+	}
+
 	if err := s.dbService.CreateUser(ctx, request.User); err != nil {
 		return nil, err
 	}
@@ -35,6 +52,23 @@ func (s *Service) UpdateUser(ctx context.Context, request *types.UpdateUserReque
 	}
 	if request.User.Pid == "" {
 		return nil, fmt.Errorf("UpdateUser error: pid is required")
+	}
+
+	card := request.User.IdCard
+	if card == nil {
+		return nil, fmt.Errorf("CreateUser error: id card is required")
+	}
+	if card.Name == "" {
+		return nil, fmt.Errorf("CreateUser error: id card name is required")
+	}
+	if card.Sex == "" {
+		return nil, fmt.Errorf("CreateUser error: id card sex is required")
+	}
+	if card.DateOfBirth == "" {
+		return nil, fmt.Errorf("CreateUser error: id card date of birth is required")
+	}
+	if card.PlaceOfBirth == "" {
+		return nil, fmt.Errorf("CreateUser error: id card place of birth is required")
 	}
 
 	if err := s.dbService.UpdateUser(ctx, request.User); err != nil {
