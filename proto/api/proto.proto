@@ -39,7 +39,7 @@ service Query {
     }
     rpc UpdateUser(UpdateUserRequest) returns (UpdateUserResponse) {
         option (google.api.http) = {
-            put: "/api/users/{user.pid}"
+            put: "/api/users/{pid}"
             body: "user"
         };
     }
@@ -51,6 +51,16 @@ service Query {
     }
     rpc ListUsers(ListUsersRequest) returns (ListUsersResponse) {
         option (google.api.http).get = "/api/users";
+    }
+
+    // ==============================================================
+
+    // create if not exists, update if exists
+    rpc SetUserIdCard(SetUserIdCardRequest) returns (SetUserIdCardResponse) {
+        option (google.api.http) = {
+            put: "/api/users/{pid}/id-card"
+            body: "id_card"
+        };
     }
 
     // ==============================================================
@@ -124,9 +134,17 @@ message ListRoomsResponse {
 
 // ==============================================================
 
+message CitizenIdCard {
+    string name = 1 [(gogoproto.moretags) = "bson:\"name\""];
+    string sex = 2 [(gogoproto.moretags) = "bson:\"sex\""];
+    string date_of_birth = 3 [(gogoproto.moretags) = "bson:\"date_of_birth\""];
+    string place_of_birth = 4 [(gogoproto.moretags) = "bson:\"place_of_birth\""];
+}
+
 message User {
     string pid = 1 [(gogoproto.moretags) = "bson:\"pid\""];
     string phone_number = 2 [(gogoproto.moretags) = "bson:\"phone_number\""];
+    CitizenIdCard id_card = 3 [(gogoproto.moretags) = "bson:\"id_card\""]; // embedded value object
 }
 
 message CreateUserRequest {
@@ -137,7 +155,8 @@ message CreateUserResponse {
 }
 
 message UpdateUserRequest {
-    User user = 1; // must include pid
+    string pid = 1;
+    User user = 2;
 }
 message UpdateUserResponse {
     User user = 1;
@@ -158,6 +177,16 @@ message GetUserResponse {
 message ListUsersRequest {}
 message ListUsersResponse {
     repeated User users = 1;
+}
+
+// ==============================================================
+
+message SetUserIdCardRequest {
+    string pid = 1;
+    CitizenIdCard id_card = 2;
+}
+message SetUserIdCardResponse {
+    CitizenIdCard id_card = 1;
 }
 
 // ==============================================================
