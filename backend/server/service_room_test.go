@@ -60,6 +60,27 @@ func TestCreateRoom_DuplicateRoomNumber(t *testing.T) {
 	}
 }
 
+func TestCreateRoom_MissingRoomNumber(t *testing.T) {
+	room := &types.Room{
+		Price:       9_999_999,
+		IsAvailable: true,
+	}
+
+	service := getService()
+	response, err := service.CreateRoom(context.Background(), &types.CreateRoomRequest{
+		Room: room,
+	})
+
+	t.Log(err)
+	if err == nil {
+		t.Fatal("expected error for missing room number, got nil")
+	}
+
+	if response != nil {
+		t.Fatal("expected nil response for missing room number, got non-nil")
+	}
+}
+
 func TestUpdateRoom_HappyPath(t *testing.T) {
 	ctx := context.Background()
 

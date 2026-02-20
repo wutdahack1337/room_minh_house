@@ -14,6 +14,9 @@ func (s *Service) CreateUser(ctx context.Context, request *types.CreateUserReque
 	if request.User == nil {
 		return nil, fmt.Errorf("CreateUser error: empty user")
 	}
+	if request.User.Pid == "" {
+		return nil, fmt.Errorf("CreateUser error: pid is required")
+	}
 
 	if err := s.dbService.CreateUser(ctx, request.User); err != nil {
 		return nil, err
@@ -45,6 +48,9 @@ func (s *Service) UpdateUser(ctx context.Context, request *types.UpdateUserReque
 func (s *Service) DeleteUser(ctx context.Context, request *types.DeleteUserRequest) (*types.DeleteUserResponse, error) {
 	if request == nil {
 		return nil, fmt.Errorf("DeleteUser error: empty request")
+	}
+	if request.Pid == "" {
+		return nil, fmt.Errorf("DeleteUser error: pid is required")
 	}
 
 	if err := s.dbService.DeleteUser(ctx, request.Pid); err != nil {

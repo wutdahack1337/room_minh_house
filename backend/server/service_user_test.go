@@ -56,6 +56,24 @@ func TestCreateUser_DuplicatePid(t *testing.T) {
 	}
 }
 
+func TestCreateUser_MissingPid(t *testing.T) {
+	service := getUserService()
+	response, err := service.CreateUser(context.Background(), &types.CreateUserRequest{
+		User: &types.User{
+			PhoneNumber: "0949447156",
+		},
+	})
+
+	t.Log(err)
+	if err == nil {
+		t.Fatal("expected error for empty pid, got nil")
+	}
+
+	if response != nil {
+		t.Fatal("expected nil response for empty pid, got non-nil")
+	}
+}
+
 func TestUpdateUser_HappyPath(t *testing.T) {
 	ctx := context.Background()
 	service := getUserService()

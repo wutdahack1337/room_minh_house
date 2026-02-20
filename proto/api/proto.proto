@@ -107,7 +107,7 @@ message CreateUserResponse {
 }
 
 message UpdateUserRequest {
-    User user = 1; // must include id
+    User user = 1; // must include pid
 }
 message UpdateUserResponse {
     User user = 1;

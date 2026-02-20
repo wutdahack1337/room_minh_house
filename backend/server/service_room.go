@@ -14,6 +14,9 @@ func (s *Service) CreateRoom(ctx context.Context, request *types.CreateRoomReque
 	if request.Room == nil {
 		return nil, fmt.Errorf("CreateRoom error: empty room")
 	}
+	if request.Room.RoomNumber == 0 {
+		return nil, fmt.Errorf("CreateRoom error: room number is required")
+	}
 
 	if err := s.dbService.CreateRoom(ctx, request.Room); err != nil {
 		return nil, err
@@ -47,6 +50,9 @@ func (s *Service) UpdateRoom(ctx context.Context, request *types.UpdateRoomReque
 func (s *Service) DeleteRoom(ctx context.Context, request *types.DeleteRoomRequest) (*types.DeleteRoomResponse, error) {
 	if request == nil {
 		return nil, fmt.Errorf("DeleteRoom error: empty request")
+	}
+	if request.RoomNumber == 0 {
+		return nil, fmt.Errorf("DeleteRoom error: room number is required")
 	}
 
 	if err := s.dbService.DeleteRoom(ctx, request.RoomNumber); err != nil {
