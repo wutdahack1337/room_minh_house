@@ -19,5 +19,11 @@ type DatabaseService interface {
 	GetUser(ctx context.Context, pid string) (*types.User, error)
 	ListUsers(ctx context.Context) ([]*types.User, error)
 
+	CreateContract(ctx context.Context, contract *types.Contract) error
+	UpdateContract(ctx context.Context, contract *types.Contract) error
+	DeleteContract(ctx context.Context, contractId string) error
+	GetContract(ctx context.Context, contractId string) (*types.Contract, error)
+	ListContracts(ctx context.Context) ([]*types.Contract, error)
+
 	Health(ctx context.Context) error
 }

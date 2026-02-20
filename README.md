@@ -12,7 +12,8 @@ make proto
 docker exec -it mongo mongosh
 
 go test ./backend/server -v
-go test ./backend/server -run TestXYZ -v
+go test ./backend/server -v -run TestXYZ
+go test ./backend/server -v -run TestXYZ_ABC
 ```
 
 ## Run
