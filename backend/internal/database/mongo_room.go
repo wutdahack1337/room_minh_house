@@ -31,6 +31,7 @@ func (s *MongoService) UpdateRoom(ctx context.Context, room *types.Room) error {
 
 func (s *MongoService) DeleteRoom(ctx context.Context, roomNumber int32) error {
 	collection := s.database.Collection(roomCollection)
+
 	result, err := collection.DeleteOne(ctx, bson.M{"room_number": roomNumber})
 	if err != nil {
 		return err

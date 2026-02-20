@@ -29,6 +29,8 @@ service Query {
         option (google.api.http).get = "/api/rooms";
     }
 
+    // ==============================================================
+
     rpc CreateUser(CreateUserRequest) returns (CreateUserResponse) {
         option (google.api.http) = {
             post: "/api/users"
@@ -51,10 +53,37 @@ service Query {
         option (google.api.http).get = "/api/users";
     }
 
+    // ==============================================================
+
+    rpc CreateContract(CreateContractRequest) returns (CreateContractResponse) {
+        option (google.api.http) = {
+            post: "/api/contracts"
+            body: "contract"
+        };
+    }
+    rpc UpdateContract(UpdateContractRequest) returns (UpdateContractResponse) {
+        option (google.api.http) = {
+            put: "/api/contracts/{contract.contract_id}"
+            body: "contract"
+        };
+    }
+    rpc DeleteContract(DeleteContractRequest) returns (DeleteContractResponse) {
+        option (google.api.http).delete = "/api/contracts/{contract_id}";
+    }
+    rpc GetContract(GetContractRequest) returns (GetContractResponse) {
+        option (google.api.http).get = "/api/contracts/{contract_id}";
+    }
+    rpc ListContracts(ListContractsRequest) returns (ListContractsResponse) {
+        option (google.api.http).get = "/api/contracts";
+    }
+
+    // ==============================================================
+
     rpc CheckHealth(CheckHealthRequest) returns (CheckHealthResponse) {
         option (google.api.http).get = "/api/health";
     }
 }
+
 
 message Room {
     int32 room_number = 1 [(gogoproto.moretags) = "bson:\"room_number\""];
@@ -93,6 +122,7 @@ message ListRoomsResponse {
     repeated Room rooms = 1;
 }
 
+// ==============================================================
 
 message User {
     string pid = 1 [(gogoproto.moretags) = "bson:\"pid\""];
@@ -130,6 +160,50 @@ message ListUsersResponse {
     repeated User users = 1;
 }
 
+// ==============================================================
+
+message Contract {
+    string contract_id = 1 [(gogoproto.moretags) = "bson:\"contract_id\""];
+    string user_pid = 2 [(gogoproto.moretags) = "bson:\"user_pid\""];
+    int32 room_number = 3 [(gogoproto.moretags) = "bson:\"room_number\""];
+    string start_date = 4 [(gogoproto.moretags) = "bson:\"start_date\""];
+    string end_date = 5 [(gogoproto.moretags) = "bson:\"end_date\""];
+    int32 duration_months = 6 [(gogoproto.moretags) = "bson:\"duration_months\""];
+    string status = 7 [(gogoproto.moretags) = "bson:\"status\""];
+}
+
+message CreateContractRequest {
+    Contract contract = 1;
+}
+message CreateContractResponse {
+    Contract contract = 1;
+}
+
+message UpdateContractRequest {
+    Contract contract = 1; // must include id
+}
+message UpdateContractResponse {
+    Contract contract = 1;
+}
+
+message DeleteContractRequest {
+    string contract_id = 1;
+}
+message DeleteContractResponse {}
+
+message GetContractRequest {
+    string contract_id = 1;
+}
+message GetContractResponse {
+    Contract contract = 1;
+}
+
+message ListContractsRequest {}
+message ListContractsResponse {
+    repeated Contract contracts = 1;
+}
+
+// ==============================================================
 
 message CheckHealthRequest {}
 message CheckHealthResponse {

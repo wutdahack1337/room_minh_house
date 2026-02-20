@@ -11,6 +11,7 @@ import (
 
 const roomCollection = "rooms"
 const userCollection = "users"
+const contractCollection = "contracts"
 
 type MongoService struct {
 	database *mongo.Database
@@ -32,6 +33,17 @@ func NewMongoService(database *mongo.Database) (*MongoService, error) {
 	collection = database.Collection(userCollection)
 	indexModel = mongo.IndexModel{
 		Keys:    bson.D{{Key: "pid", Value: 1}},
+		Options: options.Index().SetUnique(true),
+	}
+	_, err = collection.Indexes().CreateOne(context.Background(), indexModel)
+	if err != nil {
+		return nil, err
+	}
+
+	// set contract id as unique index
+	collection = database.Collection(contractCollection)
+	indexModel = mongo.IndexModel{
+		Keys:    bson.D{{Key: "contract_id", Value: 1}},
 		Options: options.Index().SetUnique(true),
 	}
 	_, err = collection.Indexes().CreateOne(context.Background(), indexModel)
