@@ -11,16 +11,14 @@ import (
 )
 
 func TestCreateRoom_HappyPath(t *testing.T) {
-	ctx := context.Background()
-	service := getService()
-
 	room := &types.Room{
 		RoomNumber:  666,
 		Price:       9_999_999,
 		IsAvailable: true,
 	}
 
-	response, err := service.CreateRoom(ctx, &types.CreateRoomRequest{
+	service := getService()
+	response, err := service.CreateRoom(context.Background(), &types.CreateRoomRequest{
 		Room: room,
 	})
 
@@ -62,9 +60,29 @@ func TestCreateRoom_DuplicateRoomNumber(t *testing.T) {
 	}
 }
 
+func TestCreateRoom_MissingRoomNumber(t *testing.T) {
+	room := &types.Room{
+		Price:       9_999_999,
+		IsAvailable: true,
+	}
+
+	service := getService()
+	response, err := service.CreateRoom(context.Background(), &types.CreateRoomRequest{
+		Room: room,
+	})
+
+	t.Log(err)
+	if err == nil {
+		t.Fatal("expected error for missing room number, got nil")
+	}
+
+	if response != nil {
+		t.Fatal("expected nil response for missing room number, got non-nil")
+	}
+}
+
 func TestUpdateRoom_HappyPath(t *testing.T) {
 	ctx := context.Background()
-	service := getService()
 
 	room := &types.Room{
 		RoomNumber:  666,
@@ -72,24 +90,18 @@ func TestUpdateRoom_HappyPath(t *testing.T) {
 		IsAvailable: true,
 	}
 
-	createResponse, err := service.CreateRoom(ctx, &types.CreateRoomRequest{
+	service := getService()
+	_, _ = service.CreateRoom(ctx, &types.CreateRoomRequest{
 		Room: room,
 	})
-
-	if err != nil {
-		t.Fatal("CreateRoom failed: " + err.Error())
-	}
-	if createResponse == nil {
-		t.Fatal("CreateRoom returned nil response")
-	}
 
 	room = &types.Room{
 		RoomNumber:  666,
 		Price:       9_999_999,
-		IsAvailable: true,
+		IsAvailable: false,
 	}
 
-	_, err = service.UpdateRoom(ctx, &types.UpdateRoomRequest{
+	_, err := service.UpdateRoom(ctx, &types.UpdateRoomRequest{
 		Room: room,
 	})
 
@@ -105,18 +117,20 @@ func TestUpdateRoom_HappyPath(t *testing.T) {
 	if response == nil {
 		t.Fatal("GetRoom returned nil response")
 	}
+
+	if response.Room.Price != room.Price || response.Room.IsAvailable != room.IsAvailable {
+		t.Fatalf("expected room price %f and isAvailable %t, got %f and %t", room.Price, room.IsAvailable, response.Room.Price, response.Room.IsAvailable)
+	}
 }
 
 func TestUpdateRoom_MissingRoomNumber(t *testing.T) {
-	ctx := context.Background()
-	service := getService()
-
 	room := &types.Room{
 		Price:       6_666_666,
 		IsAvailable: true,
 	}
 
-	_, err := service.UpdateRoom(ctx, &types.UpdateRoomRequest{
+	service := getService()
+	_, err := service.UpdateRoom(context.Background(), &types.UpdateRoomRequest{
 		Room: room,
 	})
 
@@ -127,16 +141,14 @@ func TestUpdateRoom_MissingRoomNumber(t *testing.T) {
 }
 
 func TestUpdateRoom_NotFound(t *testing.T) {
-	ctx := context.Background()
-	service := getService()
-
 	room := &types.Room{
 		RoomNumber:  999,
 		Price:       9_999_999,
 		IsAvailable: true,
 	}
 
-	response, err := service.UpdateRoom(ctx, &types.UpdateRoomRequest{
+	service := getService()
+	response, err := service.UpdateRoom(context.Background(), &types.UpdateRoomRequest{
 		Room: room,
 	})
 
@@ -151,7 +163,6 @@ func TestUpdateRoom_NotFound(t *testing.T) {
 
 func TestDeleteRoom_HappyPath(t *testing.T) {
 	ctx := context.Background()
-	service := getService()
 
 	room := &types.Room{
 		RoomNumber:  666,
@@ -159,6 +170,7 @@ func TestDeleteRoom_HappyPath(t *testing.T) {
 		IsAvailable: true,
 	}
 
+	service := getService()
 	createResponse, err := service.CreateRoom(ctx, &types.CreateRoomRequest{
 		Room: room,
 	})
@@ -195,10 +207,8 @@ func TestDeleteRoom_HappyPath(t *testing.T) {
 }
 
 func TestDeleteRoom_NotFound(t *testing.T) {
-	ctx := context.Background()
 	service := getService()
-
-	deleteResponse, err := service.DeleteRoom(ctx, &types.DeleteRoomRequest{
+	deleteResponse, err := service.DeleteRoom(context.Background(), &types.DeleteRoomRequest{
 		RoomNumber: 999,
 	})
 
@@ -213,7 +223,6 @@ func TestDeleteRoom_NotFound(t *testing.T) {
 
 func TestGetRoom_HappyPath(t *testing.T) {
 	ctx := context.Background()
-	service := getService()
 
 	room := &types.Room{
 		RoomNumber:  666,
@@ -221,16 +230,10 @@ func TestGetRoom_HappyPath(t *testing.T) {
 		IsAvailable: true,
 	}
 
-	createResponse, err := service.CreateRoom(ctx, &types.CreateRoomRequest{
+	service := getService()
+	_, _ = service.CreateRoom(ctx, &types.CreateRoomRequest{
 		Room: room,
 	})
-
-	if err != nil {
-		t.Fatal("CreateRoom failed: " + err.Error())
-	}
-	if createResponse == nil {
-		t.Fatal("CreateRoom returned nil response")
-	}
 
 	response, err := service.GetRoom(ctx, &types.GetRoomRequest{
 		RoomNumber: 666,
@@ -254,10 +257,8 @@ func TestGetRoom_HappyPath(t *testing.T) {
 }
 
 func TestGetRoom_NotFound(t *testing.T) {
-	ctx := context.Background()
 	service := getService()
-
-	response, err := service.GetRoom(ctx, &types.GetRoomRequest{
+	response, err := service.GetRoom(context.Background(), &types.GetRoomRequest{
 		RoomNumber: 999,
 	})
 
@@ -272,7 +273,6 @@ func TestGetRoom_NotFound(t *testing.T) {
 
 func TestListRooms_HappyPath(t *testing.T) {
 	ctx := context.Background()
-	service := getService()
 
 	// Create multiple rooms
 	rooms := []*types.Room{
@@ -281,6 +281,7 @@ func TestListRooms_HappyPath(t *testing.T) {
 		{RoomNumber: 999, Price: 999_999, IsAvailable: true},
 	}
 
+	service := getService()
 	for _, room := range rooms {
 		_, err := service.CreateRoom(ctx, &types.CreateRoomRequest{
 			Room: room,
@@ -301,13 +302,17 @@ func TestListRooms_HappyPath(t *testing.T) {
 	if len(response.Rooms) != 3 {
 		t.Fatalf("expected 3 rooms, got %d", len(response.Rooms))
 	}
+
+	for i, room := range rooms {
+		if response.Rooms[i].RoomNumber != room.RoomNumber || response.Rooms[i].Price != room.Price || response.Rooms[i].IsAvailable != room.IsAvailable {
+			t.Fatalf("expected room number %d, price %f, isAvailable %t, got room number %d, price %f, isAvailable %t", room.RoomNumber, room.Price, room.IsAvailable, response.Rooms[i].RoomNumber, response.Rooms[i].Price, response.Rooms[i].IsAvailable)
+		}
+	}
 }
 
 func TestListRooms_Empty(t *testing.T) {
-	ctx := context.Background()
 	service := getService()
-
-	response, err := service.ListRooms(ctx, &types.ListRoomsRequest{})
+	response, err := service.ListRooms(context.Background(), &types.ListRoomsRequest{})
 
 	if err != nil {
 		t.Fatal("ListRooms failed: " + err.Error())

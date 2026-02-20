@@ -29,6 +29,28 @@ service Query {
         option (google.api.http).get = "/api/rooms";
     }
 
+    rpc CreateUser(CreateUserRequest) returns (CreateUserResponse) {
+        option (google.api.http) = {
+            post: "/api/users"
+            body: "user"
+        };
+    }
+    rpc UpdateUser(UpdateUserRequest) returns (UpdateUserResponse) {
+        option (google.api.http) = {
+            put: "/api/users/{user.pid}"
+            body: "user"
+        };
+    }
+    rpc DeleteUser(DeleteUserRequest) returns (DeleteUserResponse) {
+        option (google.api.http).delete = "/api/users/{pid}";
+    }
+    rpc GetUser(GetUserRequest) returns (GetUserResponse) {
+        option (google.api.http).get = "/api/users/{pid}";
+    }
+    rpc ListUsers(ListUsersRequest) returns (ListUsersResponse) {
+        option (google.api.http).get = "/api/users";
+    }
+
     rpc CheckHealth(CheckHealthRequest) returns (CheckHealthResponse) {
         option (google.api.http).get = "/api/health";
     }
@@ -70,6 +92,44 @@ message ListRoomsRequest {}
 message ListRoomsResponse {
     repeated Room rooms = 1;
 }
+
+
+message User {
+    string pid = 1 [(gogoproto.moretags) = "bson:\"pid\""];
+    string phone_number = 2 [(gogoproto.moretags) = "bson:\"phone_number\""];
+}
+
+message CreateUserRequest {
+    User user = 1;
+}
+message CreateUserResponse {
+    User user = 1;
+}
+
+message UpdateUserRequest {
+    User user = 1; // must include pid
+}
+message UpdateUserResponse {
+    User user = 1;
+}
+
+message DeleteUserRequest {
+    string pid = 1;
+}
+message DeleteUserResponse {}
+
+message GetUserRequest {
+    string pid = 1;
+}
+message GetUserResponse {
+    User user = 1;
+}
+
+message ListUsersRequest {}
+message ListUsersResponse {
+    repeated User users = 1;
+}
+
 
 message CheckHealthRequest {}
 message CheckHealthResponse {
