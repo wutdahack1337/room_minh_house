@@ -11,9 +11,9 @@ import (
 
 func (s *MongoService) CreateContract(ctx context.Context, contract *types.Contract) error {
 	// check if user exists
-	userCollection := s.database.Collection(userCollection)
+	userColl := s.database.Collection(userCollection)
 	var user types.User
-	if err := userCollection.FindOne(ctx, bson.M{"pid": contract.UserPid}).Decode(&user); err != nil {
+	if err := userColl.FindOne(ctx, bson.M{"pid": contract.UserPid}).Decode(&user); err != nil {
 		if err == mongo.ErrNoDocuments {
 			return fmt.Errorf("database error: user with pid %s not found", contract.UserPid)
 		}
@@ -21,9 +21,9 @@ func (s *MongoService) CreateContract(ctx context.Context, contract *types.Contr
 	}
 
 	// check if room exists
-	roomCollection := s.database.Collection(roomCollection)
+	roomColl := s.database.Collection(roomCollection)
 	var room types.Room
-	if err := roomCollection.FindOne(ctx, bson.M{"room_number": contract.RoomNumber}).Decode(&room); err != nil {
+	if err := roomColl.FindOne(ctx, bson.M{"room_number": contract.RoomNumber}).Decode(&room); err != nil {
 		if err == mongo.ErrNoDocuments {
 			return fmt.Errorf("database error: room with number %d not found", contract.RoomNumber)
 		}

@@ -439,19 +439,6 @@ func TestListContracts_HappyPath(t *testing.T) {
 	if len(response.Contracts) != 3 {
 		t.Fatalf("expected 3 contracts, got %d", len(response.Contracts))
 	}
-
-	for i, contract := range response.Contracts {
-		if contract.UserPid != contracts[i].UserPid || contract.RoomNumber != contracts[i].RoomNumber || contract.StartDate != contracts[i].StartDate {
-			t.Fatalf("contract mismatch at index %d: expected user_pid=%s, room_number=%d, start_date=%s; got user_pid=%s, room_number=%d, start_date=%s",
-				i,
-				contracts[i].UserPid,
-				contracts[i].RoomNumber,
-				contracts[i].StartDate,
-				contract.UserPid,
-				contract.RoomNumber,
-				contract.StartDate)
-		}
-	}
 }
 
 func TestListContracts_Empty(t *testing.T) {

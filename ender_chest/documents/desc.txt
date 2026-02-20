@@ -1,5 +1,5 @@
 Một chủ trọ cần quản lý dãy nhà trọ của mình, mỗi phòng chỉ đủ cho 1 người ở. Một người cùng lúc chỉ có thể thuê 1 phòng. Nhà trọ này chỉ tính tiền phòng, điện và nước, các dịch vụ khác đều là miễn phí.
-Hệ thống quản lý nhà trọ cho phép chủ trọ có thể quản lý (thêm, sửa, xóa) phòng trọ, post, người thuê, hợp đồng và hóa đơn. Hệ thống sẽ có trang tổng hợp số liệu, ví dụ: số phòng trống, hợp đồng sắp hết hạn,…
+Hệ thống quản lý nhà trọ cho phép chủ trọ có thể quản lý (thêm, sửa, xóa) phòng trọ, post, người thuê, hợp đồng và hóa đơn. Hệ thống sẽ có trang tổng hợp số hiệu, ví dụ: số phòng trống, hợp đồng sắp hết hạn,…
 Entities chính sẽ là phòng và người thuê.
 Mỗi người dùng có mã số người dùng, số chứng minh nhân dân (pid - personal id), và số điện thoại. Mỗi người ai cũng sẽ có một thẻ căn cước công dân có số chứng minh nhân dân, họ tên, giới tính, quê quán và ngày tháng năm sinh. Mỗi người thuê sẽ được chủ trọ tạo và cấp tài khoản sau khi kí hợp đồng. Mỗi người sẽ có một tài khoản có mã tài khoản, mã người thuê, username, mật khẩu và role. Có hai role: admin hoặc tenant (người thuê nhà, phòng,…).
 Khi chưa được cấp tài khoản, người dùng chỉ có thể truy cập được trang xem phòng, trang này list ra nhiều phòng, người dùng muốn xem chi tiết phòng nào thì click vào. Sau khi kí hợp đồng và đã được cấp tài khoản, tài khoản sẽ được truy cập thêm vào trang hóa đơn chưa thanh toán và trang thông tin cá nhân. Người thuê trọ bắt buộc phải nhập thông tin cá nhân. Hàng tháng, người thuê sẽ được thông báo về hóa đơn của mình
@@ -12,8 +12,8 @@ Hóa đơn có mã số hóa đơn, mã số hợp đồng, tổng số tiền, 
 Người thuê sẽ thanh toán, và hệ thống sẽ lưu trữ gồm mã thanh toán, mã hóa đơn, số tiền, phương pháp thanh toán (tiền mặt, chuyển khoản), và thời gian trả. Người thuê phải thanh toán đủ tiền.
 
 Công nghệ:
-    • Fronted: Vue, TypeScript
-    • Backed: Go
+    • Frontend: Vue, TypeScript
+    • Backend: Go
     • Database: MongoDB
 
 

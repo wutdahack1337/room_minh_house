@@ -17,13 +17,16 @@ func (s *Service) CreateContract(ctx context.Context, request *types.CreateContr
 		return nil, fmt.Errorf("CreateContract error: empty contract")
 	}
 	if request.Contract.UserPid == "" {
-		return nil, fmt.Errorf("CreateContract error: user_pid is required")
+		return nil, fmt.Errorf("CreateContract error: user pid is required")
 	}
 	if request.Contract.RoomNumber == 0 {
-		return nil, fmt.Errorf("CreateContract error: room_number is required")
+		return nil, fmt.Errorf("CreateContract error: room number is required")
 	}
 	if request.Contract.StartDate == "" {
-		return nil, fmt.Errorf("CreateContract error: start_date is required")
+		return nil, fmt.Errorf("CreateContract error: start date is required")
+	}
+	if request.Contract.DurationMonths <= 0 {
+		return nil, fmt.Errorf("CreateContract error: duration months must be greater than 0")
 	}
 
 	// generate UUID
