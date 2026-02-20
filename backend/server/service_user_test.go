@@ -8,10 +8,20 @@ import (
 	types "github.com/wutdahack1337/room_minh_house/backend/pkg/pb"
 )
 
+func newTestIdCard() *types.IdCard {
+	return &types.IdCard{
+		Name:         "Trần Quang Minh",
+		Sex:          "Nam",
+		DateOfBirth:  "02-08-2005",
+		PlaceOfBirth: "Cần Thơ",
+	}
+}
+
 func TestCreateUser_HappyPath(t *testing.T) {
 	user := &types.User{
 		Pid:         "0123456789",
 		PhoneNumber: "0949447156",
+		IdCard:      newTestIdCard(),
 	}
 
 	service := getUserService()
@@ -35,6 +45,7 @@ func TestCreateUser_DuplicatePid(t *testing.T) {
 	user := &types.User{
 		Pid:         "0123456789",
 		PhoneNumber: "0949447156",
+		IdCard:      newTestIdCard(),
 	}
 
 	service := getUserService()
@@ -61,6 +72,7 @@ func TestCreateUser_MissingPid(t *testing.T) {
 	response, err := service.CreateUser(context.Background(), &types.CreateUserRequest{
 		User: &types.User{
 			PhoneNumber: "0949447156",
+			IdCard:      newTestIdCard(),
 		},
 	})
 
@@ -74,6 +86,117 @@ func TestCreateUser_MissingPid(t *testing.T) {
 	}
 }
 
+func TestCreateUser_MissingIdCard(t *testing.T) {
+	service := getUserService()
+	response, err := service.CreateUser(context.Background(), &types.CreateUserRequest{
+		User: &types.User{
+			Pid:         "0123456789",
+			PhoneNumber: "0949447156",
+		},
+	})
+
+	t.Log(err)
+	if err == nil {
+		t.Fatal("expected error for missing IdCard, got nil")
+	}
+
+	if response != nil {
+		t.Fatal("expected nil response for missing IdCard, got non-nil")
+	}
+}
+
+func TestCreateUser_IdCardMissingName(t *testing.T) {
+	service := getUserService()
+	idCard := newTestIdCard()
+	idCard.Name = ""
+
+	response, err := service.CreateUser(context.Background(), &types.CreateUserRequest{
+		User: &types.User{
+			Pid:         "0123456789",
+			PhoneNumber: "0949447156",
+			IdCard:      idCard,
+		},
+	})
+
+	t.Log(err)
+	if err == nil {
+		t.Fatal("expected error for missing IdCard.Name, got nil")
+	}
+
+	if response != nil {
+		t.Fatal("expected nil response for missing IdCard.Name, got non-nil")
+	}
+}
+
+func TestCreateUser_IdCardMissingSex(t *testing.T) {
+	service := getUserService()
+	idCard := newTestIdCard()
+	idCard.Sex = ""
+
+	response, err := service.CreateUser(context.Background(), &types.CreateUserRequest{
+		User: &types.User{
+			Pid:         "0123456789",
+			PhoneNumber: "0949447156",
+			IdCard:      idCard,
+		},
+	})
+
+	t.Log(err)
+	if err == nil {
+		t.Fatal("expected error for missing IdCard.Sex, got nil")
+	}
+
+	if response != nil {
+		t.Fatal("expected nil response for missing IdCard.Sex, got non-nil")
+	}
+}
+
+func TestCreateUser_IdCardMissingDateOfBirth(t *testing.T) {
+	service := getUserService()
+	idCard := newTestIdCard()
+	idCard.DateOfBirth = ""
+
+	response, err := service.CreateUser(context.Background(), &types.CreateUserRequest{
+		User: &types.User{
+			Pid:         "0123456789",
+			PhoneNumber: "0949447156",
+			IdCard:      idCard,
+		},
+	})
+
+	t.Log(err)
+	if err == nil {
+		t.Fatal("expected error for missing IdCard.DateOfBirth, got nil")
+	}
+
+	if response != nil {
+		t.Fatal("expected nil response for missing IdCard.DateOfBirth, got non-nil")
+	}
+}
+
+func TestCreateUser_IdCardMissingPlaceOfBirth(t *testing.T) {
+	service := getUserService()
+	idCard := newTestIdCard()
+	idCard.PlaceOfBirth = ""
+
+	response, err := service.CreateUser(context.Background(), &types.CreateUserRequest{
+		User: &types.User{
+			Pid:         "0123456789",
+			PhoneNumber: "0949447156",
+			IdCard:      idCard,
+		},
+	})
+
+	t.Log(err)
+	if err == nil {
+		t.Fatal("expected error for missing IdCard.PlaceOfBirth, got nil")
+	}
+
+	if response != nil {
+		t.Fatal("expected nil response for missing IdCard.PlaceOfBirth, got non-nil")
+	}
+}
+
 func TestUpdateUser_HappyPath(t *testing.T) {
 	ctx := context.Background()
 	service := getUserService()
@@ -81,6 +204,7 @@ func TestUpdateUser_HappyPath(t *testing.T) {
 	user := &types.User{
 		Pid:         "0123456789",
 		PhoneNumber: "0949447156",
+		IdCard:      newTestIdCard(),
 	}
 
 	_, _ = service.CreateUser(ctx, &types.CreateUserRequest{
@@ -112,6 +236,7 @@ func TestUpdateUser_HappyPath(t *testing.T) {
 func TestUpdateUser_MissingPid(t *testing.T) {
 	user := &types.User{
 		PhoneNumber: "0949447156",
+		IdCard:      newTestIdCard(),
 	}
 
 	service := getUserService()
@@ -133,6 +258,7 @@ func TestUpdateUser_NotFound(t *testing.T) {
 	user := &types.User{
 		Pid:         "9999999999",
 		PhoneNumber: "0949447156",
+		IdCard:      newTestIdCard(),
 	}
 
 	service := getUserService()
@@ -150,12 +276,56 @@ func TestUpdateUser_NotFound(t *testing.T) {
 	}
 }
 
+func TestUpdateUser_IdCardUpdated(t *testing.T) {
+	ctx := context.Background()
+	service := getUserService()
+
+	user := &types.User{
+		Pid:         "0123456789",
+		PhoneNumber: "0949447156",
+		IdCard:      newTestIdCard(),
+	}
+
+	_, _ = service.CreateUser(ctx, &types.CreateUserRequest{
+		User: user,
+	})
+
+	user.IdCard = &types.IdCard{
+		Name:         "Trần Tấn Khang",
+		Sex:          "Nam",
+		DateOfBirth:  "09-02-2012",
+		PlaceOfBirth: "Cần Thơ",
+	}
+
+	_, err := service.UpdateUser(ctx, &types.UpdateUserRequest{
+		User: user,
+	})
+
+	if err != nil {
+		t.Fatal("UpdateUser failed: " + err.Error())
+	}
+
+	response, err := service.GetUser(ctx, &types.GetUserRequest{
+		Pid: user.Pid,
+	})
+
+	t.Log(response)
+	if err != nil {
+		t.Fatal("GetUser failed: " + err.Error())
+	}
+
+	if response.User.IdCard.Name != user.IdCard.Name {
+		t.Fatalf("expected IdCard.Name %s, got %s", user.IdCard.Name, response.User.IdCard.Name)
+	}
+}
+
 func TestDeleteUser_HappyPath(t *testing.T) {
 	ctx := context.Background()
 
 	user := &types.User{
 		Pid:         "0123456789",
 		PhoneNumber: "0949447156",
+		IdCard:      newTestIdCard(),
 	}
 
 	service := getUserService()
@@ -205,6 +375,7 @@ func TestGetUser_HappyPath(t *testing.T) {
 	user := &types.User{
 		Pid:         "0123456789",
 		PhoneNumber: "0949447156",
+		IdCard:      newTestIdCard(),
 	}
 
 	service := getUserService()
@@ -251,10 +422,12 @@ func TestListUsers_HappyPath(t *testing.T) {
 		{
 			Pid:         "0123456789",
 			PhoneNumber: "0949447156",
+			IdCard:      newTestIdCard(),
 		},
 		{
 			Pid:         "9876543210",
 			PhoneNumber: "0918441887",
+			IdCard:      newTestIdCard(),
 		},
 	}
 

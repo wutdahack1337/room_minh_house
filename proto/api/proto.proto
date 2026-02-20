@@ -124,9 +124,17 @@ message ListRoomsResponse {
 
 // ==============================================================
 
+message IdCard {
+    string name = 1 [(gogoproto.moretags) = "bson:\"name\""];
+    string sex = 2 [(gogoproto.moretags) = "bson:\"sex\""];
+    string date_of_birth = 3 [(gogoproto.moretags) = "bson:\"date_of_birth\""];
+    string place_of_birth = 4 [(gogoproto.moretags) = "bson:\"place_of_birth\""];
+}
+
 message User {
     string pid = 1 [(gogoproto.moretags) = "bson:\"pid\""];
     string phone_number = 2 [(gogoproto.moretags) = "bson:\"phone_number\""];
+    IdCard id_card = 3 [(gogoproto.moretags) = "bson:\"id_card\""]; // embedded value object
 }
 
 message CreateUserRequest {
@@ -137,7 +145,7 @@ message CreateUserResponse {
 }
 
 message UpdateUserRequest {
-    User user = 1; // must include pid
+    User user = 1;  // must include pid
 }
 message UpdateUserResponse {
     User user = 1;
@@ -180,7 +188,7 @@ message CreateContractResponse {
 }
 
 message UpdateContractRequest {
-    Contract contract = 1; // must include id
+    Contract contract = 1; // must include contract_id
 }
 message UpdateContractResponse {
     Contract contract = 1;

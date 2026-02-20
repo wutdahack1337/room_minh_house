@@ -19,10 +19,15 @@ func TestCreateContract_HappyPath(t *testing.T) {
 	user := &types.User{
 		Pid:         "0123456789",
 		PhoneNumber: "0949447156",
+		IdCard:      newTestIdCard(),
 	}
-	_, _ = service.CreateUser(ctx, &types.CreateUserRequest{
+	_, err := service.CreateUser(ctx, &types.CreateUserRequest{
 		User: user,
 	})
+
+	if err != nil {
+		t.Fatal(err)
+	}
 
 	room := &types.Room{
 		RoomNumber:  666,
@@ -151,6 +156,7 @@ func TestCreateContract_RoomNotFound(t *testing.T) {
 	user := &types.User{
 		Pid:         "0123456789",
 		PhoneNumber: "0949447156",
+		IdCard:      newTestIdCard(),
 	}
 	_, _ = service.CreateUser(ctx, &types.CreateUserRequest{
 		User: user,
@@ -191,6 +197,7 @@ func TestUpdateContract_HappyPath(t *testing.T) {
 	validUser := &types.User{
 		Pid:         "0123456789",
 		PhoneNumber: "0949447156",
+		IdCard:      newTestIdCard(),
 	}
 	_, _ = service.CreateUser(ctx, &types.CreateUserRequest{
 		User: validUser,
@@ -382,9 +389,9 @@ func TestListContracts_HappyPath(t *testing.T) {
 	service := getServiceForContract()
 
 	users := []*types.User{
-		{Pid: "user1", PhoneNumber: "0111111111"},
-		{Pid: "user2", PhoneNumber: "0222222222"},
-		{Pid: "user3", PhoneNumber: "0333333333"},
+		{Pid: "user1", PhoneNumber: "0111111111", IdCard: newTestIdCard()},
+		{Pid: "user2", PhoneNumber: "0222222222", IdCard: newTestIdCard()},
+		{Pid: "user3", PhoneNumber: "0333333333", IdCard: newTestIdCard()},
 	}
 	for _, user := range users {
 		_, _ = service.CreateUser(ctx, &types.CreateUserRequest{User: user})
