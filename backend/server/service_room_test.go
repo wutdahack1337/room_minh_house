@@ -10,31 +10,6 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-func connectDatabase(uri, dbName string) (*mongo.Database, error) {
-	clientOptions := options.Client().ApplyURI(uri)
-	client, err := mongo.Connect(context.TODO(), clientOptions)
-	if err != nil {
-		return nil, err
-	}
-	return client.Database(dbName), nil
-}
-
-func getService() *Service {
-	ctx := context.Background()
-	db, _ := connectDatabase("mongodb://localhost:27017/?directConnection=true", "room_minh_house")
-
-	// removes all documents and indexes
-	db.Collection("rooms").Drop(ctx)
-
-	dbService, err := database.NewMongoService(db)
-	if err != nil {
-		panic("Failed to create database service: " + err.Error())
-	}
-
-	service := NewService(dbService)
-	return service
-}
-
 func TestCreateRoom_HappyPath(t *testing.T) {
 	ctx := context.Background()
 	service := getService()
@@ -69,11 +44,11 @@ func TestCreateRoom_DuplicateRoomNumber(t *testing.T) {
 	}
 
 	service := getService()
-	response, err := service.CreateRoom(ctx, &types.CreateRoomRequest{
+	_, _ = service.CreateRoom(ctx, &types.CreateRoomRequest{
 		Room: room,
 	})
 
-	response, err = service.CreateRoom(ctx, &types.CreateRoomRequest{
+	response, err := service.CreateRoom(ctx, &types.CreateRoomRequest{
 		Room: room,
 	})
 
@@ -148,6 +123,29 @@ func TestUpdateRoom_MissingRoomNumber(t *testing.T) {
 	t.Log(err)
 	if err == nil {
 		t.Fatal("expected error for missing room number, got nil")
+	}
+}
+
+func TestUpdateRoom_NotFound(t *testing.T) {
+	ctx := context.Background()
+	service := getService()
+
+	room := &types.Room{
+		RoomNumber:  999,
+		Price:       9_999_999,
+		IsAvailable: true,
+	}
+
+	response, err := service.UpdateRoom(ctx, &types.UpdateRoomRequest{
+		Room: room,
+	})
+
+	t.Log(err)
+	if err == nil {
+		t.Fatal("expected error for room not found, got nil")
+	}
+	if response != nil {
+		t.Fatal("expected nil response when room not found")
 	}
 }
 
@@ -322,4 +320,34 @@ func TestListRooms_Empty(t *testing.T) {
 	}
 
 	t.Log("ListRooms returned empty list as expected")
+}
+
+// helper
+func connectDatabase(uri, dbName string) (*mongo.Database, error) {
+	clientOptions := options.Client().ApplyURI(uri)
+	client, err := mongo.Connect(context.TODO(), clientOptions)
+	if err != nil {
+		return nil, err
+	}
+	return client.Database(dbName), nil
+}
+
+func getService() *Service {
+	ctx := context.Background()
+
+	db, err := connectDatabase("mongodb://localhost:27017/?directConnection=true", "room_minh_house")
+	if err != nil {
+		panic("Failed to connect to database: " + err.Error())
+	}
+
+	// removes all documents and indexes
+	db.Collection("rooms").Drop(ctx)
+
+	dbService, err := database.NewMongoService(db)
+	if err != nil {
+		panic("Failed to create database service: " + err.Error())
+	}
+
+	service := NewService(dbService)
+	return service
 }

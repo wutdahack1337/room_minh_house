@@ -16,8 +16,16 @@ func (s *MongoService) CreateRoom(ctx context.Context, room *types.Room) error {
 
 func (s *MongoService) UpdateRoom(ctx context.Context, room *types.Room) error {
 	collection := s.database.Collection(roomsCollection)
-	_, err := collection.UpdateOne(ctx, bson.M{"room_number": room.RoomNumber}, bson.M{"$set": room})
-	return err
+	res, err := collection.UpdateOne(ctx, bson.M{"room_number": room.RoomNumber}, bson.M{"$set": room})
+
+	if err != nil {
+		return err
+	}
+	if res.MatchedCount == 0 {
+		return mongo.ErrNoDocuments
+	}
+
+	return nil
 }
 
 func (s *MongoService) DeleteRoom(ctx context.Context, roomNumber int32) error {

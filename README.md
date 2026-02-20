@@ -2,7 +2,7 @@
 Tranh thủ đợt niên luận cơ sở này, viết để sau này xài luôn =DDD
 - [Slides](https://docs.google.com/presentation/d/1ah9UJaAR0LRt9XVeBSRe9aSXfINHvsAoaEpz0z5HbB8)
 - [Notes](https://www.notion.so/Ni-n-lu-n-c-s-ng-nh-KHMT-CT201-2e3d7839804a804383d0d76b004c5f2b)
-- [Github](https://github.com/wutdahack1337/room_minh_house)
+- [GitHub](https://github.com/wutdahack1337/room_minh_house)
 
 # Commands
 
@@ -11,7 +11,8 @@ make proto
 
 docker exec -it mongo mongosh
 
-go test backend/server -v
+go test ./backend/server -v
+go test ./ackend/server -run TestXYZ -v
 ```
 
 ## Run
