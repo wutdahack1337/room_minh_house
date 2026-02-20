@@ -21,7 +21,7 @@ func WithDbOptions(c *cli.Cmd) DbConfig {
 			Name:   "db-name",
 			Desc:   "Service db name",
 			EnvVar: "DB_NAME",
-			Value:  "capstone",
+			Value:  "room_minh_house",
 		})
 	}
 

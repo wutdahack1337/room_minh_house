@@ -1,19 +1,77 @@
 syntax = "proto3";
 
 package api;
-option go_package = "github.com/wutdahack1337/introductory_capstone;pb";
+option go_package = "github.com/wutdahack1337/room_minh_house;pb";
 
 import "google/api/annotations.proto";
 import "gogoproto/gogo.proto";
 
 service Query {
-    rpc Health(HealthRequest) returns (HealthResponse) {
+    rpc CreateRoom(CreateRoomRequest) returns (CreateRoomResponse) {
+        option (google.api.http) = {
+            post: "/api/rooms"
+            body: "room"
+        };
+    }
+    rpc UpdateRoom(UpdateRoomRequest) returns (UpdateRoomResponse) {
+        option (google.api.http) = {
+            put: "/api/rooms/{room.room_number}"
+            body: "room"
+        };
+    }
+    rpc DeleteRoom(DeleteRoomRequest) returns (DeleteRoomResponse) {
+        option (google.api.http).delete = "/api/rooms/{room_number}";
+    }
+    rpc GetRoom(GetRoomRequest) returns (GetRoomResponse) {
+        option (google.api.http).get = "/api/rooms/{room_number}";
+    }
+    rpc ListRooms(ListRoomsRequest) returns (ListRoomsResponse) {
+        option (google.api.http).get = "/api/rooms";
+    }
+
+    rpc CheckHealth(CheckHealthRequest) returns (CheckHealthResponse) {
         option (google.api.http).get = "/api/health";
     }
 }
 
-message HealthRequest {}
+message Room {
+    int32 room_number = 1 [(gogoproto.moretags) = "bson:\"room_number\""];
+    double price = 2 [(gogoproto.moretags) = "bson:\"price\""];
+    bool is_available = 3 [(gogoproto.moretags) = "bson:\"is_available\""];
+}
 
-message HealthResponse {
+message CreateRoomRequest {
+    Room room = 1;
+}
+message CreateRoomResponse {
+    Room room = 1;
+}
+
+message UpdateRoomRequest {
+    Room room = 1; // must include id
+}
+message UpdateRoomResponse {
+    Room room = 1;
+}
+
+message DeleteRoomRequest {
+    int32 room_number = 1;
+}
+message DeleteRoomResponse {}
+
+message GetRoomRequest {
+    int32 room_number = 1;
+}
+message GetRoomResponse {
+    Room room = 1;
+}
+
+message ListRoomsRequest {}
+message ListRoomsResponse {
+    repeated Room rooms = 1;
+}
+
+message CheckHealthRequest {}
+message CheckHealthResponse {
     string status = 1;
 }

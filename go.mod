@@ -1,4 +1,4 @@
-module github.com/wutdahack1337/introductory_capstone
+module github.com/wutdahack1337/room_minh_house
 
 go 1.25.5
 
@@ -9,6 +9,7 @@ require (
 	github.com/golang/protobuf v1.5.4
 	github.com/grpc-ecosystem/grpc-gateway v1.16.0
 	github.com/jawher/mow.cli v1.2.0
+	github.com/rs/cors v1.11.1
 	go.elastic.co/apm/module/apmgrpc v1.15.0
 	go.mongodb.org/mongo-driver v1.17.7
 	google.golang.org/genproto/googleapis/api v0.0.0-20260122232226-8e98ce8d340d
@@ -26,21 +27,20 @@ require (
 	github.com/elastic/go-windows v1.0.0 // indirect
 	github.com/gofrs/uuid v3.2.0+incompatible // indirect
 	github.com/gogo/googleapis v1.4.1-0.20201022092350-68b0159b7869 // indirect
-	github.com/gogo/protobuf v1.3.1 // indirect
+	github.com/gogo/protobuf v1.3.2 // indirect
 	github.com/golang/snappy v0.0.4 // indirect
 	github.com/google/go-cmp v0.7.0 // indirect
 	github.com/jcchavezs/porto v0.1.0 // indirect
 	github.com/jmespath/go-jmespath v0.0.0-20180206201540-c2b33e8439af // indirect
 	github.com/joeshaw/multierror v0.0.0-20140124173710-69b34d4ec901 // indirect
 	github.com/kardianos/osext v0.0.0-20190222173326-2bc1f35cddc0 // indirect
-	github.com/klauspost/compress v1.16.7 // indirect
+	github.com/klauspost/compress v1.18.0 // indirect
 	github.com/montanaflynn/stats v0.7.1 // indirect
 	github.com/oklog/ulid v1.3.1 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/prometheus/procfs v0.19.2 // indirect
-	github.com/rs/cors v1.11.1 // indirect
 	github.com/santhosh-tekuri/jsonschema v1.2.4 // indirect
-	github.com/sirupsen/logrus v1.8.1 // indirect
+	github.com/sirupsen/logrus v1.9.3 // indirect
 	github.com/xdg-go/pbkdf2 v1.0.0 // indirect
 	github.com/xdg-go/scram v1.1.2 // indirect
 	github.com/xdg-go/stringprep v1.0.4 // indirect

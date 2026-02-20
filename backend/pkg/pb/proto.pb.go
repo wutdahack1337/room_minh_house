@@ -5,6 +5,7 @@ package pb
 
 import (
 	context "context"
+	encoding_binary "encoding/binary"
 	fmt "fmt"
 	_ "github.com/cosmos/gogoproto/gogoproto"
 	grpc1 "github.com/cosmos/gogoproto/grpc"
@@ -29,21 +30,24 @@ var _ = math.Inf
 // proto package needs to be updated.
 const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 
-type HealthRequest struct {
+type Room struct {
+	RoomNumber  int32   `protobuf:"varint,1,opt,name=room_number,json=roomNumber,proto3" json:"room_number,omitempty" bson:"room_number"`
+	Price       float64 `protobuf:"fixed64,2,opt,name=price,proto3" json:"price,omitempty" bson:"price"`
+	IsAvailable bool    `protobuf:"varint,3,opt,name=is_available,json=isAvailable,proto3" json:"is_available,omitempty" bson:"is_available"`
 }
 
-func (m *HealthRequest) Reset()         { *m = HealthRequest{} }
-func (m *HealthRequest) String() string { return proto.CompactTextString(m) }
-func (*HealthRequest) ProtoMessage()    {}
-func (*HealthRequest) Descriptor() ([]byte, []int) {
+func (m *Room) Reset()         { *m = Room{} }
+func (m *Room) String() string { return proto.CompactTextString(m) }
+func (*Room) ProtoMessage()    {}
+func (*Room) Descriptor() ([]byte, []int) {
 	return fileDescriptor_be498c345e55ac46, []int{0}
 }
-func (m *HealthRequest) XXX_Unmarshal(b []byte) error {
+func (m *Room) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *HealthRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *Room) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_HealthRequest.Marshal(b, m, deterministic)
+		return xxx_messageInfo_Room.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -53,34 +57,515 @@ func (m *HealthRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error
 		return b[:n], nil
 	}
 }
-func (m *HealthRequest) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_HealthRequest.Merge(m, src)
+func (m *Room) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_Room.Merge(m, src)
 }
-func (m *HealthRequest) XXX_Size() int {
+func (m *Room) XXX_Size() int {
 	return m.Size()
 }
-func (m *HealthRequest) XXX_DiscardUnknown() {
-	xxx_messageInfo_HealthRequest.DiscardUnknown(m)
+func (m *Room) XXX_DiscardUnknown() {
+	xxx_messageInfo_Room.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_HealthRequest proto.InternalMessageInfo
+var xxx_messageInfo_Room proto.InternalMessageInfo
 
-type HealthResponse struct {
+func (m *Room) GetRoomNumber() int32 {
+	if m != nil {
+		return m.RoomNumber
+	}
+	return 0
+}
+
+func (m *Room) GetPrice() float64 {
+	if m != nil {
+		return m.Price
+	}
+	return 0
+}
+
+func (m *Room) GetIsAvailable() bool {
+	if m != nil {
+		return m.IsAvailable
+	}
+	return false
+}
+
+type CreateRoomRequest struct {
+	Room *Room `protobuf:"bytes,1,opt,name=room,proto3" json:"room,omitempty"`
+}
+
+func (m *CreateRoomRequest) Reset()         { *m = CreateRoomRequest{} }
+func (m *CreateRoomRequest) String() string { return proto.CompactTextString(m) }
+func (*CreateRoomRequest) ProtoMessage()    {}
+func (*CreateRoomRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_be498c345e55ac46, []int{1}
+}
+func (m *CreateRoomRequest) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *CreateRoomRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_CreateRoomRequest.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *CreateRoomRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_CreateRoomRequest.Merge(m, src)
+}
+func (m *CreateRoomRequest) XXX_Size() int {
+	return m.Size()
+}
+func (m *CreateRoomRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_CreateRoomRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_CreateRoomRequest proto.InternalMessageInfo
+
+func (m *CreateRoomRequest) GetRoom() *Room {
+	if m != nil {
+		return m.Room
+	}
+	return nil
+}
+
+type CreateRoomResponse struct {
+	Room *Room `protobuf:"bytes,1,opt,name=room,proto3" json:"room,omitempty"`
+}
+
+func (m *CreateRoomResponse) Reset()         { *m = CreateRoomResponse{} }
+func (m *CreateRoomResponse) String() string { return proto.CompactTextString(m) }
+func (*CreateRoomResponse) ProtoMessage()    {}
+func (*CreateRoomResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_be498c345e55ac46, []int{2}
+}
+func (m *CreateRoomResponse) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *CreateRoomResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_CreateRoomResponse.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *CreateRoomResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_CreateRoomResponse.Merge(m, src)
+}
+func (m *CreateRoomResponse) XXX_Size() int {
+	return m.Size()
+}
+func (m *CreateRoomResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_CreateRoomResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_CreateRoomResponse proto.InternalMessageInfo
+
+func (m *CreateRoomResponse) GetRoom() *Room {
+	if m != nil {
+		return m.Room
+	}
+	return nil
+}
+
+type UpdateRoomRequest struct {
+	Room *Room `protobuf:"bytes,1,opt,name=room,proto3" json:"room,omitempty"`
+}
+
+func (m *UpdateRoomRequest) Reset()         { *m = UpdateRoomRequest{} }
+func (m *UpdateRoomRequest) String() string { return proto.CompactTextString(m) }
+func (*UpdateRoomRequest) ProtoMessage()    {}
+func (*UpdateRoomRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_be498c345e55ac46, []int{3}
+}
+func (m *UpdateRoomRequest) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *UpdateRoomRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_UpdateRoomRequest.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *UpdateRoomRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_UpdateRoomRequest.Merge(m, src)
+}
+func (m *UpdateRoomRequest) XXX_Size() int {
+	return m.Size()
+}
+func (m *UpdateRoomRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_UpdateRoomRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_UpdateRoomRequest proto.InternalMessageInfo
+
+func (m *UpdateRoomRequest) GetRoom() *Room {
+	if m != nil {
+		return m.Room
+	}
+	return nil
+}
+
+type UpdateRoomResponse struct {
+	Room *Room `protobuf:"bytes,1,opt,name=room,proto3" json:"room,omitempty"`
+}
+
+func (m *UpdateRoomResponse) Reset()         { *m = UpdateRoomResponse{} }
+func (m *UpdateRoomResponse) String() string { return proto.CompactTextString(m) }
+func (*UpdateRoomResponse) ProtoMessage()    {}
+func (*UpdateRoomResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_be498c345e55ac46, []int{4}
+}
+func (m *UpdateRoomResponse) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *UpdateRoomResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_UpdateRoomResponse.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *UpdateRoomResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_UpdateRoomResponse.Merge(m, src)
+}
+func (m *UpdateRoomResponse) XXX_Size() int {
+	return m.Size()
+}
+func (m *UpdateRoomResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_UpdateRoomResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_UpdateRoomResponse proto.InternalMessageInfo
+
+func (m *UpdateRoomResponse) GetRoom() *Room {
+	if m != nil {
+		return m.Room
+	}
+	return nil
+}
+
+type DeleteRoomRequest struct {
+	RoomNumber int32 `protobuf:"varint,1,opt,name=room_number,json=roomNumber,proto3" json:"room_number,omitempty"`
+}
+
+func (m *DeleteRoomRequest) Reset()         { *m = DeleteRoomRequest{} }
+func (m *DeleteRoomRequest) String() string { return proto.CompactTextString(m) }
+func (*DeleteRoomRequest) ProtoMessage()    {}
+func (*DeleteRoomRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_be498c345e55ac46, []int{5}
+}
+func (m *DeleteRoomRequest) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *DeleteRoomRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_DeleteRoomRequest.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *DeleteRoomRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_DeleteRoomRequest.Merge(m, src)
+}
+func (m *DeleteRoomRequest) XXX_Size() int {
+	return m.Size()
+}
+func (m *DeleteRoomRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_DeleteRoomRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_DeleteRoomRequest proto.InternalMessageInfo
+
+func (m *DeleteRoomRequest) GetRoomNumber() int32 {
+	if m != nil {
+		return m.RoomNumber
+	}
+	return 0
+}
+
+type DeleteRoomResponse struct {
+}
+
+func (m *DeleteRoomResponse) Reset()         { *m = DeleteRoomResponse{} }
+func (m *DeleteRoomResponse) String() string { return proto.CompactTextString(m) }
+func (*DeleteRoomResponse) ProtoMessage()    {}
+func (*DeleteRoomResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_be498c345e55ac46, []int{6}
+}
+func (m *DeleteRoomResponse) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *DeleteRoomResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_DeleteRoomResponse.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *DeleteRoomResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_DeleteRoomResponse.Merge(m, src)
+}
+func (m *DeleteRoomResponse) XXX_Size() int {
+	return m.Size()
+}
+func (m *DeleteRoomResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_DeleteRoomResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_DeleteRoomResponse proto.InternalMessageInfo
+
+type GetRoomRequest struct {
+	RoomNumber int32 `protobuf:"varint,1,opt,name=room_number,json=roomNumber,proto3" json:"room_number,omitempty"`
+}
+
+func (m *GetRoomRequest) Reset()         { *m = GetRoomRequest{} }
+func (m *GetRoomRequest) String() string { return proto.CompactTextString(m) }
+func (*GetRoomRequest) ProtoMessage()    {}
+func (*GetRoomRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_be498c345e55ac46, []int{7}
+}
+func (m *GetRoomRequest) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *GetRoomRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_GetRoomRequest.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *GetRoomRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_GetRoomRequest.Merge(m, src)
+}
+func (m *GetRoomRequest) XXX_Size() int {
+	return m.Size()
+}
+func (m *GetRoomRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_GetRoomRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_GetRoomRequest proto.InternalMessageInfo
+
+func (m *GetRoomRequest) GetRoomNumber() int32 {
+	if m != nil {
+		return m.RoomNumber
+	}
+	return 0
+}
+
+type GetRoomResponse struct {
+	Room *Room `protobuf:"bytes,1,opt,name=room,proto3" json:"room,omitempty"`
+}
+
+func (m *GetRoomResponse) Reset()         { *m = GetRoomResponse{} }
+func (m *GetRoomResponse) String() string { return proto.CompactTextString(m) }
+func (*GetRoomResponse) ProtoMessage()    {}
+func (*GetRoomResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_be498c345e55ac46, []int{8}
+}
+func (m *GetRoomResponse) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *GetRoomResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_GetRoomResponse.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *GetRoomResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_GetRoomResponse.Merge(m, src)
+}
+func (m *GetRoomResponse) XXX_Size() int {
+	return m.Size()
+}
+func (m *GetRoomResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_GetRoomResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_GetRoomResponse proto.InternalMessageInfo
+
+func (m *GetRoomResponse) GetRoom() *Room {
+	if m != nil {
+		return m.Room
+	}
+	return nil
+}
+
+type ListRoomsRequest struct {
+}
+
+func (m *ListRoomsRequest) Reset()         { *m = ListRoomsRequest{} }
+func (m *ListRoomsRequest) String() string { return proto.CompactTextString(m) }
+func (*ListRoomsRequest) ProtoMessage()    {}
+func (*ListRoomsRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_be498c345e55ac46, []int{9}
+}
+func (m *ListRoomsRequest) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *ListRoomsRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_ListRoomsRequest.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *ListRoomsRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_ListRoomsRequest.Merge(m, src)
+}
+func (m *ListRoomsRequest) XXX_Size() int {
+	return m.Size()
+}
+func (m *ListRoomsRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_ListRoomsRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_ListRoomsRequest proto.InternalMessageInfo
+
+type ListRoomsResponse struct {
+	Rooms []*Room `protobuf:"bytes,1,rep,name=rooms,proto3" json:"rooms,omitempty"`
+}
+
+func (m *ListRoomsResponse) Reset()         { *m = ListRoomsResponse{} }
+func (m *ListRoomsResponse) String() string { return proto.CompactTextString(m) }
+func (*ListRoomsResponse) ProtoMessage()    {}
+func (*ListRoomsResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_be498c345e55ac46, []int{10}
+}
+func (m *ListRoomsResponse) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *ListRoomsResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_ListRoomsResponse.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *ListRoomsResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_ListRoomsResponse.Merge(m, src)
+}
+func (m *ListRoomsResponse) XXX_Size() int {
+	return m.Size()
+}
+func (m *ListRoomsResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_ListRoomsResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_ListRoomsResponse proto.InternalMessageInfo
+
+func (m *ListRoomsResponse) GetRooms() []*Room {
+	if m != nil {
+		return m.Rooms
+	}
+	return nil
+}
+
+type CheckHealthRequest struct {
+}
+
+func (m *CheckHealthRequest) Reset()         { *m = CheckHealthRequest{} }
+func (m *CheckHealthRequest) String() string { return proto.CompactTextString(m) }
+func (*CheckHealthRequest) ProtoMessage()    {}
+func (*CheckHealthRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_be498c345e55ac46, []int{11}
+}
+func (m *CheckHealthRequest) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *CheckHealthRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_CheckHealthRequest.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *CheckHealthRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_CheckHealthRequest.Merge(m, src)
+}
+func (m *CheckHealthRequest) XXX_Size() int {
+	return m.Size()
+}
+func (m *CheckHealthRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_CheckHealthRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_CheckHealthRequest proto.InternalMessageInfo
+
+type CheckHealthResponse struct {
 	Status string `protobuf:"bytes,1,opt,name=status,proto3" json:"status,omitempty"`
 }
 
-func (m *HealthResponse) Reset()         { *m = HealthResponse{} }
-func (m *HealthResponse) String() string { return proto.CompactTextString(m) }
-func (*HealthResponse) ProtoMessage()    {}
-func (*HealthResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_be498c345e55ac46, []int{1}
+func (m *CheckHealthResponse) Reset()         { *m = CheckHealthResponse{} }
+func (m *CheckHealthResponse) String() string { return proto.CompactTextString(m) }
+func (*CheckHealthResponse) ProtoMessage()    {}
+func (*CheckHealthResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_be498c345e55ac46, []int{12}
 }
-func (m *HealthResponse) XXX_Unmarshal(b []byte) error {
+func (m *CheckHealthResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *HealthResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *CheckHealthResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_HealthResponse.Marshal(b, m, deterministic)
+		return xxx_messageInfo_CheckHealthResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -90,19 +575,19 @@ func (m *HealthResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, erro
 		return b[:n], nil
 	}
 }
-func (m *HealthResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_HealthResponse.Merge(m, src)
+func (m *CheckHealthResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_CheckHealthResponse.Merge(m, src)
 }
-func (m *HealthResponse) XXX_Size() int {
+func (m *CheckHealthResponse) XXX_Size() int {
 	return m.Size()
 }
-func (m *HealthResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_HealthResponse.DiscardUnknown(m)
+func (m *CheckHealthResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_CheckHealthResponse.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_HealthResponse proto.InternalMessageInfo
+var xxx_messageInfo_CheckHealthResponse proto.InternalMessageInfo
 
-func (m *HealthResponse) GetStatus() string {
+func (m *CheckHealthResponse) GetStatus() string {
 	if m != nil {
 		return m.Status
 	}
@@ -110,30 +595,63 @@ func (m *HealthResponse) GetStatus() string {
 }
 
 func init() {
-	proto.RegisterType((*HealthRequest)(nil), "api.HealthRequest")
-	proto.RegisterType((*HealthResponse)(nil), "api.HealthResponse")
+	proto.RegisterType((*Room)(nil), "api.Room")
+	proto.RegisterType((*CreateRoomRequest)(nil), "api.CreateRoomRequest")
+	proto.RegisterType((*CreateRoomResponse)(nil), "api.CreateRoomResponse")
+	proto.RegisterType((*UpdateRoomRequest)(nil), "api.UpdateRoomRequest")
+	proto.RegisterType((*UpdateRoomResponse)(nil), "api.UpdateRoomResponse")
+	proto.RegisterType((*DeleteRoomRequest)(nil), "api.DeleteRoomRequest")
+	proto.RegisterType((*DeleteRoomResponse)(nil), "api.DeleteRoomResponse")
+	proto.RegisterType((*GetRoomRequest)(nil), "api.GetRoomRequest")
+	proto.RegisterType((*GetRoomResponse)(nil), "api.GetRoomResponse")
+	proto.RegisterType((*ListRoomsRequest)(nil), "api.ListRoomsRequest")
+	proto.RegisterType((*ListRoomsResponse)(nil), "api.ListRoomsResponse")
+	proto.RegisterType((*CheckHealthRequest)(nil), "api.CheckHealthRequest")
+	proto.RegisterType((*CheckHealthResponse)(nil), "api.CheckHealthResponse")
 }
 
 func init() { proto.RegisterFile("api/proto.proto", fileDescriptor_be498c345e55ac46) }
 
 var fileDescriptor_be498c345e55ac46 = []byte{
-	// 256 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe2, 0xe2, 0x4f, 0x2c, 0xc8, 0xd4,
-	0x2f, 0x28, 0xca, 0x2f, 0xc9, 0xd7, 0x03, 0x93, 0x42, 0xcc, 0x89, 0x05, 0x99, 0x52, 0x32, 0xe9,
-	0xf9, 0xf9, 0xe9, 0x39, 0xa9, 0xfa, 0x20, 0xc9, 0xc4, 0xbc, 0xbc, 0xfc, 0x92, 0xc4, 0x92, 0xcc,
-	0xfc, 0xbc, 0x62, 0x88, 0x12, 0x29, 0x91, 0xf4, 0xfc, 0xf4, 0x7c, 0x30, 0x53, 0x1f, 0xc4, 0x82,
-	0x88, 0x2a, 0xf1, 0x73, 0xf1, 0x7a, 0xa4, 0x26, 0xe6, 0x94, 0x64, 0x04, 0xa5, 0x16, 0x96, 0xa6,
-	0x16, 0x97, 0x28, 0x69, 0x70, 0xf1, 0xc1, 0x04, 0x8a, 0x0b, 0xf2, 0xf3, 0x8a, 0x53, 0x85, 0xc4,
-	0xb8, 0xd8, 0x8a, 0x4b, 0x12, 0x4b, 0x4a, 0x8b, 0x25, 0x18, 0x15, 0x18, 0x35, 0x38, 0x83, 0xa0,
-	0x3c, 0x23, 0x7f, 0x2e, 0xd6, 0xc0, 0xd2, 0xd4, 0xa2, 0x4a, 0x21, 0x37, 0x2e, 0x36, 0x88, 0x16,
-	0x21, 0x21, 0xbd, 0xc4, 0x82, 0x4c, 0x3d, 0x14, 0x03, 0xa5, 0x84, 0x51, 0xc4, 0x20, 0x66, 0x2a,
-	0x09, 0x37, 0x5d, 0x7e, 0x32, 0x99, 0x89, 0x57, 0x88, 0x1b, 0xec, 0xd8, 0x0c, 0xb0, 0xa4, 0x93,
-	0xf7, 0x89, 0x47, 0x72, 0x8c, 0x17, 0x1e, 0xc9, 0x31, 0x3e, 0x78, 0x24, 0xc7, 0x38, 0xe1, 0xb1,
-	0x1c, 0xc3, 0x85, 0xc7, 0x72, 0x0c, 0x37, 0x1e, 0xcb, 0x31, 0x44, 0x19, 0xa6, 0x67, 0x96, 0x64,
-	0x94, 0x26, 0xe9, 0x25, 0xe7, 0xe7, 0xea, 0x97, 0x97, 0x96, 0xa4, 0x24, 0x66, 0x24, 0x26, 0x67,
-	0x1b, 0x1a, 0x1b, 0x9b, 0xeb, 0x67, 0xe6, 0x95, 0x14, 0xe5, 0xa7, 0x94, 0x26, 0x97, 0xe4, 0x17,
-	0x55, 0xc6, 0x27, 0x27, 0x16, 0x14, 0x97, 0xe4, 0xe7, 0xa5, 0x5a, 0x17, 0x24, 0x25, 0xb1, 0x81,
-	0xfd, 0x67, 0x0c, 0x08, 0x00, 0x00, 0xff, 0xff, 0x2d, 0x4e, 0x35, 0x89, 0x2b, 0x01, 0x00, 0x00,
+	// 607 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x94, 0x94, 0x41, 0x8f, 0xd2, 0x40,
+	0x14, 0xc7, 0xe9, 0x02, 0xab, 0x3c, 0xd0, 0x5d, 0x06, 0x64, 0x9b, 0xc6, 0x2d, 0xa4, 0x89, 0x86,
+	0xb8, 0x11, 0x5c, 0x30, 0xd9, 0x04, 0x4f, 0xb2, 0x1a, 0x3d, 0x98, 0x4d, 0x6c, 0xb2, 0x9a, 0x78,
+	0x21, 0x53, 0x76, 0x42, 0xeb, 0x42, 0xa7, 0x76, 0xa6, 0x1a, 0x63, 0xbc, 0xf8, 0x09, 0x4c, 0xfc,
+	0x08, 0x5e, 0xfd, 0x20, 0x1e, 0x37, 0xf1, 0xe2, 0x89, 0x18, 0xf0, 0x13, 0xf0, 0x09, 0x4c, 0xa7,
+	0x23, 0xb4, 0x74, 0x8d, 0xbb, 0x17, 0xe8, 0x7b, 0xaf, 0xef, 0xf7, 0x7f, 0x33, 0xef, 0x0f, 0xb0,
+	0x85, 0x3d, 0xa7, 0xed, 0xf9, 0x94, 0xd3, 0x96, 0xf8, 0x44, 0x59, 0xec, 0x39, 0xda, 0xcd, 0x11,
+	0xa5, 0xa3, 0x31, 0x69, 0x87, 0x45, 0xec, 0xba, 0x94, 0x63, 0xee, 0x50, 0x97, 0x45, 0xaf, 0x68,
+	0xd5, 0x11, 0x1d, 0x51, 0xf1, 0xd8, 0x0e, 0x9f, 0xa2, 0xac, 0xf1, 0x55, 0x81, 0x9c, 0x49, 0xe9,
+	0x04, 0x1d, 0x40, 0xd1, 0xa7, 0x74, 0x32, 0x70, 0x83, 0x89, 0x45, 0x7c, 0x55, 0x69, 0x28, 0xcd,
+	0x7c, 0xbf, 0xb6, 0x98, 0xd6, 0x91, 0xc5, 0xa8, 0xdb, 0x33, 0x62, 0x45, 0xc3, 0x84, 0x30, 0x3a,
+	0x12, 0x01, 0xba, 0x0d, 0x79, 0xcf, 0x77, 0x86, 0x44, 0xdd, 0x68, 0x28, 0x4d, 0xa5, 0xbf, 0xbd,
+	0x98, 0xd6, 0x4b, 0x51, 0x8b, 0x48, 0x1b, 0x66, 0x54, 0x46, 0x3d, 0x28, 0x39, 0x6c, 0x80, 0xdf,
+	0x62, 0x67, 0x8c, 0xad, 0x31, 0x51, 0xb3, 0x0d, 0xa5, 0x79, 0xb5, 0xbf, 0xb3, 0x98, 0xd6, 0x2b,
+	0xd1, 0xeb, 0xf1, 0xaa, 0x61, 0x16, 0x1d, 0xf6, 0x70, 0x19, 0x75, 0xa0, 0x7c, 0xe8, 0x13, 0xcc,
+	0x49, 0x38, 0xaa, 0x49, 0xde, 0x04, 0x84, 0x71, 0xb4, 0x0b, 0xb9, 0x70, 0x0c, 0x31, 0x6a, 0xb1,
+	0x53, 0x68, 0x61, 0xcf, 0x69, 0x89, 0xba, 0x48, 0x1b, 0x5d, 0x40, 0xf1, 0x1e, 0xe6, 0x51, 0x97,
+	0x91, 0xff, 0x35, 0x75, 0xa0, 0x7c, 0xec, 0x9d, 0x5c, 0x5a, 0x28, 0xde, 0x73, 0x31, 0xa1, 0xfb,
+	0x50, 0x7e, 0x44, 0xc6, 0x24, 0x29, 0x54, 0x3f, 0x67, 0x07, 0xf1, 0xbb, 0x36, 0xaa, 0x80, 0xe2,
+	0x5d, 0x91, 0x94, 0xb1, 0x0f, 0xd7, 0x9f, 0x10, 0x7e, 0x29, 0xd0, 0x3d, 0xd8, 0x5a, 0xb6, 0x5c,
+	0x6c, 0x60, 0x04, 0xdb, 0xcf, 0x1c, 0x26, 0x5a, 0x98, 0x94, 0x09, 0x0f, 0x11, 0xcb, 0x49, 0x4e,
+	0x1d, 0xf2, 0x61, 0x03, 0x53, 0x95, 0x46, 0x36, 0x09, 0x8a, 0xf2, 0xe1, 0x21, 0x0e, 0x6d, 0x32,
+	0x3c, 0x7d, 0x4a, 0xf0, 0x98, 0xdb, 0x7f, 0x59, 0x77, 0xa1, 0x92, 0xc8, 0x4a, 0x5a, 0x0d, 0x36,
+	0x19, 0xc7, 0x3c, 0x60, 0x62, 0xae, 0x82, 0x29, 0xa3, 0xce, 0xb7, 0x1c, 0xe4, 0x9f, 0x07, 0xc4,
+	0x7f, 0x8f, 0x5e, 0x02, 0xac, 0xf6, 0x8c, 0x6a, 0x42, 0x2e, 0x65, 0x16, 0x6d, 0x27, 0x95, 0x97,
+	0x97, 0xa7, 0x7e, 0xfa, 0xf1, 0xfb, 0xcb, 0x06, 0xea, 0x45, 0xa7, 0x04, 0xf1, 0xe3, 0x11, 0x73,
+	0xa2, 0xd7, 0x00, 0xab, 0xbd, 0x4a, 0x70, 0xca, 0x1c, 0x12, 0x9c, 0x36, 0x80, 0xb1, 0x27, 0xc0,
+	0xb7, 0x22, 0xb0, 0xb6, 0xbb, 0x02, 0xb7, 0x3f, 0x84, 0x5f, 0xad, 0xd8, 0x82, 0x3e, 0xa2, 0x01,
+	0xc0, 0x6a, 0xb1, 0x52, 0x2b, 0xe5, 0x0f, 0xa9, 0x75, 0x8e, 0x03, 0x1a, 0x42, 0x4b, 0xbb, 0xa3,
+	0xae, 0xab, 0x2c, 0x05, 0x5e, 0xc0, 0x15, 0xb9, 0x70, 0x54, 0x11, 0x94, 0xa4, 0x63, 0xb4, 0x6a,
+	0x32, 0x99, 0xe4, 0xa2, 0x7f, 0x73, 0x8f, 0xa0, 0xb0, 0xb4, 0x00, 0xba, 0x21, 0x20, 0xeb, 0x36,
+	0xd1, 0x6a, 0xeb, 0x69, 0x49, 0x47, 0x82, 0x5e, 0x42, 0xf1, 0x4b, 0x3f, 0x86, 0x62, 0xcc, 0x06,
+	0x48, 0xae, 0x2d, 0x65, 0x17, 0x4d, 0x4d, 0x17, 0x24, 0xb5, 0x22, 0xa8, 0xd7, 0x50, 0x51, 0x50,
+	0x6d, 0x51, 0xec, 0x3f, 0xfe, 0x3e, 0xd3, 0x95, 0xb3, 0x99, 0xae, 0xfc, 0x9a, 0xe9, 0xca, 0xe7,
+	0xb9, 0x9e, 0x39, 0x9b, 0xeb, 0x99, 0x9f, 0x73, 0x3d, 0xf3, 0x6a, 0x6f, 0xe4, 0x70, 0x3b, 0xb0,
+	0x5a, 0x43, 0x3a, 0x69, 0xbf, 0x0b, 0xf8, 0x09, 0xb6, 0xf1, 0xf0, 0x74, 0xbf, 0xdb, 0x3d, 0x10,
+	0x03, 0x0d, 0x26, 0x8e, 0x6b, 0x0f, 0x6c, 0x1a, 0x30, 0xf2, 0xc0, 0xb3, 0xac, 0x4d, 0xf1, 0xa7,
+	0xd9, 0xfd, 0x13, 0x00, 0x00, 0xff, 0xff, 0x76, 0xa7, 0xf1, 0xd2, 0x80, 0x05, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -148,7 +666,12 @@ const _ = grpc.SupportPackageIsVersion4
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
 type QueryClient interface {
-	Health(ctx context.Context, in *HealthRequest, opts ...grpc.CallOption) (*HealthResponse, error)
+	CreateRoom(ctx context.Context, in *CreateRoomRequest, opts ...grpc.CallOption) (*CreateRoomResponse, error)
+	UpdateRoom(ctx context.Context, in *UpdateRoomRequest, opts ...grpc.CallOption) (*UpdateRoomResponse, error)
+	DeleteRoom(ctx context.Context, in *DeleteRoomRequest, opts ...grpc.CallOption) (*DeleteRoomResponse, error)
+	GetRoom(ctx context.Context, in *GetRoomRequest, opts ...grpc.CallOption) (*GetRoomResponse, error)
+	ListRooms(ctx context.Context, in *ListRoomsRequest, opts ...grpc.CallOption) (*ListRoomsResponse, error)
+	CheckHealth(ctx context.Context, in *CheckHealthRequest, opts ...grpc.CallOption) (*CheckHealthResponse, error)
 }
 
 type queryClient struct {
@@ -159,9 +682,54 @@ func NewQueryClient(cc grpc1.ClientConn) QueryClient {
 	return &queryClient{cc}
 }
 
-func (c *queryClient) Health(ctx context.Context, in *HealthRequest, opts ...grpc.CallOption) (*HealthResponse, error) {
-	out := new(HealthResponse)
-	err := c.cc.Invoke(ctx, "/api.Query/Health", in, out, opts...)
+func (c *queryClient) CreateRoom(ctx context.Context, in *CreateRoomRequest, opts ...grpc.CallOption) (*CreateRoomResponse, error) {
+	out := new(CreateRoomResponse)
+	err := c.cc.Invoke(ctx, "/api.Query/CreateRoom", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *queryClient) UpdateRoom(ctx context.Context, in *UpdateRoomRequest, opts ...grpc.CallOption) (*UpdateRoomResponse, error) {
+	out := new(UpdateRoomResponse)
+	err := c.cc.Invoke(ctx, "/api.Query/UpdateRoom", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *queryClient) DeleteRoom(ctx context.Context, in *DeleteRoomRequest, opts ...grpc.CallOption) (*DeleteRoomResponse, error) {
+	out := new(DeleteRoomResponse)
+	err := c.cc.Invoke(ctx, "/api.Query/DeleteRoom", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *queryClient) GetRoom(ctx context.Context, in *GetRoomRequest, opts ...grpc.CallOption) (*GetRoomResponse, error) {
+	out := new(GetRoomResponse)
+	err := c.cc.Invoke(ctx, "/api.Query/GetRoom", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *queryClient) ListRooms(ctx context.Context, in *ListRoomsRequest, opts ...grpc.CallOption) (*ListRoomsResponse, error) {
+	out := new(ListRoomsResponse)
+	err := c.cc.Invoke(ctx, "/api.Query/ListRooms", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *queryClient) CheckHealth(ctx context.Context, in *CheckHealthRequest, opts ...grpc.CallOption) (*CheckHealthResponse, error) {
+	out := new(CheckHealthResponse)
+	err := c.cc.Invoke(ctx, "/api.Query/CheckHealth", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -170,35 +738,145 @@ func (c *queryClient) Health(ctx context.Context, in *HealthRequest, opts ...grp
 
 // QueryServer is the server API for Query service.
 type QueryServer interface {
-	Health(context.Context, *HealthRequest) (*HealthResponse, error)
+	CreateRoom(context.Context, *CreateRoomRequest) (*CreateRoomResponse, error)
+	UpdateRoom(context.Context, *UpdateRoomRequest) (*UpdateRoomResponse, error)
+	DeleteRoom(context.Context, *DeleteRoomRequest) (*DeleteRoomResponse, error)
+	GetRoom(context.Context, *GetRoomRequest) (*GetRoomResponse, error)
+	ListRooms(context.Context, *ListRoomsRequest) (*ListRoomsResponse, error)
+	CheckHealth(context.Context, *CheckHealthRequest) (*CheckHealthResponse, error)
 }
 
 // UnimplementedQueryServer can be embedded to have forward compatible implementations.
 type UnimplementedQueryServer struct {
 }
 
-func (*UnimplementedQueryServer) Health(ctx context.Context, req *HealthRequest) (*HealthResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Health not implemented")
+func (*UnimplementedQueryServer) CreateRoom(ctx context.Context, req *CreateRoomRequest) (*CreateRoomResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateRoom not implemented")
+}
+func (*UnimplementedQueryServer) UpdateRoom(ctx context.Context, req *UpdateRoomRequest) (*UpdateRoomResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateRoom not implemented")
+}
+func (*UnimplementedQueryServer) DeleteRoom(ctx context.Context, req *DeleteRoomRequest) (*DeleteRoomResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteRoom not implemented")
+}
+func (*UnimplementedQueryServer) GetRoom(ctx context.Context, req *GetRoomRequest) (*GetRoomResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetRoom not implemented")
+}
+func (*UnimplementedQueryServer) ListRooms(ctx context.Context, req *ListRoomsRequest) (*ListRoomsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListRooms not implemented")
+}
+func (*UnimplementedQueryServer) CheckHealth(ctx context.Context, req *CheckHealthRequest) (*CheckHealthResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CheckHealth not implemented")
 }
 
 func RegisterQueryServer(s grpc1.Server, srv QueryServer) {
 	s.RegisterService(&_Query_serviceDesc, srv)
 }
 
-func _Query_Health_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(HealthRequest)
+func _Query_CreateRoom_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateRoomRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(QueryServer).Health(ctx, in)
+		return srv.(QueryServer).CreateRoom(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/api.Query/Health",
+		FullMethod: "/api.Query/CreateRoom",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(QueryServer).Health(ctx, req.(*HealthRequest))
+		return srv.(QueryServer).CreateRoom(ctx, req.(*CreateRoomRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Query_UpdateRoom_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateRoomRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(QueryServer).UpdateRoom(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/api.Query/UpdateRoom",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(QueryServer).UpdateRoom(ctx, req.(*UpdateRoomRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Query_DeleteRoom_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteRoomRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(QueryServer).DeleteRoom(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/api.Query/DeleteRoom",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(QueryServer).DeleteRoom(ctx, req.(*DeleteRoomRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Query_GetRoom_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetRoomRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(QueryServer).GetRoom(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/api.Query/GetRoom",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(QueryServer).GetRoom(ctx, req.(*GetRoomRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Query_ListRooms_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListRoomsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(QueryServer).ListRooms(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/api.Query/ListRooms",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(QueryServer).ListRooms(ctx, req.(*ListRoomsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Query_CheckHealth_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CheckHealthRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(QueryServer).CheckHealth(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/api.Query/CheckHealth",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(QueryServer).CheckHealth(ctx, req.(*CheckHealthRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -208,15 +886,35 @@ var _Query_serviceDesc = grpc.ServiceDesc{
 	HandlerType: (*QueryServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "Health",
-			Handler:    _Query_Health_Handler,
+			MethodName: "CreateRoom",
+			Handler:    _Query_CreateRoom_Handler,
+		},
+		{
+			MethodName: "UpdateRoom",
+			Handler:    _Query_UpdateRoom_Handler,
+		},
+		{
+			MethodName: "DeleteRoom",
+			Handler:    _Query_DeleteRoom_Handler,
+		},
+		{
+			MethodName: "GetRoom",
+			Handler:    _Query_GetRoom_Handler,
+		},
+		{
+			MethodName: "ListRooms",
+			Handler:    _Query_ListRooms_Handler,
+		},
+		{
+			MethodName: "CheckHealth",
+			Handler:    _Query_CheckHealth_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
 	Metadata: "api/proto.proto",
 }
 
-func (m *HealthRequest) Marshal() (dAtA []byte, err error) {
+func (m *Room) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -226,12 +924,224 @@ func (m *HealthRequest) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *HealthRequest) MarshalTo(dAtA []byte) (int, error) {
+func (m *Room) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *HealthRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *Room) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.IsAvailable {
+		i--
+		if m.IsAvailable {
+			dAtA[i] = 1
+		} else {
+			dAtA[i] = 0
+		}
+		i--
+		dAtA[i] = 0x18
+	}
+	if m.Price != 0 {
+		i -= 8
+		encoding_binary.LittleEndian.PutUint64(dAtA[i:], uint64(math.Float64bits(float64(m.Price))))
+		i--
+		dAtA[i] = 0x11
+	}
+	if m.RoomNumber != 0 {
+		i = encodeVarintProto(dAtA, i, uint64(m.RoomNumber))
+		i--
+		dAtA[i] = 0x8
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *CreateRoomRequest) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *CreateRoomRequest) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *CreateRoomRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.Room != nil {
+		{
+			size, err := m.Room.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintProto(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *CreateRoomResponse) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *CreateRoomResponse) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *CreateRoomResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.Room != nil {
+		{
+			size, err := m.Room.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintProto(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *UpdateRoomRequest) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *UpdateRoomRequest) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *UpdateRoomRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.Room != nil {
+		{
+			size, err := m.Room.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintProto(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *UpdateRoomResponse) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *UpdateRoomResponse) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *UpdateRoomResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.Room != nil {
+		{
+			size, err := m.Room.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintProto(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *DeleteRoomRequest) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *DeleteRoomRequest) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *DeleteRoomRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.RoomNumber != 0 {
+		i = encodeVarintProto(dAtA, i, uint64(m.RoomNumber))
+		i--
+		dAtA[i] = 0x8
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *DeleteRoomResponse) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *DeleteRoomResponse) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *DeleteRoomResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -239,7 +1149,7 @@ func (m *HealthRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
-func (m *HealthResponse) Marshal() (dAtA []byte, err error) {
+func (m *GetRoomRequest) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -249,12 +1159,158 @@ func (m *HealthResponse) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *HealthResponse) MarshalTo(dAtA []byte) (int, error) {
+func (m *GetRoomRequest) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *HealthResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *GetRoomRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.RoomNumber != 0 {
+		i = encodeVarintProto(dAtA, i, uint64(m.RoomNumber))
+		i--
+		dAtA[i] = 0x8
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *GetRoomResponse) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *GetRoomResponse) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *GetRoomResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.Room != nil {
+		{
+			size, err := m.Room.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintProto(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *ListRoomsRequest) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *ListRoomsRequest) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *ListRoomsRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	return len(dAtA) - i, nil
+}
+
+func (m *ListRoomsResponse) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *ListRoomsResponse) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *ListRoomsResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if len(m.Rooms) > 0 {
+		for iNdEx := len(m.Rooms) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size, err := m.Rooms[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintProto(dAtA, i, uint64(size))
+			}
+			i--
+			dAtA[i] = 0xa
+		}
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *CheckHealthRequest) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *CheckHealthRequest) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *CheckHealthRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	return len(dAtA) - i, nil
+}
+
+func (m *CheckHealthResponse) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *CheckHealthResponse) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *CheckHealthResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -280,7 +1336,89 @@ func encodeVarintProto(dAtA []byte, offset int, v uint64) int {
 	dAtA[offset] = uint8(v)
 	return base
 }
-func (m *HealthRequest) Size() (n int) {
+func (m *Room) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.RoomNumber != 0 {
+		n += 1 + sovProto(uint64(m.RoomNumber))
+	}
+	if m.Price != 0 {
+		n += 9
+	}
+	if m.IsAvailable {
+		n += 2
+	}
+	return n
+}
+
+func (m *CreateRoomRequest) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.Room != nil {
+		l = m.Room.Size()
+		n += 1 + l + sovProto(uint64(l))
+	}
+	return n
+}
+
+func (m *CreateRoomResponse) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.Room != nil {
+		l = m.Room.Size()
+		n += 1 + l + sovProto(uint64(l))
+	}
+	return n
+}
+
+func (m *UpdateRoomRequest) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.Room != nil {
+		l = m.Room.Size()
+		n += 1 + l + sovProto(uint64(l))
+	}
+	return n
+}
+
+func (m *UpdateRoomResponse) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.Room != nil {
+		l = m.Room.Size()
+		n += 1 + l + sovProto(uint64(l))
+	}
+	return n
+}
+
+func (m *DeleteRoomRequest) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.RoomNumber != 0 {
+		n += 1 + sovProto(uint64(m.RoomNumber))
+	}
+	return n
+}
+
+func (m *DeleteRoomResponse) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -289,7 +1427,65 @@ func (m *HealthRequest) Size() (n int) {
 	return n
 }
 
-func (m *HealthResponse) Size() (n int) {
+func (m *GetRoomRequest) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.RoomNumber != 0 {
+		n += 1 + sovProto(uint64(m.RoomNumber))
+	}
+	return n
+}
+
+func (m *GetRoomResponse) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.Room != nil {
+		l = m.Room.Size()
+		n += 1 + l + sovProto(uint64(l))
+	}
+	return n
+}
+
+func (m *ListRoomsRequest) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	return n
+}
+
+func (m *ListRoomsResponse) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if len(m.Rooms) > 0 {
+		for _, e := range m.Rooms {
+			l = e.Size()
+			n += 1 + l + sovProto(uint64(l))
+		}
+	}
+	return n
+}
+
+func (m *CheckHealthRequest) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	return n
+}
+
+func (m *CheckHealthResponse) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -308,7 +1504,7 @@ func sovProto(x uint64) (n int) {
 func sozProto(x uint64) (n int) {
 	return sovProto(uint64((x << 1) ^ uint64((int64(x) >> 63))))
 }
-func (m *HealthRequest) Unmarshal(dAtA []byte) error {
+func (m *Room) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -331,10 +1527,523 @@ func (m *HealthRequest) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: HealthRequest: wiretype end group for non-group")
+			return fmt.Errorf("proto: Room: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: HealthRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: Room: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field RoomNumber", wireType)
+			}
+			m.RoomNumber = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowProto
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.RoomNumber |= int32(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 2:
+			if wireType != 1 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Price", wireType)
+			}
+			var v uint64
+			if (iNdEx + 8) > l {
+				return io.ErrUnexpectedEOF
+			}
+			v = uint64(encoding_binary.LittleEndian.Uint64(dAtA[iNdEx:]))
+			iNdEx += 8
+			m.Price = float64(math.Float64frombits(v))
+		case 3:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field IsAvailable", wireType)
+			}
+			var v int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowProto
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				v |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			m.IsAvailable = bool(v != 0)
+		default:
+			iNdEx = preIndex
+			skippy, err := skipProto(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthProto
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *CreateRoomRequest) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowProto
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: CreateRoomRequest: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: CreateRoomRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Room", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowProto
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthProto
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthProto
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.Room == nil {
+				m.Room = &Room{}
+			}
+			if err := m.Room.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipProto(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthProto
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *CreateRoomResponse) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowProto
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: CreateRoomResponse: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: CreateRoomResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Room", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowProto
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthProto
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthProto
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.Room == nil {
+				m.Room = &Room{}
+			}
+			if err := m.Room.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipProto(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthProto
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *UpdateRoomRequest) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowProto
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: UpdateRoomRequest: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: UpdateRoomRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Room", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowProto
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthProto
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthProto
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.Room == nil {
+				m.Room = &Room{}
+			}
+			if err := m.Room.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipProto(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthProto
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *UpdateRoomResponse) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowProto
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: UpdateRoomResponse: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: UpdateRoomResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Room", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowProto
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthProto
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthProto
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.Room == nil {
+				m.Room = &Room{}
+			}
+			if err := m.Room.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipProto(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthProto
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *DeleteRoomRequest) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowProto
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: DeleteRoomRequest: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: DeleteRoomRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field RoomNumber", wireType)
+			}
+			m.RoomNumber = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowProto
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.RoomNumber |= int32(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		default:
+			iNdEx = preIndex
+			skippy, err := skipProto(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthProto
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *DeleteRoomResponse) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowProto
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: DeleteRoomResponse: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: DeleteRoomResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		default:
@@ -358,7 +2067,7 @@ func (m *HealthRequest) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *HealthResponse) Unmarshal(dAtA []byte) error {
+func (m *GetRoomRequest) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -381,10 +2090,349 @@ func (m *HealthResponse) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: HealthResponse: wiretype end group for non-group")
+			return fmt.Errorf("proto: GetRoomRequest: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: HealthResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: GetRoomRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field RoomNumber", wireType)
+			}
+			m.RoomNumber = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowProto
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.RoomNumber |= int32(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		default:
+			iNdEx = preIndex
+			skippy, err := skipProto(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthProto
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *GetRoomResponse) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowProto
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: GetRoomResponse: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: GetRoomResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Room", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowProto
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthProto
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthProto
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.Room == nil {
+				m.Room = &Room{}
+			}
+			if err := m.Room.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipProto(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthProto
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *ListRoomsRequest) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowProto
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: ListRoomsRequest: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: ListRoomsRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		default:
+			iNdEx = preIndex
+			skippy, err := skipProto(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthProto
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *ListRoomsResponse) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowProto
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: ListRoomsResponse: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: ListRoomsResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Rooms", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowProto
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthProto
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthProto
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Rooms = append(m.Rooms, &Room{})
+			if err := m.Rooms[len(m.Rooms)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipProto(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthProto
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *CheckHealthRequest) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowProto
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: CheckHealthRequest: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: CheckHealthRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		default:
+			iNdEx = preIndex
+			skippy, err := skipProto(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthProto
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *CheckHealthResponse) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowProto
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: CheckHealthResponse: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: CheckHealthResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:

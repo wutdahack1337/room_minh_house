@@ -5,9 +5,9 @@ import {getHealth} from '../services/api';
 const checkHealth = async () => {
     try {
         const status = await getHealth();
-        alert(`Status: ${status.status}`);
+        alert(`${status.status}`);
     } catch (error) {
-        alert(`Error: ${error}`);
+        alert(`${error}`);
     }
 };
 

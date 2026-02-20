@@ -1,5 +1,5 @@
 version: v1
-name: buf.build/wutdahack1337/introductory_capstone
+name: buf.build/wutdahack1337/room_minh_house
 deps:
   - buf.build/googleapis/googleapis
   - buf.build/cosmos/gogo-proto
