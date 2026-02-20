@@ -79,12 +79,12 @@ func (s *Service) GetUser(ctx context.Context, request *types.GetUserRequest) (*
 }
 
 func (s *Service) ListUsers(ctx context.Context, request *types.ListUsersRequest) (*types.ListUsersResponse, error) {
-	rooms, err := s.dbService.ListUsers(ctx)
+	users, err := s.dbService.ListUsers(ctx)
 	if err != nil {
 		return nil, err
 	}
 
 	return &types.ListUsersResponse{
-		Users: rooms,
+		Users: users,
 	}, nil
 }
