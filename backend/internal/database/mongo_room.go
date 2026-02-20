@@ -9,18 +9,19 @@ import (
 )
 
 func (s *MongoService) CreateRoom(ctx context.Context, room *types.Room) error {
-	collection := s.database.Collection(roomsCollection)
+	collection := s.database.Collection(roomCollection)
 	_, err := collection.InsertOne(ctx, room)
 	return err
 }
 
 func (s *MongoService) UpdateRoom(ctx context.Context, room *types.Room) error {
-	collection := s.database.Collection(roomsCollection)
-	res, err := collection.UpdateOne(ctx, bson.M{"room_number": room.RoomNumber}, bson.M{"$set": room})
+	collection := s.database.Collection(roomCollection)
 
+	res, err := collection.UpdateOne(ctx, bson.M{"room_number": room.RoomNumber}, bson.M{"$set": room})
 	if err != nil {
 		return err
 	}
+
 	if res.MatchedCount == 0 {
 		return mongo.ErrNoDocuments
 	}
@@ -29,19 +30,21 @@ func (s *MongoService) UpdateRoom(ctx context.Context, room *types.Room) error {
 }
 
 func (s *MongoService) DeleteRoom(ctx context.Context, roomNumber int32) error {
-	collection := s.database.Collection(roomsCollection)
+	collection := s.database.Collection(roomCollection)
 	result, err := collection.DeleteOne(ctx, bson.M{"room_number": roomNumber})
 	if err != nil {
 		return err
 	}
+
 	if result.DeletedCount == 0 {
 		return mongo.ErrNoDocuments
 	}
+
 	return nil
 }
 
 func (s *MongoService) GetRoom(ctx context.Context, roomNumber int32) (*types.Room, error) {
-	collection := s.database.Collection(roomsCollection)
+	collection := s.database.Collection(roomCollection)
 
 	var room types.Room
 	if err := collection.FindOne(ctx, bson.M{"room_number": roomNumber}).Decode(&room); err != nil {
@@ -52,7 +55,7 @@ func (s *MongoService) GetRoom(ctx context.Context, roomNumber int32) (*types.Ro
 }
 
 func (s *MongoService) ListRooms(ctx context.Context) ([]*types.Room, error) {
-	collection := s.database.Collection(roomsCollection)
+	collection := s.database.Collection(roomCollection)
 	cursor, err := collection.Find(ctx, bson.M{})
 	if err != nil {
 		return nil, err
@@ -67,5 +70,6 @@ func (s *MongoService) ListRooms(ctx context.Context) ([]*types.Room, error) {
 		}
 		res = append(res, &room)
 	}
+
 	return res, cursor.Err()
 }

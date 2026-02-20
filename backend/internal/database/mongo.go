@@ -9,7 +9,8 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/readpref"
 )
 
-const roomsCollection = "rooms"
+const roomCollection = "rooms"
+const userCollection = "users"
 
 type MongoService struct {
 	database *mongo.Database
@@ -17,7 +18,7 @@ type MongoService struct {
 
 func NewMongoService(database *mongo.Database) (*MongoService, error) {
 	// set room_number as unique index
-	collection := database.Collection(roomsCollection)
+	collection := database.Collection(roomCollection)
 	indexModel := mongo.IndexModel{
 		Keys:    bson.D{{Key: "room_number", Value: 1}},
 		Options: options.Index().SetUnique(true),

@@ -18,6 +18,7 @@ func (s *Service) CreateRoom(ctx context.Context, request *types.CreateRoomReque
 	if err := s.dbService.CreateRoom(ctx, request.Room); err != nil {
 		return nil, err
 	}
+
 	return &types.CreateRoomResponse{
 		Room: request.Room,
 	}, nil
@@ -37,6 +38,7 @@ func (s *Service) UpdateRoom(ctx context.Context, request *types.UpdateRoomReque
 	if err := s.dbService.UpdateRoom(ctx, request.Room); err != nil {
 		return nil, err
 	}
+
 	return &types.UpdateRoomResponse{
 		Room: request.Room,
 	}, nil
@@ -46,9 +48,11 @@ func (s *Service) DeleteRoom(ctx context.Context, request *types.DeleteRoomReque
 	if request == nil {
 		return nil, fmt.Errorf("DeleteRoom error: empty request")
 	}
+
 	if err := s.dbService.DeleteRoom(ctx, request.RoomNumber); err != nil {
 		return nil, err
 	}
+
 	return &types.DeleteRoomResponse{}, nil
 }
 
@@ -56,10 +60,15 @@ func (s *Service) GetRoom(ctx context.Context, request *types.GetRoomRequest) (*
 	if request == nil {
 		return nil, fmt.Errorf("GetRoom error: empty request")
 	}
+	if request.RoomNumber == 0 {
+		return nil, fmt.Errorf("GetRoom error: room number is required")
+	}
+
 	room, err := s.dbService.GetRoom(ctx, request.RoomNumber)
 	if err != nil {
 		return nil, err
 	}
+
 	return &types.GetRoomResponse{
 		Room: room,
 	}, nil
@@ -70,6 +79,7 @@ func (s *Service) ListRooms(ctx context.Context, request *types.ListRoomsRequest
 	if err != nil {
 		return nil, err
 	}
+
 	return &types.ListRoomsResponse{
 		Rooms: rooms,
 	}, nil

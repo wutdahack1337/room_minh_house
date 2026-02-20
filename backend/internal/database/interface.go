@@ -13,5 +13,11 @@ type DatabaseService interface {
 	GetRoom(ctx context.Context, roomNumber int32) (*types.Room, error)
 	ListRooms(ctx context.Context) ([]*types.Room, error)
 
+	CreateUser(ctx context.Context, user *types.User) error
+	UpdateUser(ctx context.Context, user *types.User) error
+	DeleteUser(ctx context.Context, pId string) error
+	GetUser(ctx context.Context, pId string) (*types.User, error)
+	ListUsers(ctx context.Context) ([]*types.User, error)
+
 	Health(ctx context.Context) error
 }
