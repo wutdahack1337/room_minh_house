@@ -14,6 +14,8 @@ const (
 	userCollection         = "users"
 	contractCollection     = "contracts"
 	meterReadingCollection = "meter_readings"
+	invoiceCollection      = "invoices"
+	invoiceItemCollection  = "invoice_items"
 )
 
 type MongoService struct {
@@ -55,6 +57,26 @@ func NewMongoService(database *mongo.Database) (*MongoService, error) {
 	collection = database.Collection(meterReadingCollection)
 	_, err = collection.Indexes().CreateOne(context.Background(), mongo.IndexModel{
 		Keys:    bson.D{{Key: "room_number", Value: 1}, {Key: "period", Value: 1}},
+		Options: options.Index().SetUnique(true),
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	// set invoice compound index on (contract_id, period)
+	collection = database.Collection(invoiceCollection)
+	_, err = collection.Indexes().CreateOne(context.Background(), mongo.IndexModel{
+		Keys:    bson.D{{Key: "contract_id", Value: 1}, {Key: "period", Value: 1}},
+		Options: options.Index().SetUnique(true),
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	// set invoice_item compound index on (contract_id, period, item_type)
+	collection = database.Collection(invoiceItemCollection)
+	_, err = collection.Indexes().CreateOne(context.Background(), mongo.IndexModel{
+		Keys:    bson.D{{Key: "contract_id", Value: 1}, {Key: "period", Value: 1}, {Key: "item_type", Value: 1}},
 		Options: options.Index().SetUnique(true),
 	})
 	if err != nil {

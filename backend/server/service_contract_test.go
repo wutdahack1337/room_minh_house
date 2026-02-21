@@ -472,15 +472,17 @@ func TestListContracts_Empty(t *testing.T) {
 
 // helper
 func getServiceForContract() *Service {
+	ctx := context.Background()
+
 	db, err := connectDatabase("mongodb://localhost:27017/?directConnection=true", "room_minh_house")
 	if err != nil {
 		panic("Failed to connect to database: " + err.Error())
 	}
 
 	// removes all documents and indexes
-	db.Collection("users").Drop(context.Background())
-	db.Collection("rooms").Drop(context.Background())
-	db.Collection("contracts").Drop(context.Background())
+	db.Collection("users").Drop(ctx)
+	db.Collection("rooms").Drop(ctx)
+	db.Collection("contracts").Drop(ctx)
 
 	dbService, err := database.NewMongoService(db)
 	if err != nil {

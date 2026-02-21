@@ -2078,6 +2078,822 @@ func (m *ListContractsResponse) GetContracts() []*Contract {
 	return nil
 }
 
+type Invoice struct {
+	ContractId  string  `protobuf:"bytes,1,opt,name=contract_id,json=contractId,proto3" json:"contract_id,omitempty" bson:"contract_id"`
+	Period      string  `protobuf:"bytes,2,opt,name=period,proto3" json:"period,omitempty" bson:"period"`
+	TotalAmount float64 `protobuf:"fixed64,3,opt,name=total_amount,json=totalAmount,proto3" json:"total_amount,omitempty" bson:"total_amount"`
+	Status      string  `protobuf:"bytes,4,opt,name=status,proto3" json:"status,omitempty" bson:"status"`
+}
+
+func (m *Invoice) Reset()         { *m = Invoice{} }
+func (m *Invoice) String() string { return proto.CompactTextString(m) }
+func (*Invoice) ProtoMessage()    {}
+func (*Invoice) Descriptor() ([]byte, []int) {
+	return fileDescriptor_be498c345e55ac46, []int{44}
+}
+func (m *Invoice) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *Invoice) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_Invoice.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *Invoice) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_Invoice.Merge(m, src)
+}
+func (m *Invoice) XXX_Size() int {
+	return m.Size()
+}
+func (m *Invoice) XXX_DiscardUnknown() {
+	xxx_messageInfo_Invoice.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_Invoice proto.InternalMessageInfo
+
+func (m *Invoice) GetContractId() string {
+	if m != nil {
+		return m.ContractId
+	}
+	return ""
+}
+
+func (m *Invoice) GetPeriod() string {
+	if m != nil {
+		return m.Period
+	}
+	return ""
+}
+
+func (m *Invoice) GetTotalAmount() float64 {
+	if m != nil {
+		return m.TotalAmount
+	}
+	return 0
+}
+
+func (m *Invoice) GetStatus() string {
+	if m != nil {
+		return m.Status
+	}
+	return ""
+}
+
+type InvoiceItem struct {
+	ContractId string  `protobuf:"bytes,1,opt,name=contract_id,json=contractId,proto3" json:"contract_id,omitempty" bson:"contract_id"`
+	Period     string  `protobuf:"bytes,2,opt,name=period,proto3" json:"period,omitempty" bson:"period"`
+	ItemType   string  `protobuf:"bytes,3,opt,name=item_type,json=itemType,proto3" json:"item_type,omitempty" bson:"item_type"`
+	Quantity   float64 `protobuf:"fixed64,4,opt,name=quantity,proto3" json:"quantity,omitempty" bson:"quantity"`
+	UnitPrice  float64 `protobuf:"fixed64,5,opt,name=unit_price,json=unitPrice,proto3" json:"unit_price,omitempty" bson:"unit_price"`
+	Amount     float64 `protobuf:"fixed64,6,opt,name=amount,proto3" json:"amount,omitempty" bson:"amount"`
+}
+
+func (m *InvoiceItem) Reset()         { *m = InvoiceItem{} }
+func (m *InvoiceItem) String() string { return proto.CompactTextString(m) }
+func (*InvoiceItem) ProtoMessage()    {}
+func (*InvoiceItem) Descriptor() ([]byte, []int) {
+	return fileDescriptor_be498c345e55ac46, []int{45}
+}
+func (m *InvoiceItem) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *InvoiceItem) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_InvoiceItem.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *InvoiceItem) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_InvoiceItem.Merge(m, src)
+}
+func (m *InvoiceItem) XXX_Size() int {
+	return m.Size()
+}
+func (m *InvoiceItem) XXX_DiscardUnknown() {
+	xxx_messageInfo_InvoiceItem.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_InvoiceItem proto.InternalMessageInfo
+
+func (m *InvoiceItem) GetContractId() string {
+	if m != nil {
+		return m.ContractId
+	}
+	return ""
+}
+
+func (m *InvoiceItem) GetPeriod() string {
+	if m != nil {
+		return m.Period
+	}
+	return ""
+}
+
+func (m *InvoiceItem) GetItemType() string {
+	if m != nil {
+		return m.ItemType
+	}
+	return ""
+}
+
+func (m *InvoiceItem) GetQuantity() float64 {
+	if m != nil {
+		return m.Quantity
+	}
+	return 0
+}
+
+func (m *InvoiceItem) GetUnitPrice() float64 {
+	if m != nil {
+		return m.UnitPrice
+	}
+	return 0
+}
+
+func (m *InvoiceItem) GetAmount() float64 {
+	if m != nil {
+		return m.Amount
+	}
+	return 0
+}
+
+type CreateInvoiceRequest struct {
+	ContractId           string  `protobuf:"bytes,1,opt,name=contract_id,json=contractId,proto3" json:"contract_id,omitempty"`
+	Period               string  `protobuf:"bytes,2,opt,name=period,proto3" json:"period,omitempty"`
+	ElectricityUnitPrice float64 `protobuf:"fixed64,3,opt,name=electricity_unit_price,json=electricityUnitPrice,proto3" json:"electricity_unit_price,omitempty"`
+	WaterUnitPrice       float64 `protobuf:"fixed64,4,opt,name=water_unit_price,json=waterUnitPrice,proto3" json:"water_unit_price,omitempty"`
+}
+
+func (m *CreateInvoiceRequest) Reset()         { *m = CreateInvoiceRequest{} }
+func (m *CreateInvoiceRequest) String() string { return proto.CompactTextString(m) }
+func (*CreateInvoiceRequest) ProtoMessage()    {}
+func (*CreateInvoiceRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_be498c345e55ac46, []int{46}
+}
+func (m *CreateInvoiceRequest) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *CreateInvoiceRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_CreateInvoiceRequest.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *CreateInvoiceRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_CreateInvoiceRequest.Merge(m, src)
+}
+func (m *CreateInvoiceRequest) XXX_Size() int {
+	return m.Size()
+}
+func (m *CreateInvoiceRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_CreateInvoiceRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_CreateInvoiceRequest proto.InternalMessageInfo
+
+func (m *CreateInvoiceRequest) GetContractId() string {
+	if m != nil {
+		return m.ContractId
+	}
+	return ""
+}
+
+func (m *CreateInvoiceRequest) GetPeriod() string {
+	if m != nil {
+		return m.Period
+	}
+	return ""
+}
+
+func (m *CreateInvoiceRequest) GetElectricityUnitPrice() float64 {
+	if m != nil {
+		return m.ElectricityUnitPrice
+	}
+	return 0
+}
+
+func (m *CreateInvoiceRequest) GetWaterUnitPrice() float64 {
+	if m != nil {
+		return m.WaterUnitPrice
+	}
+	return 0
+}
+
+type CreateInvoiceResponse struct {
+	Invoice      *Invoice       `protobuf:"bytes,1,opt,name=invoice,proto3" json:"invoice,omitempty"`
+	InvoiceItems []*InvoiceItem `protobuf:"bytes,2,rep,name=invoice_items,json=invoiceItems,proto3" json:"invoice_items,omitempty"`
+}
+
+func (m *CreateInvoiceResponse) Reset()         { *m = CreateInvoiceResponse{} }
+func (m *CreateInvoiceResponse) String() string { return proto.CompactTextString(m) }
+func (*CreateInvoiceResponse) ProtoMessage()    {}
+func (*CreateInvoiceResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_be498c345e55ac46, []int{47}
+}
+func (m *CreateInvoiceResponse) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *CreateInvoiceResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_CreateInvoiceResponse.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *CreateInvoiceResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_CreateInvoiceResponse.Merge(m, src)
+}
+func (m *CreateInvoiceResponse) XXX_Size() int {
+	return m.Size()
+}
+func (m *CreateInvoiceResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_CreateInvoiceResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_CreateInvoiceResponse proto.InternalMessageInfo
+
+func (m *CreateInvoiceResponse) GetInvoice() *Invoice {
+	if m != nil {
+		return m.Invoice
+	}
+	return nil
+}
+
+func (m *CreateInvoiceResponse) GetInvoiceItems() []*InvoiceItem {
+	if m != nil {
+		return m.InvoiceItems
+	}
+	return nil
+}
+
+type UpdateInvoiceRequest struct {
+	Invoice *Invoice `protobuf:"bytes,1,opt,name=invoice,proto3" json:"invoice,omitempty"`
+}
+
+func (m *UpdateInvoiceRequest) Reset()         { *m = UpdateInvoiceRequest{} }
+func (m *UpdateInvoiceRequest) String() string { return proto.CompactTextString(m) }
+func (*UpdateInvoiceRequest) ProtoMessage()    {}
+func (*UpdateInvoiceRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_be498c345e55ac46, []int{48}
+}
+func (m *UpdateInvoiceRequest) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *UpdateInvoiceRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_UpdateInvoiceRequest.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *UpdateInvoiceRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_UpdateInvoiceRequest.Merge(m, src)
+}
+func (m *UpdateInvoiceRequest) XXX_Size() int {
+	return m.Size()
+}
+func (m *UpdateInvoiceRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_UpdateInvoiceRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_UpdateInvoiceRequest proto.InternalMessageInfo
+
+func (m *UpdateInvoiceRequest) GetInvoice() *Invoice {
+	if m != nil {
+		return m.Invoice
+	}
+	return nil
+}
+
+type UpdateInvoiceResponse struct {
+	Invoice *Invoice `protobuf:"bytes,1,opt,name=invoice,proto3" json:"invoice,omitempty"`
+}
+
+func (m *UpdateInvoiceResponse) Reset()         { *m = UpdateInvoiceResponse{} }
+func (m *UpdateInvoiceResponse) String() string { return proto.CompactTextString(m) }
+func (*UpdateInvoiceResponse) ProtoMessage()    {}
+func (*UpdateInvoiceResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_be498c345e55ac46, []int{49}
+}
+func (m *UpdateInvoiceResponse) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *UpdateInvoiceResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_UpdateInvoiceResponse.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *UpdateInvoiceResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_UpdateInvoiceResponse.Merge(m, src)
+}
+func (m *UpdateInvoiceResponse) XXX_Size() int {
+	return m.Size()
+}
+func (m *UpdateInvoiceResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_UpdateInvoiceResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_UpdateInvoiceResponse proto.InternalMessageInfo
+
+func (m *UpdateInvoiceResponse) GetInvoice() *Invoice {
+	if m != nil {
+		return m.Invoice
+	}
+	return nil
+}
+
+type DeleteInvoiceRequest struct {
+	ContractId string `protobuf:"bytes,1,opt,name=contract_id,json=contractId,proto3" json:"contract_id,omitempty"`
+	Period     string `protobuf:"bytes,2,opt,name=period,proto3" json:"period,omitempty"`
+}
+
+func (m *DeleteInvoiceRequest) Reset()         { *m = DeleteInvoiceRequest{} }
+func (m *DeleteInvoiceRequest) String() string { return proto.CompactTextString(m) }
+func (*DeleteInvoiceRequest) ProtoMessage()    {}
+func (*DeleteInvoiceRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_be498c345e55ac46, []int{50}
+}
+func (m *DeleteInvoiceRequest) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *DeleteInvoiceRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_DeleteInvoiceRequest.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *DeleteInvoiceRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_DeleteInvoiceRequest.Merge(m, src)
+}
+func (m *DeleteInvoiceRequest) XXX_Size() int {
+	return m.Size()
+}
+func (m *DeleteInvoiceRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_DeleteInvoiceRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_DeleteInvoiceRequest proto.InternalMessageInfo
+
+func (m *DeleteInvoiceRequest) GetContractId() string {
+	if m != nil {
+		return m.ContractId
+	}
+	return ""
+}
+
+func (m *DeleteInvoiceRequest) GetPeriod() string {
+	if m != nil {
+		return m.Period
+	}
+	return ""
+}
+
+type DeleteInvoiceResponse struct {
+}
+
+func (m *DeleteInvoiceResponse) Reset()         { *m = DeleteInvoiceResponse{} }
+func (m *DeleteInvoiceResponse) String() string { return proto.CompactTextString(m) }
+func (*DeleteInvoiceResponse) ProtoMessage()    {}
+func (*DeleteInvoiceResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_be498c345e55ac46, []int{51}
+}
+func (m *DeleteInvoiceResponse) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *DeleteInvoiceResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_DeleteInvoiceResponse.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *DeleteInvoiceResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_DeleteInvoiceResponse.Merge(m, src)
+}
+func (m *DeleteInvoiceResponse) XXX_Size() int {
+	return m.Size()
+}
+func (m *DeleteInvoiceResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_DeleteInvoiceResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_DeleteInvoiceResponse proto.InternalMessageInfo
+
+type GetInvoiceRequest struct {
+	ContractId string `protobuf:"bytes,1,opt,name=contract_id,json=contractId,proto3" json:"contract_id,omitempty"`
+	Period     string `protobuf:"bytes,2,opt,name=period,proto3" json:"period,omitempty"`
+}
+
+func (m *GetInvoiceRequest) Reset()         { *m = GetInvoiceRequest{} }
+func (m *GetInvoiceRequest) String() string { return proto.CompactTextString(m) }
+func (*GetInvoiceRequest) ProtoMessage()    {}
+func (*GetInvoiceRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_be498c345e55ac46, []int{52}
+}
+func (m *GetInvoiceRequest) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *GetInvoiceRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_GetInvoiceRequest.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *GetInvoiceRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_GetInvoiceRequest.Merge(m, src)
+}
+func (m *GetInvoiceRequest) XXX_Size() int {
+	return m.Size()
+}
+func (m *GetInvoiceRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_GetInvoiceRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_GetInvoiceRequest proto.InternalMessageInfo
+
+func (m *GetInvoiceRequest) GetContractId() string {
+	if m != nil {
+		return m.ContractId
+	}
+	return ""
+}
+
+func (m *GetInvoiceRequest) GetPeriod() string {
+	if m != nil {
+		return m.Period
+	}
+	return ""
+}
+
+type GetInvoiceResponse struct {
+	Invoice *Invoice `protobuf:"bytes,1,opt,name=invoice,proto3" json:"invoice,omitempty"`
+}
+
+func (m *GetInvoiceResponse) Reset()         { *m = GetInvoiceResponse{} }
+func (m *GetInvoiceResponse) String() string { return proto.CompactTextString(m) }
+func (*GetInvoiceResponse) ProtoMessage()    {}
+func (*GetInvoiceResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_be498c345e55ac46, []int{53}
+}
+func (m *GetInvoiceResponse) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *GetInvoiceResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_GetInvoiceResponse.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *GetInvoiceResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_GetInvoiceResponse.Merge(m, src)
+}
+func (m *GetInvoiceResponse) XXX_Size() int {
+	return m.Size()
+}
+func (m *GetInvoiceResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_GetInvoiceResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_GetInvoiceResponse proto.InternalMessageInfo
+
+func (m *GetInvoiceResponse) GetInvoice() *Invoice {
+	if m != nil {
+		return m.Invoice
+	}
+	return nil
+}
+
+type ListInvoicesRequest struct {
+	ContractId string `protobuf:"bytes,1,opt,name=contract_id,json=contractId,proto3" json:"contract_id,omitempty"`
+}
+
+func (m *ListInvoicesRequest) Reset()         { *m = ListInvoicesRequest{} }
+func (m *ListInvoicesRequest) String() string { return proto.CompactTextString(m) }
+func (*ListInvoicesRequest) ProtoMessage()    {}
+func (*ListInvoicesRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_be498c345e55ac46, []int{54}
+}
+func (m *ListInvoicesRequest) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *ListInvoicesRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_ListInvoicesRequest.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *ListInvoicesRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_ListInvoicesRequest.Merge(m, src)
+}
+func (m *ListInvoicesRequest) XXX_Size() int {
+	return m.Size()
+}
+func (m *ListInvoicesRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_ListInvoicesRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_ListInvoicesRequest proto.InternalMessageInfo
+
+func (m *ListInvoicesRequest) GetContractId() string {
+	if m != nil {
+		return m.ContractId
+	}
+	return ""
+}
+
+type ListInvoicesResponse struct {
+	Invoices []*Invoice `protobuf:"bytes,1,rep,name=invoices,proto3" json:"invoices,omitempty"`
+}
+
+func (m *ListInvoicesResponse) Reset()         { *m = ListInvoicesResponse{} }
+func (m *ListInvoicesResponse) String() string { return proto.CompactTextString(m) }
+func (*ListInvoicesResponse) ProtoMessage()    {}
+func (*ListInvoicesResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_be498c345e55ac46, []int{55}
+}
+func (m *ListInvoicesResponse) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *ListInvoicesResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_ListInvoicesResponse.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *ListInvoicesResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_ListInvoicesResponse.Merge(m, src)
+}
+func (m *ListInvoicesResponse) XXX_Size() int {
+	return m.Size()
+}
+func (m *ListInvoicesResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_ListInvoicesResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_ListInvoicesResponse proto.InternalMessageInfo
+
+func (m *ListInvoicesResponse) GetInvoices() []*Invoice {
+	if m != nil {
+		return m.Invoices
+	}
+	return nil
+}
+
+type UpdateInvoiceItemRequest struct {
+	InvoiceItem *InvoiceItem `protobuf:"bytes,1,opt,name=invoice_item,json=invoiceItem,proto3" json:"invoice_item,omitempty"`
+}
+
+func (m *UpdateInvoiceItemRequest) Reset()         { *m = UpdateInvoiceItemRequest{} }
+func (m *UpdateInvoiceItemRequest) String() string { return proto.CompactTextString(m) }
+func (*UpdateInvoiceItemRequest) ProtoMessage()    {}
+func (*UpdateInvoiceItemRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_be498c345e55ac46, []int{56}
+}
+func (m *UpdateInvoiceItemRequest) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *UpdateInvoiceItemRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_UpdateInvoiceItemRequest.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *UpdateInvoiceItemRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_UpdateInvoiceItemRequest.Merge(m, src)
+}
+func (m *UpdateInvoiceItemRequest) XXX_Size() int {
+	return m.Size()
+}
+func (m *UpdateInvoiceItemRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_UpdateInvoiceItemRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_UpdateInvoiceItemRequest proto.InternalMessageInfo
+
+func (m *UpdateInvoiceItemRequest) GetInvoiceItem() *InvoiceItem {
+	if m != nil {
+		return m.InvoiceItem
+	}
+	return nil
+}
+
+type UpdateInvoiceItemResponse struct {
+	InvoiceItem *InvoiceItem `protobuf:"bytes,1,opt,name=invoice_item,json=invoiceItem,proto3" json:"invoice_item,omitempty"`
+}
+
+func (m *UpdateInvoiceItemResponse) Reset()         { *m = UpdateInvoiceItemResponse{} }
+func (m *UpdateInvoiceItemResponse) String() string { return proto.CompactTextString(m) }
+func (*UpdateInvoiceItemResponse) ProtoMessage()    {}
+func (*UpdateInvoiceItemResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_be498c345e55ac46, []int{57}
+}
+func (m *UpdateInvoiceItemResponse) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *UpdateInvoiceItemResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_UpdateInvoiceItemResponse.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *UpdateInvoiceItemResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_UpdateInvoiceItemResponse.Merge(m, src)
+}
+func (m *UpdateInvoiceItemResponse) XXX_Size() int {
+	return m.Size()
+}
+func (m *UpdateInvoiceItemResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_UpdateInvoiceItemResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_UpdateInvoiceItemResponse proto.InternalMessageInfo
+
+func (m *UpdateInvoiceItemResponse) GetInvoiceItem() *InvoiceItem {
+	if m != nil {
+		return m.InvoiceItem
+	}
+	return nil
+}
+
+type ListInvoiceItemsRequest struct {
+	ContractId string `protobuf:"bytes,1,opt,name=contract_id,json=contractId,proto3" json:"contract_id,omitempty"`
+	Period     string `protobuf:"bytes,2,opt,name=period,proto3" json:"period,omitempty"`
+}
+
+func (m *ListInvoiceItemsRequest) Reset()         { *m = ListInvoiceItemsRequest{} }
+func (m *ListInvoiceItemsRequest) String() string { return proto.CompactTextString(m) }
+func (*ListInvoiceItemsRequest) ProtoMessage()    {}
+func (*ListInvoiceItemsRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_be498c345e55ac46, []int{58}
+}
+func (m *ListInvoiceItemsRequest) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *ListInvoiceItemsRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_ListInvoiceItemsRequest.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *ListInvoiceItemsRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_ListInvoiceItemsRequest.Merge(m, src)
+}
+func (m *ListInvoiceItemsRequest) XXX_Size() int {
+	return m.Size()
+}
+func (m *ListInvoiceItemsRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_ListInvoiceItemsRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_ListInvoiceItemsRequest proto.InternalMessageInfo
+
+func (m *ListInvoiceItemsRequest) GetContractId() string {
+	if m != nil {
+		return m.ContractId
+	}
+	return ""
+}
+
+func (m *ListInvoiceItemsRequest) GetPeriod() string {
+	if m != nil {
+		return m.Period
+	}
+	return ""
+}
+
+type ListInvoiceItemsResponse struct {
+	InvoiceItems []*InvoiceItem `protobuf:"bytes,1,rep,name=invoice_items,json=invoiceItems,proto3" json:"invoice_items,omitempty"`
+}
+
+func (m *ListInvoiceItemsResponse) Reset()         { *m = ListInvoiceItemsResponse{} }
+func (m *ListInvoiceItemsResponse) String() string { return proto.CompactTextString(m) }
+func (*ListInvoiceItemsResponse) ProtoMessage()    {}
+func (*ListInvoiceItemsResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_be498c345e55ac46, []int{59}
+}
+func (m *ListInvoiceItemsResponse) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *ListInvoiceItemsResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_ListInvoiceItemsResponse.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *ListInvoiceItemsResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_ListInvoiceItemsResponse.Merge(m, src)
+}
+func (m *ListInvoiceItemsResponse) XXX_Size() int {
+	return m.Size()
+}
+func (m *ListInvoiceItemsResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_ListInvoiceItemsResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_ListInvoiceItemsResponse proto.InternalMessageInfo
+
+func (m *ListInvoiceItemsResponse) GetInvoiceItems() []*InvoiceItem {
+	if m != nil {
+		return m.InvoiceItems
+	}
+	return nil
+}
+
 type CheckHealthRequest struct {
 }
 
@@ -2085,7 +2901,7 @@ func (m *CheckHealthRequest) Reset()         { *m = CheckHealthRequest{} }
 func (m *CheckHealthRequest) String() string { return proto.CompactTextString(m) }
 func (*CheckHealthRequest) ProtoMessage()    {}
 func (*CheckHealthRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_be498c345e55ac46, []int{44}
+	return fileDescriptor_be498c345e55ac46, []int{60}
 }
 func (m *CheckHealthRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -2122,7 +2938,7 @@ func (m *CheckHealthResponse) Reset()         { *m = CheckHealthResponse{} }
 func (m *CheckHealthResponse) String() string { return proto.CompactTextString(m) }
 func (*CheckHealthResponse) ProtoMessage()    {}
 func (*CheckHealthResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_be498c345e55ac46, []int{45}
+	return fileDescriptor_be498c345e55ac46, []int{61}
 }
 func (m *CheckHealthResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -2203,6 +3019,22 @@ func init() {
 	proto.RegisterType((*GetContractResponse)(nil), "api.GetContractResponse")
 	proto.RegisterType((*ListContractsRequest)(nil), "api.ListContractsRequest")
 	proto.RegisterType((*ListContractsResponse)(nil), "api.ListContractsResponse")
+	proto.RegisterType((*Invoice)(nil), "api.Invoice")
+	proto.RegisterType((*InvoiceItem)(nil), "api.InvoiceItem")
+	proto.RegisterType((*CreateInvoiceRequest)(nil), "api.CreateInvoiceRequest")
+	proto.RegisterType((*CreateInvoiceResponse)(nil), "api.CreateInvoiceResponse")
+	proto.RegisterType((*UpdateInvoiceRequest)(nil), "api.UpdateInvoiceRequest")
+	proto.RegisterType((*UpdateInvoiceResponse)(nil), "api.UpdateInvoiceResponse")
+	proto.RegisterType((*DeleteInvoiceRequest)(nil), "api.DeleteInvoiceRequest")
+	proto.RegisterType((*DeleteInvoiceResponse)(nil), "api.DeleteInvoiceResponse")
+	proto.RegisterType((*GetInvoiceRequest)(nil), "api.GetInvoiceRequest")
+	proto.RegisterType((*GetInvoiceResponse)(nil), "api.GetInvoiceResponse")
+	proto.RegisterType((*ListInvoicesRequest)(nil), "api.ListInvoicesRequest")
+	proto.RegisterType((*ListInvoicesResponse)(nil), "api.ListInvoicesResponse")
+	proto.RegisterType((*UpdateInvoiceItemRequest)(nil), "api.UpdateInvoiceItemRequest")
+	proto.RegisterType((*UpdateInvoiceItemResponse)(nil), "api.UpdateInvoiceItemResponse")
+	proto.RegisterType((*ListInvoiceItemsRequest)(nil), "api.ListInvoiceItemsRequest")
+	proto.RegisterType((*ListInvoiceItemsResponse)(nil), "api.ListInvoiceItemsResponse")
 	proto.RegisterType((*CheckHealthRequest)(nil), "api.CheckHealthRequest")
 	proto.RegisterType((*CheckHealthResponse)(nil), "api.CheckHealthResponse")
 }
@@ -2210,118 +3042,155 @@ func init() {
 func init() { proto.RegisterFile("api/proto.proto", fileDescriptor_be498c345e55ac46) }
 
 var fileDescriptor_be498c345e55ac46 = []byte{
-	// 1772 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xac, 0x58, 0x5f, 0x6f, 0x1b, 0xc7,
-	0x11, 0xf7, 0xe9, 0x3f, 0x87, 0x7f, 0x24, 0xad, 0x44, 0x8a, 0xba, 0x58, 0x3c, 0x61, 0x5d, 0xb7,
-	0xfe, 0x83, 0x90, 0xb1, 0x94, 0xd4, 0x82, 0xd2, 0xa2, 0x0d, 0xe5, 0xd6, 0x0d, 0xe0, 0x38, 0xf5,
-	0xa5, 0x6a, 0x81, 0x02, 0x2d, 0x71, 0xe4, 0xad, 0xc5, 0xab, 0x44, 0x1e, 0x7b, 0x77, 0xac, 0x13,
-	0x18, 0x7a, 0x51, 0x81, 0x3e, 0x17, 0xe8, 0x47, 0xc8, 0xb7, 0xe8, 0x27, 0xe8, 0x53, 0x11, 0xa0,
-	0x2f, 0x7d, 0x22, 0x0a, 0xbb, 0x9f, 0x80, 0x5f, 0x20, 0xc5, 0xce, 0xee, 0x1d, 0x77, 0x8f, 0x47,
-	0x47, 0xb4, 0xfb, 0x62, 0x71, 0x67, 0x76, 0x7e, 0xf3, 0xbb, 0x9d, 0xd9, 0x99, 0x59, 0xc3, 0xba,
-	0x33, 0xf0, 0x1a, 0x83, 0xc0, 0x8f, 0xfc, 0x3a, 0xfe, 0x4b, 0x16, 0x9d, 0x81, 0x67, 0xde, 0x3c,
-	0xf3, 0xfd, 0xb3, 0x0b, 0xd6, 0xe0, 0x4a, 0xa7, 0xdf, 0xf7, 0x23, 0x27, 0xf2, 0xfc, 0x7e, 0x28,
-	0xb6, 0x98, 0xdb, 0x67, 0xfe, 0x99, 0x8f, 0x3f, 0x1b, 0xfc, 0x97, 0x90, 0xd2, 0xaf, 0x0d, 0x58,
-	0xb2, 0x7d, 0xbf, 0x47, 0x1e, 0x42, 0x3e, 0xf0, 0xfd, 0x5e, 0xab, 0x3f, 0xec, 0xb5, 0x59, 0x50,
-	0x35, 0xf6, 0x8d, 0x3b, 0xcb, 0xcd, 0xca, 0x78, 0x64, 0x91, 0x76, 0xe8, 0xf7, 0x8f, 0xa9, 0xa2,
-	0xa4, 0x36, 0xf0, 0xd5, 0x53, 0x5c, 0x90, 0xef, 0xc3, 0xf2, 0x20, 0xf0, 0x3a, 0xac, 0xba, 0xb0,
-	0x6f, 0xdc, 0x31, 0x9a, 0x1b, 0xe3, 0x91, 0x55, 0x10, 0x26, 0x28, 0xa6, 0xb6, 0x50, 0x93, 0x63,
-	0x28, 0x78, 0x61, 0xcb, 0xf9, 0x93, 0xe3, 0x5d, 0x38, 0xed, 0x0b, 0x56, 0x5d, 0xdc, 0x37, 0xee,
-	0xac, 0x35, 0x77, 0xc6, 0x23, 0x6b, 0x4b, 0x6c, 0x57, 0xb5, 0xd4, 0xce, 0x7b, 0xe1, 0x27, 0xc9,
-	0xea, 0x00, 0x36, 0x4f, 0x02, 0xe6, 0x44, 0x8c, 0x53, 0xb5, 0xd9, 0x1f, 0x87, 0x2c, 0x8c, 0xc8,
-	0x1e, 0x2c, 0x71, 0x1a, 0x48, 0x35, 0x7f, 0x90, 0xab, 0x3b, 0x03, 0xaf, 0x8e, 0x7a, 0x14, 0xd3,
-	0x43, 0x20, 0xaa, 0x4d, 0x38, 0xf0, 0xfb, 0x21, 0xfb, 0x2e, 0xa3, 0x03, 0xd8, 0x3c, 0x1d, 0xb8,
-	0x73, 0x3b, 0x52, 0x6d, 0xae, 0xe7, 0xe8, 0x43, 0xd8, 0x7c, 0xc4, 0x2e, 0x98, 0xee, 0xc8, 0xca,
-	0x88, 0x81, 0x7a, 0xd6, 0x74, 0x1b, 0x88, 0x6a, 0x25, 0x5c, 0xd1, 0x07, 0x50, 0x7a, 0xcc, 0xa2,
-	0xb9, 0x80, 0x3e, 0x80, 0xf5, 0xc4, 0xe4, 0x7a, 0x84, 0x09, 0x6c, 0x3c, 0xf1, 0x42, 0x34, 0x09,
-	0xa5, 0x1b, 0xfe, 0x11, 0x8a, 0x4c, 0xe2, 0x58, 0xb0, 0xcc, 0x0d, 0xc2, 0xaa, 0xb1, 0xbf, 0xa8,
-	0x03, 0x09, 0x39, 0xbd, 0x5a, 0x80, 0xc2, 0x67, 0x2c, 0x62, 0x81, 0xcd, 0x1c, 0xd7, 0xeb, 0x9f,
-	0xbd, 0x7d, 0xea, 0xdd, 0x85, 0x95, 0x01, 0x0b, 0x3c, 0xdf, 0xc5, 0xdc, 0xcb, 0x35, 0x37, 0xc7,
-	0x23, 0xab, 0x28, 0x73, 0x0f, 0xe5, 0xd4, 0x96, 0x1b, 0xc8, 0xe7, 0xb0, 0xc5, 0x2e, 0x58, 0x27,
-	0x0a, 0xbc, 0x8e, 0x17, 0x7d, 0xd5, 0x0a, 0x84, 0x6b, 0x4c, 0x42, 0xa3, 0x59, 0x1b, 0x8f, 0x2c,
-	0x53, 0xd8, 0x65, 0x6c, 0xa2, 0x36, 0x51, 0xa4, 0x31, 0xe9, 0x1f, 0x43, 0xf1, 0x85, 0x13, 0xb1,
-	0x20, 0x81, 0x5a, 0x42, 0xa8, 0xea, 0x78, 0x64, 0x6d, 0x0b, 0x28, 0x4d, 0x4d, 0xed, 0x02, 0xae,
-	0xa5, 0x39, 0xfd, 0x02, 0x76, 0x45, 0x76, 0xaa, 0x27, 0x11, 0x87, 0xef, 0x87, 0x50, 0xec, 0x31,
-	0x15, 0x5b, 0xc4, 0x64, 0x13, 0x8f, 0x52, 0x33, 0x28, 0xf4, 0x94, 0x15, 0xfd, 0x15, 0x98, 0x59,
-	0xa0, 0x32, 0x30, 0x6f, 0x8b, 0xfa, 0x05, 0xec, 0x8a, 0xfc, 0xfe, 0x3f, 0x53, 0xcd, 0x02, 0x7d,
-	0x47, 0xaa, 0xcf, 0xa0, 0xf2, 0x98, 0x45, 0x59, 0x3c, 0xbf, 0xeb, 0x46, 0x90, 0x8a, 0x9e, 0x4b,
-	0x71, 0xe2, 0xd0, 0x67, 0xb0, 0x33, 0x05, 0xf9, 0x8e, 0x2c, 0x3f, 0x86, 0x2a, 0xbf, 0x36, 0xea,
-	0x8e, 0xf0, 0xda, 0x37, 0xf7, 0x14, 0x76, 0x33, 0x8c, 0x25, 0xa3, 0x23, 0x28, 0x69, 0x8c, 0xe2,
-	0x4b, 0x98, 0x41, 0xa9, 0xa8, 0x52, 0x0a, 0xe9, 0x3f, 0x0d, 0x58, 0xf9, 0xd4, 0x3d, 0x71, 0x02,
-	0x97, 0xdc, 0x82, 0xa5, 0xbe, 0xd3, 0x63, 0xe8, 0x3b, 0xd7, 0x5c, 0x1f, 0x8f, 0xac, 0xbc, 0x48,
-	0x68, 0x2e, 0xa5, 0x36, 0x2a, 0xc9, 0x3e, 0x2c, 0x86, 0xec, 0x4b, 0x79, 0xef, 0x4a, 0xe3, 0x91,
-	0x05, 0x62, 0x4f, 0xc8, 0xbe, 0xa4, 0x36, 0x57, 0x91, 0x1f, 0x41, 0x91, 0xc7, 0xb7, 0xe5, 0x3f,
-	0x6f, 0xb5, 0xbd, 0x20, 0xea, 0xe2, 0x5d, 0xcb, 0xa9, 0x17, 0x44, 0x53, 0x53, 0x3b, 0xcf, 0xd7,
-	0x9f, 0x3f, 0x6f, 0xf2, 0x15, 0xf9, 0x09, 0x94, 0x06, 0x17, 0x4e, 0x47, 0x31, 0x5f, 0x42, 0xf3,
-	0xdd, 0xf1, 0xc8, 0x2a, 0xcb, 0x2b, 0xae, 0xe9, 0xa9, 0x5d, 0x40, 0x81, 0x04, 0xa0, 0xe7, 0xb0,
-	0xfa, 0x49, 0xa7, 0xe3, 0x0f, 0xfb, 0x11, 0x69, 0xc0, 0xda, 0x30, 0x64, 0x81, 0xf2, 0x51, 0x5b,
-	0xe3, 0x91, 0xb5, 0x2e, 0x50, 0x62, 0x0d, 0xb5, 0x93, 0x4d, 0xdc, 0x60, 0xe0, 0x84, 0xe1, 0x0b,
-	0x3f, 0x88, 0x2b, 0x8b, 0x62, 0x10, 0x6b, 0xa8, 0x9d, 0x6c, 0xa2, 0xdf, 0x1a, 0xb0, 0x74, 0x1a,
-	0xb2, 0x80, 0x1f, 0xcb, 0xc0, 0x73, 0xa5, 0x17, 0xe5, 0x58, 0x06, 0x9e, 0x4b, 0x6d, 0xae, 0xe2,
-	0x6d, 0x70, 0xd0, 0xf5, 0xfb, 0x2c, 0x8e, 0xb0, 0xc0, 0x57, 0xda, 0xa0, 0xaa, 0xa5, 0x76, 0x1e,
-	0x97, 0x32, 0x47, 0x6f, 0xf1, 0x12, 0x2d, 0x5b, 0xa7, 0x16, 0x19, 0x2e, 0xa5, 0x36, 0x2a, 0xc9,
-	0x11, 0xac, 0x7a, 0x6e, 0xab, 0xe3, 0x04, 0x2e, 0x1e, 0x59, 0xfe, 0x20, 0x8f, 0xc1, 0x17, 0xc1,
-	0x6d, 0x92, 0xf1, 0xc8, 0x2a, 0xc9, 0x7e, 0x2b, 0x76, 0x51, 0x7b, 0xc5, 0x13, 0x81, 0x3f, 0x86,
-	0x55, 0x47, 0x1c, 0x59, 0x75, 0x19, 0x2d, 0x0b, 0x68, 0x29, 0x8f, 0x51, 0x35, 0x95, 0xdb, 0xa8,
-	0x1d, 0x1b, 0x4c, 0x3a, 0x34, 0x3f, 0x06, 0xa5, 0x71, 0xf2, 0x33, 0xd5, 0x5a, 0x0a, 0xea, 0x51,
-	0x3c, 0xe9, 0xd0, 0xc2, 0x66, 0xd2, 0x87, 0xde, 0x64, 0x94, 0x74, 0xe8, 0xf9, 0x1c, 0xa9, 0x36,
-	0xd7, 0x73, 0x74, 0x3b, 0xee, 0xd0, 0xaa, 0xa3, 0x0d, 0x25, 0xbe, 0x18, 0xcf, 0x49, 0x4b, 0x56,
-	0xb1, 0x29, 0xc5, 0x96, 0xfc, 0x66, 0x4b, 0xd1, 0x83, 0xe7, 0xa1, 0x24, 0x7b, 0x30, 0x97, 0xa4,
-	0x7b, 0xb0, 0x94, 0x4d, 0x7a, 0x30, 0x37, 0xd0, 0x7b, 0x30, 0x02, 0x09, 0x39, 0xbd, 0x5a, 0x84,
-	0xb5, 0x13, 0xbf, 0x1f, 0x05, 0x4e, 0x27, 0xe2, 0xfd, 0xb7, 0x23, 0x7f, 0xb7, 0x92, 0xe4, 0x55,
-	0xfa, 0xaf, 0xa2, 0xa4, 0x36, 0xc4, 0xab, 0x4f, 0x5d, 0x52, 0x17, 0x17, 0xab, 0xc5, 0x3f, 0x6c,
-	0x21, 0xeb, 0x62, 0xb5, 0x30, 0xef, 0x57, 0xf9, 0xcf, 0x5f, 0x7a, 0x6e, 0xba, 0xd1, 0x2f, 0x5e,
-	0xbb, 0xd1, 0x7f, 0x08, 0x10, 0x46, 0x4e, 0x10, 0xb5, 0x78, 0x10, 0x65, 0x25, 0x28, 0x8f, 0x47,
-	0xd6, 0xa6, 0x2c, 0x3a, 0x89, 0x8e, 0xda, 0x39, 0x5c, 0x3c, 0x72, 0x22, 0xc6, 0xe9, 0xb1, 0xbe,
-	0x2b, 0x6c, 0x96, 0xd3, 0xf4, 0x62, 0x0d, 0xb5, 0x57, 0x59, 0xdf, 0xc5, 0xfd, 0x27, 0xb0, 0xee,
-	0x0e, 0x03, 0x1c, 0x9a, 0x5b, 0x3d, 0xbf, 0x1f, 0x75, 0xc3, 0xea, 0x0a, 0x52, 0x34, 0xc7, 0x23,
-	0xab, 0x22, 0x6b, 0x96, 0xbe, 0x81, 0xda, 0xa5, 0x58, 0xf2, 0x19, 0x0a, 0xf8, 0x4c, 0x12, 0x46,
-	0x4e, 0x34, 0x0c, 0xab, 0xab, 0xe9, 0x99, 0x44, 0xc8, 0xa9, 0x2d, 0x37, 0xd0, 0x26, 0x94, 0x45,
-	0xfe, 0xc7, 0x91, 0x88, 0x73, 0xe5, 0x2e, 0xac, 0xc5, 0xa7, 0x2c, 0x53, 0xa1, 0x88, 0x11, 0x4c,
-	0xf6, 0x25, 0x6a, 0x7a, 0x02, 0x95, 0x34, 0x86, 0xcc, 0x81, 0x39, 0x40, 0x9a, 0x50, 0x16, 0xf7,
-	0xe3, 0xdd, 0x88, 0xa4, 0x31, 0xe6, 0x27, 0x72, 0x04, 0x65, 0x71, 0x99, 0xd2, 0x44, 0xac, 0x8c,
-	0x14, 0x55, 0x53, 0x91, 0x56, 0xa1, 0x92, 0xb6, 0x94, 0x57, 0xf1, 0x23, 0x20, 0x8f, 0x59, 0x34,
-	0x37, 0xe0, 0x4f, 0x61, 0x4b, 0x33, 0x9b, 0xff, 0x63, 0x2a, 0xb0, 0xcd, 0x6f, 0x66, 0xac, 0x49,
-	0x6e, 0xec, 0x23, 0x28, 0xa7, 0xe4, 0x12, 0xfb, 0x3e, 0xe4, 0x62, 0xe3, 0xf8, 0xe6, 0xa6, 0xc0,
-	0x27, 0x7a, 0x5e, 0x77, 0x4e, 0xba, 0xac, 0x73, 0xfe, 0x0b, 0xe6, 0x5c, 0x44, 0xdd, 0x18, 0xfb,
-	0x7d, 0xd8, 0xd2, 0xa4, 0x12, 0xb9, 0x92, 0x24, 0xa5, 0xf8, 0x50, 0xb9, 0x3a, 0xf8, 0x76, 0x03,
-	0x96, 0x9f, 0x0d, 0x59, 0xf0, 0x15, 0xf9, 0x0d, 0xc0, 0xe4, 0xb5, 0x44, 0x2a, 0xc2, 0x6d, 0xfa,
-	0xc9, 0x65, 0xee, 0x4c, 0xc9, 0xe5, 0x21, 0x57, 0xaf, 0xfe, 0xf5, 0xdf, 0xbf, 0x2d, 0x90, 0x63,
-	0xf1, 0x56, 0x00, 0x7c, 0x82, 0xe2, 0xb4, 0x4f, 0xfe, 0x00, 0x30, 0x79, 0x1d, 0x49, 0xe0, 0xa9,
-	0x27, 0x96, 0x04, 0x9e, 0x7e, 0x46, 0xd1, 0xfb, 0x08, 0x7c, 0x5b, 0x00, 0x9b, 0x7b, 0x13, 0xe0,
-	0xc6, 0x4b, 0xfe, 0xa7, 0xae, 0x94, 0x8c, 0x4b, 0xd2, 0x02, 0x98, 0x3c, 0x8f, 0xa4, 0xaf, 0xa9,
-	0x57, 0x96, 0xf4, 0x95, 0xf1, 0x8e, 0xda, 0x47, 0x5f, 0xe6, 0xbd, 0x6a, 0xda, 0x4b, 0xe2, 0xe0,
-	0xd7, 0xb0, 0x2a, 0x9f, 0x4d, 0x64, 0x0b, 0x51, 0xf4, 0x77, 0x97, 0xb9, 0xad, 0x0b, 0x75, 0x5c,
-	0x32, 0x1b, 0xf7, 0x29, 0xe4, 0x92, 0x87, 0x14, 0x29, 0x23, 0x48, 0xfa, 0xb1, 0x65, 0x56, 0xd2,
-	0x62, 0x89, 0x4e, 0x10, 0xbd, 0x40, 0xd4, 0x43, 0xff, 0xda, 0x88, 0x5b, 0xab, 0xf6, 0xd0, 0xaa,
-	0x29, 0xe1, 0xcb, 0x18, 0x92, 0x4d, 0x6b, 0xa6, 0x5e, 0xfa, 0x7a, 0x82, 0xbe, 0x7e, 0x7e, 0xac,
-	0xcf, 0xbd, 0xf4, 0x23, 0xf5, 0xc3, 0x34, 0x95, 0x16, 0x9f, 0x06, 0xaa, 0xde, 0x8f, 0x67, 0x53,
-	0xf2, 0x77, 0x23, 0xee, 0xcb, 0x19, 0x2c, 0x67, 0x3e, 0x39, 0x24, 0xcb, 0xd9, 0xaf, 0x07, 0xda,
-	0x41, 0x96, 0xbf, 0x4b, 0xb1, 0x34, 0x9f, 0xbc, 0x15, 0xcb, 0xf4, 0x56, 0xf1, 0x2c, 0xb8, 0x24,
-	0x7f, 0x31, 0xb0, 0x7d, 0x6b, 0xcc, 0xdf, 0x8b, 0xc3, 0x9f, 0x45, 0xfb, 0x66, 0xb6, 0x52, 0x72,
-	0x3e, 0x42, 0xce, 0x07, 0xe4, 0x83, 0x59, 0x39, 0x32, 0x45, 0x2b, 0x26, 0xf2, 0x67, 0x43, 0x4c,
-	0x00, 0xda, 0x8b, 0x80, 0xec, 0x25, 0xd9, 0x92, 0xf5, 0xcc, 0x30, 0x6b, 0xb3, 0xd4, 0x92, 0x4e,
-	0x03, 0xe9, 0xdc, 0x25, 0x3f, 0xb8, 0x26, 0x9d, 0x49, 0xfd, 0xc0, 0x31, 0x58, 0xad, 0x1f, 0xca,
-	0x10, 0xa4, 0xd5, 0x0f, 0x6d, 0x5e, 0x4a, 0xea, 0x07, 0xce, 0x39, 0x22, 0x95, 0x71, 0x52, 0x21,
-	0xed, 0xb8, 0x7e, 0x28, 0xc0, 0x53, 0x03, 0xa0, 0x56, 0x3f, 0x34, 0xe0, 0x5b, 0x08, 0xbc, 0x27,
-	0x80, 0xcd, 0xf2, 0x04, 0xb8, 0xf1, 0x92, 0xff, 0xa9, 0x0f, 0x3c, 0xf7, 0x92, 0x93, 0x9f, 0xcc,
-	0x70, 0x5a, 0xdd, 0x98, 0xf6, 0x91, 0x31, 0xec, 0x49, 0xf2, 0xf7, 0x36, 0x54, 0x74, 0x04, 0x7e,
-	0x8a, 0xf5, 0x02, 0x51, 0x93, 0x7a, 0xa1, 0x42, 0x6e, 0xeb, 0x42, 0x1d, 0x8f, 0x64, 0xe1, 0xe5,
-	0x92, 0x61, 0x4f, 0xa9, 0x13, 0xea, 0x40, 0xa8, 0xd4, 0x09, 0x6d, 0x26, 0x4c, 0xd5, 0x09, 0x71,
-	0xb8, 0xe7, 0x50, 0xd2, 0xa7, 0x07, 0x62, 0x2a, 0x11, 0x4a, 0xf5, 0x4c, 0xf3, 0xbd, 0x4c, 0x9d,
-	0x5e, 0xe4, 0x8e, 0x27, 0xfd, 0xaf, 0x84, 0x8e, 0x92, 0x8e, 0x45, 0xae, 0x0c, 0x28, 0xe9, 0x23,
-	0x82, 0xf4, 0x96, 0x39, 0x7b, 0x48, 0x6f, 0xd9, 0x33, 0x05, 0x7d, 0x88, 0xde, 0x1e, 0x4c, 0xbc,
-	0x99, 0xb7, 0x75, 0x6f, 0x8d, 0x97, 0xf1, 0xcf, 0xba, 0xd2, 0xe7, 0x2f, 0x89, 0x0f, 0x25, 0x7d,
-	0x4e, 0x90, 0x1c, 0x32, 0xc7, 0x0e, 0xc9, 0x61, 0xc6, 0x60, 0xf1, 0x3d, 0xe4, 0x50, 0xbb, 0x77,
-	0x73, 0x96, 0x67, 0x74, 0xf8, 0x1c, 0xf2, 0xca, 0x1c, 0x41, 0x76, 0xe2, 0x88, 0xa7, 0x5d, 0x55,
-	0xa7, 0x15, 0xba, 0x1f, 0xf2, 0x66, 0x3f, 0xbf, 0x87, 0xa2, 0x36, 0x55, 0x90, 0xdd, 0x24, 0x0f,
-	0xd2, 0x13, 0x88, 0x69, 0x66, 0xa9, 0xa4, 0xb7, 0x0a, 0x7a, 0xdb, 0x20, 0xe9, 0xe8, 0x9d, 0x42,
-	0x5e, 0x99, 0x2c, 0xe4, 0x77, 0x4c, 0x4f, 0x20, 0xf2, 0x3b, 0x32, 0x86, 0x10, 0xba, 0x85, 0xc8,
-	0x45, 0x92, 0x47, 0xe4, 0x2e, 0x2a, 0x9b, 0x3f, 0xfb, 0xc7, 0xab, 0x9a, 0xf1, 0xcd, 0xab, 0x9a,
-	0xf1, 0x9f, 0x57, 0x35, 0xe3, 0xaf, 0xaf, 0x6b, 0x37, 0xbe, 0x79, 0x5d, 0xbb, 0xf1, 0xef, 0xd7,
-	0xb5, 0x1b, 0xbf, 0xbd, 0x7f, 0xe6, 0x45, 0xdd, 0x61, 0xbb, 0xde, 0xf1, 0x7b, 0x8d, 0x17, 0xc3,
-	0xc8, 0x75, 0xba, 0x4e, 0xe7, 0xfc, 0xc1, 0xe1, 0xe1, 0x43, 0x2c, 0x47, 0xad, 0x9e, 0xd7, 0xef,
-	0xb6, 0xba, 0xfe, 0x30, 0x64, 0x1f, 0x0f, 0xda, 0xed, 0x15, 0xfc, 0xdf, 0xec, 0xc3, 0xff, 0x05,
-	0x00, 0x00, 0xff, 0xff, 0x64, 0xa1, 0xfa, 0xf2, 0x19, 0x17, 0x00, 0x00,
+	// 2356 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xbc, 0x5a, 0xcd, 0x6e, 0x1b, 0xc9,
+	0xf1, 0xf7, 0xe8, 0x5b, 0xc5, 0x0f, 0x4b, 0x2d, 0x8a, 0xa2, 0x66, 0x2d, 0x52, 0x68, 0xff, 0xbd,
+	0x6b, 0xcb, 0xb0, 0x68, 0xcb, 0x9f, 0xd0, 0xfa, 0xbf, 0x1b, 0x53, 0x4e, 0x1c, 0x03, 0x5e, 0x7f,
+	0xcc, 0xae, 0x13, 0x20, 0x40, 0x42, 0x8c, 0xc8, 0xb1, 0x38, 0xb1, 0xc8, 0xe1, 0xce, 0x0c, 0xfd,
+	0x01, 0x43, 0x39, 0x38, 0x40, 0x6e, 0x01, 0x02, 0xe4, 0x90, 0x07, 0xd8, 0x07, 0xc8, 0x2d, 0x87,
+	0x3c, 0x41, 0x4e, 0xc1, 0x06, 0xc9, 0x21, 0x27, 0x22, 0xb0, 0xf3, 0x04, 0x7c, 0x81, 0x04, 0x5d,
+	0xdd, 0x3d, 0xd3, 0x3d, 0x1c, 0xda, 0xa4, 0x6c, 0xe4, 0x62, 0xb1, 0xab, 0xba, 0xaa, 0x7e, 0xd3,
+	0x55, 0x5d, 0xd5, 0x55, 0x30, 0x9c, 0xb4, 0xbb, 0x6e, 0xb5, 0xeb, 0x7b, 0xa1, 0xb7, 0x8d, 0xff,
+	0x92, 0x69, 0xbb, 0xeb, 0x9a, 0xa7, 0x0e, 0x3c, 0xef, 0xe0, 0xd0, 0xa9, 0x32, 0xa6, 0xdd, 0xe9,
+	0x78, 0xa1, 0x1d, 0xba, 0x5e, 0x27, 0xe0, 0x5b, 0xcc, 0xc2, 0x81, 0x77, 0xe0, 0xe1, 0xcf, 0x2a,
+	0xfb, 0xc5, 0xa9, 0xf4, 0x3b, 0x03, 0x66, 0x2c, 0xcf, 0x6b, 0x93, 0xeb, 0x90, 0xf1, 0x3d, 0xaf,
+	0x5d, 0xef, 0xf4, 0xda, 0xfb, 0x8e, 0x5f, 0x32, 0x36, 0x8d, 0xb3, 0xb3, 0xb5, 0xe2, 0xa0, 0x5f,
+	0x21, 0xfb, 0x81, 0xd7, 0xd9, 0xa5, 0x0a, 0x93, 0x5a, 0xc0, 0x56, 0xf7, 0x71, 0x41, 0x3e, 0x85,
+	0xd9, 0xae, 0xef, 0x36, 0x9c, 0xd2, 0xd4, 0xa6, 0x71, 0xd6, 0xa8, 0x2d, 0x0d, 0xfa, 0x95, 0x2c,
+	0x17, 0x41, 0x32, 0xb5, 0x38, 0x9b, 0xec, 0x42, 0xd6, 0x0d, 0xea, 0xf6, 0x33, 0xdb, 0x3d, 0xb4,
+	0xf7, 0x0f, 0x9d, 0xd2, 0xf4, 0xa6, 0x71, 0x76, 0xa1, 0xb6, 0x36, 0xe8, 0x57, 0x56, 0xf8, 0x76,
+	0x95, 0x4b, 0xad, 0x8c, 0x1b, 0xdc, 0x8a, 0x56, 0x3b, 0xb0, 0xbc, 0xe7, 0x3b, 0x76, 0xe8, 0x30,
+	0xa8, 0x96, 0xf3, 0x6d, 0xcf, 0x09, 0x42, 0xb2, 0x01, 0x33, 0x0c, 0x06, 0x42, 0xcd, 0xec, 0x2c,
+	0x6e, 0xdb, 0x5d, 0x77, 0x1b, 0xf9, 0x48, 0xa6, 0x97, 0x81, 0xa8, 0x32, 0x41, 0xd7, 0xeb, 0x04,
+	0xce, 0xfb, 0x84, 0x76, 0x60, 0xf9, 0x71, 0xb7, 0x39, 0xb1, 0x21, 0x55, 0x66, 0x3c, 0x43, 0x57,
+	0x60, 0xf9, 0xb6, 0x73, 0xe8, 0xe8, 0x86, 0x2a, 0x29, 0x3e, 0x50, 0xcf, 0x9a, 0x16, 0x80, 0xa8,
+	0x52, 0xdc, 0x14, 0xbd, 0x04, 0xf9, 0x3b, 0x4e, 0x38, 0x91, 0xa2, 0x8b, 0x70, 0x32, 0x12, 0x19,
+	0x0f, 0x30, 0x81, 0xa5, 0x7b, 0x6e, 0x80, 0x22, 0x81, 0x30, 0xc3, 0x3e, 0x42, 0xa1, 0x09, 0x3d,
+	0x15, 0x98, 0x65, 0x02, 0x41, 0xc9, 0xd8, 0x9c, 0xd6, 0x15, 0x71, 0x3a, 0x7d, 0x3d, 0x05, 0xd9,
+	0xaf, 0x9c, 0xd0, 0xf1, 0x2d, 0xc7, 0x6e, 0xba, 0x9d, 0x83, 0xe3, 0x87, 0xde, 0x39, 0x98, 0xeb,
+	0x3a, 0xbe, 0xeb, 0x35, 0x31, 0xf6, 0x16, 0x6b, 0xcb, 0x83, 0x7e, 0x25, 0x27, 0x62, 0x0f, 0xe9,
+	0xd4, 0x12, 0x1b, 0xc8, 0x03, 0x58, 0x71, 0x0e, 0x9d, 0x46, 0xe8, 0xbb, 0x0d, 0x37, 0x7c, 0x59,
+	0xf7, 0xb9, 0x69, 0x0c, 0x42, 0xa3, 0x56, 0x1e, 0xf4, 0x2b, 0x26, 0x97, 0x4b, 0xd9, 0x44, 0x2d,
+	0xa2, 0x50, 0x25, 0xe8, 0xff, 0x87, 0xdc, 0x73, 0x3b, 0x74, 0xfc, 0x48, 0xd5, 0x0c, 0xaa, 0x2a,
+	0x0d, 0xfa, 0x95, 0x02, 0x57, 0xa5, 0xb1, 0xa9, 0x95, 0xc5, 0xb5, 0x10, 0xa7, 0x5f, 0xc3, 0x3a,
+	0x8f, 0x4e, 0xf5, 0x24, 0xa4, 0xfb, 0xae, 0x41, 0xae, 0xed, 0xa8, 0xba, 0xb9, 0x4f, 0x96, 0xf1,
+	0x28, 0x35, 0x81, 0x6c, 0x5b, 0x59, 0xd1, 0x6f, 0xc0, 0x4c, 0x53, 0x2a, 0x1c, 0x73, 0x5c, 0xad,
+	0x5f, 0xc3, 0x3a, 0x8f, 0xef, 0x8f, 0x0c, 0x35, 0x4d, 0xe9, 0x07, 0x42, 0x7d, 0x04, 0xc5, 0x3b,
+	0x4e, 0x98, 0x86, 0xf3, 0x7d, 0x37, 0x82, 0x14, 0xf5, 0x58, 0x92, 0x81, 0x43, 0x1f, 0xc1, 0xda,
+	0x90, 0xca, 0x0f, 0x44, 0xf9, 0x39, 0x94, 0xd8, 0xb5, 0x51, 0x77, 0x04, 0x63, 0xdf, 0xdc, 0xc7,
+	0xb0, 0x9e, 0x22, 0x2c, 0x10, 0xdd, 0x80, 0xbc, 0x86, 0x48, 0x5e, 0xc2, 0x14, 0x48, 0x39, 0x15,
+	0x52, 0x40, 0xff, 0x6a, 0xc0, 0xdc, 0xdd, 0xe6, 0x9e, 0xed, 0x37, 0xc9, 0x69, 0x98, 0xe9, 0xd8,
+	0x6d, 0x07, 0x6d, 0x2f, 0xd6, 0x4e, 0x0e, 0xfa, 0x95, 0x0c, 0x0f, 0x68, 0x46, 0xa5, 0x16, 0x32,
+	0xc9, 0x26, 0x4c, 0x07, 0xce, 0x0b, 0x71, 0xef, 0xf2, 0x83, 0x7e, 0x05, 0xf8, 0x9e, 0xc0, 0x79,
+	0x41, 0x2d, 0xc6, 0x22, 0x37, 0x21, 0xc7, 0xfc, 0x5b, 0xf7, 0x9e, 0xd4, 0xf7, 0x5d, 0x3f, 0x6c,
+	0xe1, 0x5d, 0x5b, 0x54, 0x2f, 0x88, 0xc6, 0xa6, 0x56, 0x86, 0xad, 0x1f, 0x3c, 0xa9, 0xb1, 0x15,
+	0xf9, 0x12, 0xf2, 0xdd, 0x43, 0xbb, 0xa1, 0x88, 0xcf, 0xa0, 0xf8, 0xfa, 0xa0, 0x5f, 0x59, 0x15,
+	0x57, 0x5c, 0xe3, 0x53, 0x2b, 0x8b, 0x04, 0xa1, 0x80, 0x3e, 0x85, 0xf9, 0x5b, 0x8d, 0x86, 0xd7,
+	0xeb, 0x84, 0xa4, 0x0a, 0x0b, 0xbd, 0xc0, 0xf1, 0x95, 0x8f, 0x5a, 0x19, 0xf4, 0x2b, 0x27, 0xb9,
+	0x16, 0xc9, 0xa1, 0x56, 0xb4, 0x89, 0x09, 0x74, 0xed, 0x20, 0x78, 0xee, 0xf9, 0x32, 0xb3, 0x28,
+	0x02, 0x92, 0x43, 0xad, 0x68, 0x13, 0xfd, 0x8f, 0x01, 0x33, 0x8f, 0x03, 0xc7, 0x67, 0xc7, 0xd2,
+	0x75, 0x9b, 0xc2, 0x8a, 0x72, 0x2c, 0x5d, 0xb7, 0x49, 0x2d, 0xc6, 0x62, 0x65, 0xb0, 0xdb, 0xf2,
+	0x3a, 0x8e, 0xf4, 0x30, 0xd7, 0xaf, 0x94, 0x41, 0x95, 0x4b, 0xad, 0x0c, 0x2e, 0x45, 0x8c, 0x9e,
+	0x66, 0x29, 0x5a, 0x94, 0x4e, 0xcd, 0x33, 0x8c, 0x4a, 0x2d, 0x64, 0x92, 0x1b, 0x30, 0xef, 0x36,
+	0xeb, 0x0d, 0xdb, 0x6f, 0xe2, 0x91, 0x65, 0x76, 0x32, 0xe8, 0x7c, 0xee, 0xdc, 0x1a, 0x19, 0xf4,
+	0x2b, 0x79, 0x51, 0x6f, 0xf9, 0x2e, 0x6a, 0xcd, 0xb9, 0xdc, 0xf1, 0xbb, 0x30, 0x6f, 0xf3, 0x23,
+	0x2b, 0xcd, 0xa2, 0x64, 0x16, 0x25, 0xc5, 0x31, 0xaa, 0xa2, 0x62, 0x1b, 0xb5, 0xa4, 0x40, 0x5c,
+	0xa1, 0xd9, 0x31, 0x28, 0x85, 0x93, 0x9d, 0xa9, 0x56, 0x52, 0x90, 0x8f, 0xe4, 0xb8, 0x42, 0x73,
+	0x99, 0xb8, 0x0e, 0xbd, 0x4b, 0x28, 0xaa, 0xd0, 0x93, 0x19, 0x52, 0x65, 0xc6, 0x33, 0x74, 0x46,
+	0x56, 0x68, 0xd5, 0xd0, 0x92, 0xe2, 0x5f, 0xf4, 0x67, 0x5c, 0x92, 0x55, 0xdd, 0x94, 0x62, 0x49,
+	0x7e, 0xb7, 0x24, 0xaf, 0xc1, 0x93, 0x40, 0x12, 0x35, 0x98, 0x51, 0x92, 0x35, 0x58, 0xd0, 0xe2,
+	0x1a, 0xcc, 0x04, 0xf4, 0x1a, 0x8c, 0x8a, 0x38, 0x9d, 0xbe, 0x9e, 0x86, 0x85, 0x3d, 0xaf, 0x13,
+	0xfa, 0x76, 0x23, 0x64, 0xf5, 0xb7, 0x21, 0x7e, 0xd7, 0xa3, 0xe0, 0x55, 0xea, 0xaf, 0xc2, 0xa4,
+	0x16, 0xc8, 0xd5, 0xdd, 0x26, 0xd9, 0xe6, 0x17, 0xab, 0xce, 0x3e, 0x6c, 0x2a, 0xed, 0x62, 0xd5,
+	0x31, 0xee, 0xe7, 0xd9, 0xcf, 0x87, 0x6e, 0x33, 0x59, 0xe8, 0xa7, 0xc7, 0x2e, 0xf4, 0x57, 0x00,
+	0x82, 0xd0, 0xf6, 0xc3, 0x3a, 0x73, 0xa2, 0xc8, 0x04, 0xab, 0x83, 0x7e, 0x65, 0x59, 0x24, 0x9d,
+	0x88, 0x47, 0xad, 0x45, 0x5c, 0xdc, 0xb6, 0x43, 0x87, 0xc1, 0x73, 0x3a, 0x4d, 0x2e, 0x33, 0x9b,
+	0x84, 0x27, 0x39, 0xd4, 0x9a, 0x77, 0x3a, 0x4d, 0xdc, 0xbf, 0x07, 0x27, 0x9b, 0x3d, 0x1f, 0x1f,
+	0xcd, 0xf5, 0xb6, 0xd7, 0x09, 0x5b, 0x41, 0x69, 0x0e, 0x21, 0x9a, 0x83, 0x7e, 0xa5, 0x28, 0x72,
+	0x96, 0xbe, 0x81, 0x5a, 0x79, 0x49, 0xf9, 0x0a, 0x09, 0xec, 0x4d, 0x12, 0x84, 0x76, 0xd8, 0x0b,
+	0x4a, 0xf3, 0xc9, 0x37, 0x09, 0xa7, 0x53, 0x4b, 0x6c, 0xa0, 0x35, 0x58, 0xe5, 0xf1, 0x2f, 0x3d,
+	0x21, 0x63, 0xe5, 0x1c, 0x2c, 0xc8, 0x53, 0x16, 0xa1, 0x90, 0x43, 0x0f, 0x46, 0xfb, 0x22, 0x36,
+	0xdd, 0x83, 0x62, 0x52, 0x87, 0x88, 0x81, 0x09, 0x94, 0xd4, 0x60, 0x95, 0xdf, 0x8f, 0x0f, 0x03,
+	0x92, 0xd4, 0x31, 0x39, 0x90, 0x1b, 0xb0, 0xca, 0x2f, 0x53, 0x12, 0x48, 0x25, 0x25, 0x44, 0xd5,
+	0x50, 0xa4, 0x25, 0x28, 0x26, 0x25, 0xc5, 0x55, 0xbc, 0x0a, 0xe4, 0x8e, 0x13, 0x4e, 0xac, 0xf0,
+	0x07, 0xb0, 0xa2, 0x89, 0x4d, 0xfe, 0x31, 0x45, 0x28, 0xb0, 0x9b, 0x29, 0x39, 0xd1, 0x8d, 0xbd,
+	0x0d, 0xab, 0x09, 0xba, 0xd0, 0x7d, 0x1e, 0x16, 0xa5, 0xb0, 0xbc, 0xb9, 0x09, 0xe5, 0x31, 0x9f,
+	0xfe, 0xc3, 0x80, 0xf9, 0xbb, 0x9d, 0x67, 0x1e, 0x6b, 0xad, 0x8e, 0x7d, 0x81, 0x27, 0x78, 0x40,
+	0xef, 0x42, 0x36, 0xf4, 0x42, 0xfb, 0xb0, 0x6e, 0xb7, 0xb1, 0x42, 0xf0, 0x97, 0xb3, 0x52, 0xb7,
+	0x54, 0x2e, 0xb5, 0x32, 0xb8, 0xbc, 0x85, 0x2b, 0xe5, 0x4e, 0xcc, 0xbc, 0xef, 0x4e, 0xfc, 0x69,
+	0x0a, 0x32, 0xe2, 0xb3, 0xee, 0x86, 0x4e, 0xfb, 0x7f, 0xf2, 0x69, 0x97, 0x60, 0xd1, 0x0d, 0x9d,
+	0x76, 0x3d, 0x7c, 0xd9, 0x95, 0xb5, 0xb5, 0x30, 0xe8, 0x57, 0x96, 0x44, 0x99, 0x94, 0x2c, 0x6a,
+	0x2d, 0xb0, 0xdf, 0xdf, 0xbc, 0xec, 0xe2, 0x0b, 0xe1, 0xdb, 0x9e, 0xdd, 0x09, 0xdd, 0xf0, 0xa5,
+	0x78, 0xf8, 0x2b, 0xa9, 0x45, 0x72, 0xa8, 0x15, 0x6d, 0x62, 0x19, 0xac, 0xd7, 0x71, 0xc3, 0x3a,
+	0x6f, 0x95, 0x67, 0x51, 0x44, 0xc9, 0x60, 0x31, 0x8f, 0x5a, 0x8b, 0x6c, 0xf1, 0x10, 0x7b, 0xe6,
+	0x73, 0x30, 0x27, 0x8e, 0x7b, 0x0e, 0x25, 0x94, 0x8f, 0x90, 0x07, 0x2d, 0x36, 0xd0, 0x3f, 0x1a,
+	0x50, 0xe0, 0x99, 0x40, 0x1c, 0xdf, 0xb8, 0x91, 0x3e, 0xea, 0xe5, 0x4b, 0xae, 0x40, 0x51, 0xed,
+	0x86, 0x14, 0xf8, 0xe8, 0x7b, 0xab, 0xa0, 0x70, 0x1f, 0x47, 0x90, 0xcf, 0xc2, 0x12, 0x6f, 0x7c,
+	0x94, 0xfd, 0x78, 0x42, 0x56, 0x1e, 0xe9, 0xd1, 0x4e, 0xfa, 0x4c, 0xa6, 0xbf, 0x08, 0xb0, 0xb8,
+	0x07, 0x9f, 0xc2, 0xbc, 0xcb, 0x49, 0xe2, 0x8a, 0xf1, 0x77, 0x88, 0xdc, 0x26, 0x99, 0xe4, 0x2a,
+	0xe4, 0xc4, 0xcf, 0x3a, 0x73, 0x4c, 0x50, 0x9a, 0xc2, 0x3b, 0xb3, 0xa4, 0xee, 0x66, 0x41, 0x64,
+	0x65, 0xdd, 0x78, 0x11, 0xd0, 0x2f, 0xa0, 0xc0, 0x33, 0x55, 0xe2, 0xa0, 0xc6, 0x34, 0x4b, 0xbf,
+	0x94, 0xd9, 0xf2, 0x98, 0xb8, 0xe9, 0x03, 0x28, 0xf0, 0x5c, 0xf5, 0x91, 0x3c, 0x45, 0xd7, 0x64,
+	0xda, 0x4c, 0x20, 0xa2, 0xf7, 0x60, 0xf9, 0x8e, 0x13, 0x7e, 0x2c, 0x33, 0x37, 0x31, 0x93, 0x1e,
+	0xf7, 0xab, 0xaf, 0xc1, 0x0a, 0x4b, 0x7b, 0x82, 0x1e, 0x4c, 0x90, 0x88, 0x0b, 0xba, 0x9c, 0xb0,
+	0x7b, 0x16, 0x16, 0x84, 0x6a, 0x99, 0x2c, 0x75, 0xc3, 0x11, 0x97, 0x3e, 0x80, 0x92, 0xe6, 0x30,
+	0x8c, 0x09, 0x61, 0xfe, 0x32, 0x64, 0xd5, 0x18, 0x12, 0x9f, 0x30, 0x1c, 0x42, 0x19, 0x25, 0x84,
+	0xe8, 0x43, 0xd9, 0x11, 0x6b, 0x0a, 0x05, 0xae, 0x63, 0x69, 0xb4, 0x60, 0x4d, 0xf9, 0x48, 0x8c,
+	0xd3, 0x0f, 0x76, 0xd7, 0x23, 0xde, 0x66, 0xea, 0x3a, 0x05, 0xc8, 0xa1, 0xab, 0x63, 0x8c, 0x75,
+	0x75, 0x0a, 0x40, 0xf6, 0x5a, 0x4e, 0xe3, 0xe9, 0x8f, 0x1d, 0xfb, 0x30, 0x6c, 0xc9, 0x82, 0x76,
+	0x01, 0x56, 0x34, 0xaa, 0xb0, 0x51, 0x8c, 0xb2, 0x3e, 0xc7, 0x2c, 0x56, 0x3b, 0x6f, 0x4a, 0x30,
+	0xfb, 0xa8, 0xe7, 0xf8, 0x2f, 0xc9, 0x4f, 0x01, 0xe2, 0x11, 0x1d, 0x29, 0xf2, 0x5a, 0x97, 0x9c,
+	0xf3, 0x99, 0x6b, 0x43, 0x74, 0x11, 0xdd, 0xa5, 0xd7, 0x7f, 0xff, 0xf7, 0xef, 0xa7, 0xc8, 0x2e,
+	0x1f, 0x50, 0x01, 0xce, 0x3d, 0x71, 0xc4, 0x44, 0x7e, 0x09, 0x10, 0x8f, 0xe4, 0x84, 0xe2, 0xa1,
+	0xb9, 0x9e, 0x50, 0x3c, 0x3c, 0xbb, 0xa3, 0xe7, 0x51, 0xf1, 0x19, 0xae, 0xd8, 0xdc, 0x88, 0x15,
+	0x57, 0x5f, 0xb1, 0x3f, 0xdb, 0xca, 0x3b, 0xf5, 0x88, 0xd4, 0x01, 0xe2, 0x99, 0x9c, 0xb0, 0x35,
+	0x34, 0xda, 0x13, 0xb6, 0x52, 0x86, 0x77, 0x9b, 0x68, 0xcb, 0xdc, 0x2a, 0x25, 0xad, 0x44, 0x06,
+	0x7e, 0x02, 0xf3, 0x62, 0x56, 0x47, 0x56, 0x50, 0x8b, 0x3e, 0xec, 0x33, 0x0b, 0x3a, 0x51, 0xd7,
+	0x4b, 0x46, 0xeb, 0xbd, 0x0f, 0x8b, 0xd1, 0xf4, 0x8e, 0xac, 0xa2, 0x92, 0xe4, 0x84, 0xcf, 0x2c,
+	0x26, 0xc9, 0x42, 0x3b, 0x41, 0xed, 0x59, 0xa2, 0x1e, 0xfa, 0x77, 0x86, 0xec, 0xe7, 0xb4, 0xe9,
+	0x5e, 0x59, 0x71, 0x5f, 0xca, 0x64, 0xc6, 0xac, 0x8c, 0xe4, 0xcb, 0x24, 0x86, 0xb6, 0x7e, 0xb4,
+	0xab, 0x0f, 0x5b, 0xe8, 0x55, 0xf5, 0xc3, 0x34, 0x96, 0xe6, 0x9f, 0x2a, 0xb2, 0x2e, 0xc8, 0x81,
+	0x08, 0xf9, 0xb3, 0x21, 0x9b, 0xc1, 0x14, 0x94, 0x23, 0xe7, 0x5c, 0x02, 0xe5, 0xe8, 0x91, 0x15,
+	0x6d, 0x20, 0xca, 0x9f, 0x27, 0x50, 0x9a, 0xf7, 0x8e, 0x85, 0x32, 0xb9, 0x95, 0xdf, 0xe8, 0x23,
+	0xf2, 0x1b, 0x03, 0x7b, 0x46, 0x0d, 0xf9, 0x27, 0xd2, 0xfd, 0x69, 0xb0, 0x4f, 0xa5, 0x33, 0x05,
+	0xe6, 0x1b, 0x88, 0x79, 0x87, 0x5c, 0x1c, 0x15, 0x23, 0x43, 0xb0, 0x24, 0x90, 0x5f, 0x1b, 0xbc,
+	0xed, 0xd4, 0xc6, 0x50, 0x64, 0x23, 0x8a, 0x96, 0xb4, 0xd9, 0x96, 0x59, 0x1e, 0xc5, 0x16, 0x70,
+	0xaa, 0x08, 0xe7, 0x1c, 0xf9, 0x6c, 0x4c, 0x38, 0x71, 0xfe, 0xc0, 0xd9, 0x8b, 0x9a, 0x3f, 0x94,
+	0xce, 0x5b, 0xcb, 0x1f, 0x5a, 0x93, 0x1e, 0xe5, 0x0f, 0x6c, 0xae, 0x79, 0x28, 0x63, 0x7b, 0x4c,
+	0xf6, 0x65, 0xfe, 0x50, 0x14, 0x0f, 0x4d, 0x1d, 0xb4, 0xfc, 0xa1, 0x29, 0x3e, 0x8d, 0x8a, 0x37,
+	0xb8, 0x62, 0x73, 0x35, 0x56, 0x5c, 0x7d, 0xc5, 0xfe, 0x6c, 0x77, 0xdd, 0xe6, 0x11, 0x03, 0x1f,
+	0x0f, 0x0e, 0xb4, 0xbc, 0x31, 0x6c, 0x23, 0x65, 0xc2, 0x20, 0xc0, 0x6f, 0x2d, 0xa9, 0xda, 0x51,
+	0xf1, 0x7d, 0xcc, 0x17, 0xa8, 0x35, 0xca, 0x17, 0xaa, 0xca, 0x82, 0x4e, 0xd4, 0xf5, 0x91, 0x34,
+	0x7d, 0x8b, 0xd1, 0x84, 0x41, 0xc9, 0x13, 0xea, 0x14, 0x42, 0xc9, 0x13, 0xda, 0x20, 0x22, 0x91,
+	0x27, 0xf8, 0xe1, 0x3e, 0x85, 0xbc, 0xde, 0xb2, 0x12, 0x53, 0xf1, 0x50, 0xa2, 0x51, 0x33, 0x3f,
+	0x49, 0xe5, 0xe9, 0x49, 0x6e, 0x37, 0x6e, 0xba, 0xf2, 0x68, 0x28, 0x6a, 0x93, 0xc8, 0x6b, 0x03,
+	0xf2, 0x7a, 0x5f, 0x2a, 0xac, 0xa5, 0x36, 0xbc, 0xc2, 0x5a, 0x7a, 0x23, 0x4b, 0xaf, 0xa3, 0xb5,
+	0x4b, 0xb1, 0x35, 0xf3, 0x8c, 0x6e, 0xad, 0xfa, 0x4a, 0xfe, 0xdc, 0x56, 0x4a, 0xf6, 0x11, 0xf1,
+	0x20, 0xaf, 0x37, 0xa7, 0x02, 0x43, 0x6a, 0xaf, 0x2b, 0x30, 0x8c, 0xe8, 0x66, 0xff, 0x0f, 0x31,
+	0x94, 0xb7, 0x4e, 0x8d, 0xb2, 0x8c, 0x06, 0x9f, 0x40, 0x46, 0x69, 0x5e, 0xc9, 0x9a, 0xf4, 0x78,
+	0xd2, 0x54, 0x69, 0x98, 0xa1, 0xdb, 0x21, 0xef, 0xb6, 0xf3, 0x0b, 0xc8, 0x69, 0xad, 0x2c, 0x59,
+	0x8f, 0xe2, 0x20, 0xd9, 0xf6, 0x9a, 0x66, 0x1a, 0x4b, 0x58, 0x2b, 0xa2, 0xb5, 0x25, 0x92, 0xf4,
+	0xde, 0x0b, 0xc8, 0x69, 0x2d, 0x82, 0xd0, 0x9f, 0xd6, 0xe7, 0x98, 0x66, 0x1a, 0x4b, 0xe8, 0xbf,
+	0x88, 0xfa, 0xb7, 0x76, 0x8d, 0x2d, 0x7a, 0xe6, 0x5d, 0x1f, 0x54, 0x95, 0x6f, 0x46, 0xf2, 0x07,
+	0x03, 0x72, 0xda, 0x1b, 0x4f, 0x98, 0x4e, 0xeb, 0x1c, 0x4c, 0x33, 0x8d, 0x25, 0x4c, 0x3f, 0x40,
+	0xd3, 0x77, 0x77, 0xe5, 0x3b, 0xd8, 0xfc, 0x22, 0x09, 0x40, 0x30, 0xb6, 0x53, 0x81, 0xc4, 0x6c,
+	0x99, 0x7a, 0x7f, 0x05, 0x39, 0xed, 0xb1, 0x2f, 0x80, 0xa5, 0x75, 0x14, 0xa6, 0x99, 0xc6, 0x12,
+	0xc0, 0xae, 0x21, 0xb0, 0x8b, 0x5b, 0xdb, 0x63, 0x1d, 0x48, 0x9c, 0xfa, 0x7b, 0x00, 0x71, 0x17,
+	0x20, 0xf2, 0xd6, 0x50, 0x93, 0x61, 0xae, 0x0d, 0xd1, 0x75, 0xb3, 0x64, 0x52, 0xb3, 0x3e, 0x64,
+	0xd5, 0x36, 0x80, 0x94, 0xa2, 0x70, 0x4a, 0x74, 0x14, 0xe6, 0x7a, 0x0a, 0x47, 0x18, 0xbf, 0x80,
+	0xc6, 0x3f, 0x23, 0x63, 0x06, 0xc1, 0xdf, 0x0c, 0x39, 0x6c, 0x56, 0x47, 0x12, 0x1b, 0xc3, 0xde,
+	0x56, 0x3a, 0x0a, 0xb3, 0x3c, 0x8a, 0x2d, 0x30, 0x1c, 0x21, 0x86, 0xe7, 0xbb, 0x5a, 0x97, 0x60,
+	0x1e, 0x8c, 0x88, 0x0a, 0xe4, 0xbe, 0x27, 0x34, 0xf8, 0x1e, 0x71, 0x50, 0x55, 0x7c, 0xcf, 0x27,
+	0x78, 0xd1, 0x0c, 0xe3, 0x88, 0xfc, 0xd6, 0xe0, 0x43, 0x64, 0xb5, 0x2d, 0x20, 0xa7, 0x92, 0x47,
+	0xa6, 0x76, 0x20, 0xe6, 0xc6, 0x08, 0xae, 0xf8, 0xa0, 0x9b, 0xf8, 0x41, 0xd7, 0xc8, 0x95, 0xc9,
+	0x3c, 0xca, 0x81, 0x92, 0xc7, 0x90, 0x51, 0x9a, 0x07, 0x91, 0xaa, 0x86, 0x9b, 0x0c, 0x91, 0xaa,
+	0x52, 0xfa, 0x0c, 0xba, 0x82, 0xf6, 0x73, 0x24, 0x83, 0xf6, 0x5b, 0xc8, 0xac, 0xfd, 0xf0, 0x2f,
+	0x6f, 0xca, 0xc6, 0xf7, 0x6f, 0xca, 0xc6, 0xbf, 0xde, 0x94, 0x8d, 0xdf, 0xbd, 0x2d, 0x9f, 0xf8,
+	0xfe, 0x6d, 0xf9, 0xc4, 0x3f, 0xdf, 0x96, 0x4f, 0xfc, 0xec, 0xfc, 0x81, 0x1b, 0xb6, 0x7a, 0xfb,
+	0xdb, 0x0d, 0xaf, 0x5d, 0x7d, 0xde, 0x0b, 0x9b, 0x76, 0xcb, 0x6e, 0x3c, 0xbd, 0x74, 0xf9, 0xf2,
+	0x75, 0x7c, 0x71, 0xd4, 0xdb, 0x6e, 0xa7, 0x55, 0x6f, 0x79, 0xbd, 0xc0, 0xf9, 0xbc, 0xbb, 0xbf,
+	0x3f, 0x87, 0xff, 0x4b, 0xe2, 0xf2, 0x7f, 0x03, 0x00, 0x00, 0xff, 0xff, 0xf0, 0xc4, 0x43, 0x5f,
+	0x71, 0x21, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -2355,6 +3224,13 @@ type QueryClient interface {
 	DeleteContract(ctx context.Context, in *DeleteContractRequest, opts ...grpc.CallOption) (*DeleteContractResponse, error)
 	GetContract(ctx context.Context, in *GetContractRequest, opts ...grpc.CallOption) (*GetContractResponse, error)
 	ListContracts(ctx context.Context, in *ListContractsRequest, opts ...grpc.CallOption) (*ListContractsResponse, error)
+	CreateInvoice(ctx context.Context, in *CreateInvoiceRequest, opts ...grpc.CallOption) (*CreateInvoiceResponse, error)
+	UpdateInvoice(ctx context.Context, in *UpdateInvoiceRequest, opts ...grpc.CallOption) (*UpdateInvoiceResponse, error)
+	DeleteInvoice(ctx context.Context, in *DeleteInvoiceRequest, opts ...grpc.CallOption) (*DeleteInvoiceResponse, error)
+	GetInvoice(ctx context.Context, in *GetInvoiceRequest, opts ...grpc.CallOption) (*GetInvoiceResponse, error)
+	ListInvoices(ctx context.Context, in *ListInvoicesRequest, opts ...grpc.CallOption) (*ListInvoicesResponse, error)
+	UpdateInvoiceItem(ctx context.Context, in *UpdateInvoiceItemRequest, opts ...grpc.CallOption) (*UpdateInvoiceItemResponse, error)
+	ListInvoiceItems(ctx context.Context, in *ListInvoiceItemsRequest, opts ...grpc.CallOption) (*ListInvoiceItemsResponse, error)
 	CheckHealth(ctx context.Context, in *CheckHealthRequest, opts ...grpc.CallOption) (*CheckHealthResponse, error)
 }
 
@@ -2537,6 +3413,69 @@ func (c *queryClient) ListContracts(ctx context.Context, in *ListContractsReques
 	return out, nil
 }
 
+func (c *queryClient) CreateInvoice(ctx context.Context, in *CreateInvoiceRequest, opts ...grpc.CallOption) (*CreateInvoiceResponse, error) {
+	out := new(CreateInvoiceResponse)
+	err := c.cc.Invoke(ctx, "/api.Query/CreateInvoice", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *queryClient) UpdateInvoice(ctx context.Context, in *UpdateInvoiceRequest, opts ...grpc.CallOption) (*UpdateInvoiceResponse, error) {
+	out := new(UpdateInvoiceResponse)
+	err := c.cc.Invoke(ctx, "/api.Query/UpdateInvoice", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *queryClient) DeleteInvoice(ctx context.Context, in *DeleteInvoiceRequest, opts ...grpc.CallOption) (*DeleteInvoiceResponse, error) {
+	out := new(DeleteInvoiceResponse)
+	err := c.cc.Invoke(ctx, "/api.Query/DeleteInvoice", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *queryClient) GetInvoice(ctx context.Context, in *GetInvoiceRequest, opts ...grpc.CallOption) (*GetInvoiceResponse, error) {
+	out := new(GetInvoiceResponse)
+	err := c.cc.Invoke(ctx, "/api.Query/GetInvoice", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *queryClient) ListInvoices(ctx context.Context, in *ListInvoicesRequest, opts ...grpc.CallOption) (*ListInvoicesResponse, error) {
+	out := new(ListInvoicesResponse)
+	err := c.cc.Invoke(ctx, "/api.Query/ListInvoices", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *queryClient) UpdateInvoiceItem(ctx context.Context, in *UpdateInvoiceItemRequest, opts ...grpc.CallOption) (*UpdateInvoiceItemResponse, error) {
+	out := new(UpdateInvoiceItemResponse)
+	err := c.cc.Invoke(ctx, "/api.Query/UpdateInvoiceItem", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *queryClient) ListInvoiceItems(ctx context.Context, in *ListInvoiceItemsRequest, opts ...grpc.CallOption) (*ListInvoiceItemsResponse, error) {
+	out := new(ListInvoiceItemsResponse)
+	err := c.cc.Invoke(ctx, "/api.Query/ListInvoiceItems", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *queryClient) CheckHealth(ctx context.Context, in *CheckHealthRequest, opts ...grpc.CallOption) (*CheckHealthResponse, error) {
 	out := new(CheckHealthResponse)
 	err := c.cc.Invoke(ctx, "/api.Query/CheckHealth", in, out, opts...)
@@ -2567,6 +3506,13 @@ type QueryServer interface {
 	DeleteContract(context.Context, *DeleteContractRequest) (*DeleteContractResponse, error)
 	GetContract(context.Context, *GetContractRequest) (*GetContractResponse, error)
 	ListContracts(context.Context, *ListContractsRequest) (*ListContractsResponse, error)
+	CreateInvoice(context.Context, *CreateInvoiceRequest) (*CreateInvoiceResponse, error)
+	UpdateInvoice(context.Context, *UpdateInvoiceRequest) (*UpdateInvoiceResponse, error)
+	DeleteInvoice(context.Context, *DeleteInvoiceRequest) (*DeleteInvoiceResponse, error)
+	GetInvoice(context.Context, *GetInvoiceRequest) (*GetInvoiceResponse, error)
+	ListInvoices(context.Context, *ListInvoicesRequest) (*ListInvoicesResponse, error)
+	UpdateInvoiceItem(context.Context, *UpdateInvoiceItemRequest) (*UpdateInvoiceItemResponse, error)
+	ListInvoiceItems(context.Context, *ListInvoiceItemsRequest) (*ListInvoiceItemsResponse, error)
 	CheckHealth(context.Context, *CheckHealthRequest) (*CheckHealthResponse, error)
 }
 
@@ -2630,6 +3576,27 @@ func (*UnimplementedQueryServer) GetContract(ctx context.Context, req *GetContra
 }
 func (*UnimplementedQueryServer) ListContracts(ctx context.Context, req *ListContractsRequest) (*ListContractsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListContracts not implemented")
+}
+func (*UnimplementedQueryServer) CreateInvoice(ctx context.Context, req *CreateInvoiceRequest) (*CreateInvoiceResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateInvoice not implemented")
+}
+func (*UnimplementedQueryServer) UpdateInvoice(ctx context.Context, req *UpdateInvoiceRequest) (*UpdateInvoiceResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateInvoice not implemented")
+}
+func (*UnimplementedQueryServer) DeleteInvoice(ctx context.Context, req *DeleteInvoiceRequest) (*DeleteInvoiceResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteInvoice not implemented")
+}
+func (*UnimplementedQueryServer) GetInvoice(ctx context.Context, req *GetInvoiceRequest) (*GetInvoiceResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetInvoice not implemented")
+}
+func (*UnimplementedQueryServer) ListInvoices(ctx context.Context, req *ListInvoicesRequest) (*ListInvoicesResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListInvoices not implemented")
+}
+func (*UnimplementedQueryServer) UpdateInvoiceItem(ctx context.Context, req *UpdateInvoiceItemRequest) (*UpdateInvoiceItemResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateInvoiceItem not implemented")
+}
+func (*UnimplementedQueryServer) ListInvoiceItems(ctx context.Context, req *ListInvoiceItemsRequest) (*ListInvoiceItemsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListInvoiceItems not implemented")
 }
 func (*UnimplementedQueryServer) CheckHealth(ctx context.Context, req *CheckHealthRequest) (*CheckHealthResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CheckHealth not implemented")
@@ -2981,6 +3948,132 @@ func _Query_ListContracts_Handler(srv interface{}, ctx context.Context, dec func
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Query_CreateInvoice_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateInvoiceRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(QueryServer).CreateInvoice(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/api.Query/CreateInvoice",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(QueryServer).CreateInvoice(ctx, req.(*CreateInvoiceRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Query_UpdateInvoice_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateInvoiceRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(QueryServer).UpdateInvoice(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/api.Query/UpdateInvoice",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(QueryServer).UpdateInvoice(ctx, req.(*UpdateInvoiceRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Query_DeleteInvoice_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteInvoiceRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(QueryServer).DeleteInvoice(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/api.Query/DeleteInvoice",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(QueryServer).DeleteInvoice(ctx, req.(*DeleteInvoiceRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Query_GetInvoice_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetInvoiceRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(QueryServer).GetInvoice(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/api.Query/GetInvoice",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(QueryServer).GetInvoice(ctx, req.(*GetInvoiceRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Query_ListInvoices_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListInvoicesRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(QueryServer).ListInvoices(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/api.Query/ListInvoices",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(QueryServer).ListInvoices(ctx, req.(*ListInvoicesRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Query_UpdateInvoiceItem_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateInvoiceItemRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(QueryServer).UpdateInvoiceItem(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/api.Query/UpdateInvoiceItem",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(QueryServer).UpdateInvoiceItem(ctx, req.(*UpdateInvoiceItemRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Query_ListInvoiceItems_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListInvoiceItemsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(QueryServer).ListInvoiceItems(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/api.Query/ListInvoiceItems",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(QueryServer).ListInvoiceItems(ctx, req.(*ListInvoiceItemsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _Query_CheckHealth_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(CheckHealthRequest)
 	if err := dec(in); err != nil {
@@ -3078,6 +4171,34 @@ var _Query_serviceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ListContracts",
 			Handler:    _Query_ListContracts_Handler,
+		},
+		{
+			MethodName: "CreateInvoice",
+			Handler:    _Query_CreateInvoice_Handler,
+		},
+		{
+			MethodName: "UpdateInvoice",
+			Handler:    _Query_UpdateInvoice_Handler,
+		},
+		{
+			MethodName: "DeleteInvoice",
+			Handler:    _Query_DeleteInvoice_Handler,
+		},
+		{
+			MethodName: "GetInvoice",
+			Handler:    _Query_GetInvoice_Handler,
+		},
+		{
+			MethodName: "ListInvoices",
+			Handler:    _Query_ListInvoices_Handler,
+		},
+		{
+			MethodName: "UpdateInvoiceItem",
+			Handler:    _Query_UpdateInvoiceItem_Handler,
+		},
+		{
+			MethodName: "ListInvoiceItems",
+			Handler:    _Query_ListInvoiceItems_Handler,
 		},
 		{
 			MethodName: "CheckHealth",
@@ -4628,6 +5749,629 @@ func (m *ListContractsResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
+func (m *Invoice) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *Invoice) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *Invoice) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if len(m.Status) > 0 {
+		i -= len(m.Status)
+		copy(dAtA[i:], m.Status)
+		i = encodeVarintProto(dAtA, i, uint64(len(m.Status)))
+		i--
+		dAtA[i] = 0x22
+	}
+	if m.TotalAmount != 0 {
+		i -= 8
+		encoding_binary.LittleEndian.PutUint64(dAtA[i:], uint64(math.Float64bits(float64(m.TotalAmount))))
+		i--
+		dAtA[i] = 0x19
+	}
+	if len(m.Period) > 0 {
+		i -= len(m.Period)
+		copy(dAtA[i:], m.Period)
+		i = encodeVarintProto(dAtA, i, uint64(len(m.Period)))
+		i--
+		dAtA[i] = 0x12
+	}
+	if len(m.ContractId) > 0 {
+		i -= len(m.ContractId)
+		copy(dAtA[i:], m.ContractId)
+		i = encodeVarintProto(dAtA, i, uint64(len(m.ContractId)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *InvoiceItem) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *InvoiceItem) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *InvoiceItem) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.Amount != 0 {
+		i -= 8
+		encoding_binary.LittleEndian.PutUint64(dAtA[i:], uint64(math.Float64bits(float64(m.Amount))))
+		i--
+		dAtA[i] = 0x31
+	}
+	if m.UnitPrice != 0 {
+		i -= 8
+		encoding_binary.LittleEndian.PutUint64(dAtA[i:], uint64(math.Float64bits(float64(m.UnitPrice))))
+		i--
+		dAtA[i] = 0x29
+	}
+	if m.Quantity != 0 {
+		i -= 8
+		encoding_binary.LittleEndian.PutUint64(dAtA[i:], uint64(math.Float64bits(float64(m.Quantity))))
+		i--
+		dAtA[i] = 0x21
+	}
+	if len(m.ItemType) > 0 {
+		i -= len(m.ItemType)
+		copy(dAtA[i:], m.ItemType)
+		i = encodeVarintProto(dAtA, i, uint64(len(m.ItemType)))
+		i--
+		dAtA[i] = 0x1a
+	}
+	if len(m.Period) > 0 {
+		i -= len(m.Period)
+		copy(dAtA[i:], m.Period)
+		i = encodeVarintProto(dAtA, i, uint64(len(m.Period)))
+		i--
+		dAtA[i] = 0x12
+	}
+	if len(m.ContractId) > 0 {
+		i -= len(m.ContractId)
+		copy(dAtA[i:], m.ContractId)
+		i = encodeVarintProto(dAtA, i, uint64(len(m.ContractId)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *CreateInvoiceRequest) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *CreateInvoiceRequest) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *CreateInvoiceRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.WaterUnitPrice != 0 {
+		i -= 8
+		encoding_binary.LittleEndian.PutUint64(dAtA[i:], uint64(math.Float64bits(float64(m.WaterUnitPrice))))
+		i--
+		dAtA[i] = 0x21
+	}
+	if m.ElectricityUnitPrice != 0 {
+		i -= 8
+		encoding_binary.LittleEndian.PutUint64(dAtA[i:], uint64(math.Float64bits(float64(m.ElectricityUnitPrice))))
+		i--
+		dAtA[i] = 0x19
+	}
+	if len(m.Period) > 0 {
+		i -= len(m.Period)
+		copy(dAtA[i:], m.Period)
+		i = encodeVarintProto(dAtA, i, uint64(len(m.Period)))
+		i--
+		dAtA[i] = 0x12
+	}
+	if len(m.ContractId) > 0 {
+		i -= len(m.ContractId)
+		copy(dAtA[i:], m.ContractId)
+		i = encodeVarintProto(dAtA, i, uint64(len(m.ContractId)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *CreateInvoiceResponse) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *CreateInvoiceResponse) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *CreateInvoiceResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if len(m.InvoiceItems) > 0 {
+		for iNdEx := len(m.InvoiceItems) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size, err := m.InvoiceItems[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintProto(dAtA, i, uint64(size))
+			}
+			i--
+			dAtA[i] = 0x12
+		}
+	}
+	if m.Invoice != nil {
+		{
+			size, err := m.Invoice.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintProto(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *UpdateInvoiceRequest) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *UpdateInvoiceRequest) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *UpdateInvoiceRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.Invoice != nil {
+		{
+			size, err := m.Invoice.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintProto(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *UpdateInvoiceResponse) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *UpdateInvoiceResponse) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *UpdateInvoiceResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.Invoice != nil {
+		{
+			size, err := m.Invoice.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintProto(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *DeleteInvoiceRequest) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *DeleteInvoiceRequest) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *DeleteInvoiceRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if len(m.Period) > 0 {
+		i -= len(m.Period)
+		copy(dAtA[i:], m.Period)
+		i = encodeVarintProto(dAtA, i, uint64(len(m.Period)))
+		i--
+		dAtA[i] = 0x12
+	}
+	if len(m.ContractId) > 0 {
+		i -= len(m.ContractId)
+		copy(dAtA[i:], m.ContractId)
+		i = encodeVarintProto(dAtA, i, uint64(len(m.ContractId)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *DeleteInvoiceResponse) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *DeleteInvoiceResponse) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *DeleteInvoiceResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	return len(dAtA) - i, nil
+}
+
+func (m *GetInvoiceRequest) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *GetInvoiceRequest) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *GetInvoiceRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if len(m.Period) > 0 {
+		i -= len(m.Period)
+		copy(dAtA[i:], m.Period)
+		i = encodeVarintProto(dAtA, i, uint64(len(m.Period)))
+		i--
+		dAtA[i] = 0x12
+	}
+	if len(m.ContractId) > 0 {
+		i -= len(m.ContractId)
+		copy(dAtA[i:], m.ContractId)
+		i = encodeVarintProto(dAtA, i, uint64(len(m.ContractId)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *GetInvoiceResponse) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *GetInvoiceResponse) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *GetInvoiceResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.Invoice != nil {
+		{
+			size, err := m.Invoice.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintProto(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *ListInvoicesRequest) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *ListInvoicesRequest) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *ListInvoicesRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if len(m.ContractId) > 0 {
+		i -= len(m.ContractId)
+		copy(dAtA[i:], m.ContractId)
+		i = encodeVarintProto(dAtA, i, uint64(len(m.ContractId)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *ListInvoicesResponse) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *ListInvoicesResponse) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *ListInvoicesResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if len(m.Invoices) > 0 {
+		for iNdEx := len(m.Invoices) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size, err := m.Invoices[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintProto(dAtA, i, uint64(size))
+			}
+			i--
+			dAtA[i] = 0xa
+		}
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *UpdateInvoiceItemRequest) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *UpdateInvoiceItemRequest) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *UpdateInvoiceItemRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.InvoiceItem != nil {
+		{
+			size, err := m.InvoiceItem.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintProto(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *UpdateInvoiceItemResponse) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *UpdateInvoiceItemResponse) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *UpdateInvoiceItemResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.InvoiceItem != nil {
+		{
+			size, err := m.InvoiceItem.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintProto(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *ListInvoiceItemsRequest) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *ListInvoiceItemsRequest) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *ListInvoiceItemsRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if len(m.Period) > 0 {
+		i -= len(m.Period)
+		copy(dAtA[i:], m.Period)
+		i = encodeVarintProto(dAtA, i, uint64(len(m.Period)))
+		i--
+		dAtA[i] = 0x12
+	}
+	if len(m.ContractId) > 0 {
+		i -= len(m.ContractId)
+		copy(dAtA[i:], m.ContractId)
+		i = encodeVarintProto(dAtA, i, uint64(len(m.ContractId)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *ListInvoiceItemsResponse) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *ListInvoiceItemsResponse) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *ListInvoiceItemsResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if len(m.InvoiceItems) > 0 {
+		for iNdEx := len(m.InvoiceItems) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size, err := m.InvoiceItems[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintProto(dAtA, i, uint64(size))
+			}
+			i--
+			dAtA[i] = 0xa
+		}
+	}
+	return len(dAtA) - i, nil
+}
+
 func (m *CheckHealthRequest) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
@@ -5309,6 +7053,270 @@ func (m *ListContractsResponse) Size() (n int) {
 	_ = l
 	if len(m.Contracts) > 0 {
 		for _, e := range m.Contracts {
+			l = e.Size()
+			n += 1 + l + sovProto(uint64(l))
+		}
+	}
+	return n
+}
+
+func (m *Invoice) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.ContractId)
+	if l > 0 {
+		n += 1 + l + sovProto(uint64(l))
+	}
+	l = len(m.Period)
+	if l > 0 {
+		n += 1 + l + sovProto(uint64(l))
+	}
+	if m.TotalAmount != 0 {
+		n += 9
+	}
+	l = len(m.Status)
+	if l > 0 {
+		n += 1 + l + sovProto(uint64(l))
+	}
+	return n
+}
+
+func (m *InvoiceItem) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.ContractId)
+	if l > 0 {
+		n += 1 + l + sovProto(uint64(l))
+	}
+	l = len(m.Period)
+	if l > 0 {
+		n += 1 + l + sovProto(uint64(l))
+	}
+	l = len(m.ItemType)
+	if l > 0 {
+		n += 1 + l + sovProto(uint64(l))
+	}
+	if m.Quantity != 0 {
+		n += 9
+	}
+	if m.UnitPrice != 0 {
+		n += 9
+	}
+	if m.Amount != 0 {
+		n += 9
+	}
+	return n
+}
+
+func (m *CreateInvoiceRequest) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.ContractId)
+	if l > 0 {
+		n += 1 + l + sovProto(uint64(l))
+	}
+	l = len(m.Period)
+	if l > 0 {
+		n += 1 + l + sovProto(uint64(l))
+	}
+	if m.ElectricityUnitPrice != 0 {
+		n += 9
+	}
+	if m.WaterUnitPrice != 0 {
+		n += 9
+	}
+	return n
+}
+
+func (m *CreateInvoiceResponse) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.Invoice != nil {
+		l = m.Invoice.Size()
+		n += 1 + l + sovProto(uint64(l))
+	}
+	if len(m.InvoiceItems) > 0 {
+		for _, e := range m.InvoiceItems {
+			l = e.Size()
+			n += 1 + l + sovProto(uint64(l))
+		}
+	}
+	return n
+}
+
+func (m *UpdateInvoiceRequest) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.Invoice != nil {
+		l = m.Invoice.Size()
+		n += 1 + l + sovProto(uint64(l))
+	}
+	return n
+}
+
+func (m *UpdateInvoiceResponse) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.Invoice != nil {
+		l = m.Invoice.Size()
+		n += 1 + l + sovProto(uint64(l))
+	}
+	return n
+}
+
+func (m *DeleteInvoiceRequest) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.ContractId)
+	if l > 0 {
+		n += 1 + l + sovProto(uint64(l))
+	}
+	l = len(m.Period)
+	if l > 0 {
+		n += 1 + l + sovProto(uint64(l))
+	}
+	return n
+}
+
+func (m *DeleteInvoiceResponse) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	return n
+}
+
+func (m *GetInvoiceRequest) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.ContractId)
+	if l > 0 {
+		n += 1 + l + sovProto(uint64(l))
+	}
+	l = len(m.Period)
+	if l > 0 {
+		n += 1 + l + sovProto(uint64(l))
+	}
+	return n
+}
+
+func (m *GetInvoiceResponse) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.Invoice != nil {
+		l = m.Invoice.Size()
+		n += 1 + l + sovProto(uint64(l))
+	}
+	return n
+}
+
+func (m *ListInvoicesRequest) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.ContractId)
+	if l > 0 {
+		n += 1 + l + sovProto(uint64(l))
+	}
+	return n
+}
+
+func (m *ListInvoicesResponse) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if len(m.Invoices) > 0 {
+		for _, e := range m.Invoices {
+			l = e.Size()
+			n += 1 + l + sovProto(uint64(l))
+		}
+	}
+	return n
+}
+
+func (m *UpdateInvoiceItemRequest) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.InvoiceItem != nil {
+		l = m.InvoiceItem.Size()
+		n += 1 + l + sovProto(uint64(l))
+	}
+	return n
+}
+
+func (m *UpdateInvoiceItemResponse) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.InvoiceItem != nil {
+		l = m.InvoiceItem.Size()
+		n += 1 + l + sovProto(uint64(l))
+	}
+	return n
+}
+
+func (m *ListInvoiceItemsRequest) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.ContractId)
+	if l > 0 {
+		n += 1 + l + sovProto(uint64(l))
+	}
+	l = len(m.Period)
+	if l > 0 {
+		n += 1 + l + sovProto(uint64(l))
+	}
+	return n
+}
+
+func (m *ListInvoiceItemsResponse) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if len(m.InvoiceItems) > 0 {
+		for _, e := range m.InvoiceItems {
 			l = e.Size()
 			n += 1 + l + sovProto(uint64(l))
 		}
@@ -9293,6 +11301,1670 @@ func (m *ListContractsResponse) Unmarshal(dAtA []byte) error {
 			}
 			m.Contracts = append(m.Contracts, &Contract{})
 			if err := m.Contracts[len(m.Contracts)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipProto(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthProto
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *Invoice) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowProto
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: Invoice: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: Invoice: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field ContractId", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowProto
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthProto
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthProto
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.ContractId = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Period", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowProto
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthProto
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthProto
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Period = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 3:
+			if wireType != 1 {
+				return fmt.Errorf("proto: wrong wireType = %d for field TotalAmount", wireType)
+			}
+			var v uint64
+			if (iNdEx + 8) > l {
+				return io.ErrUnexpectedEOF
+			}
+			v = uint64(encoding_binary.LittleEndian.Uint64(dAtA[iNdEx:]))
+			iNdEx += 8
+			m.TotalAmount = float64(math.Float64frombits(v))
+		case 4:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Status", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowProto
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthProto
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthProto
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Status = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipProto(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthProto
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *InvoiceItem) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowProto
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: InvoiceItem: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: InvoiceItem: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field ContractId", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowProto
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthProto
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthProto
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.ContractId = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Period", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowProto
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthProto
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthProto
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Period = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 3:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field ItemType", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowProto
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthProto
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthProto
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.ItemType = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 4:
+			if wireType != 1 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Quantity", wireType)
+			}
+			var v uint64
+			if (iNdEx + 8) > l {
+				return io.ErrUnexpectedEOF
+			}
+			v = uint64(encoding_binary.LittleEndian.Uint64(dAtA[iNdEx:]))
+			iNdEx += 8
+			m.Quantity = float64(math.Float64frombits(v))
+		case 5:
+			if wireType != 1 {
+				return fmt.Errorf("proto: wrong wireType = %d for field UnitPrice", wireType)
+			}
+			var v uint64
+			if (iNdEx + 8) > l {
+				return io.ErrUnexpectedEOF
+			}
+			v = uint64(encoding_binary.LittleEndian.Uint64(dAtA[iNdEx:]))
+			iNdEx += 8
+			m.UnitPrice = float64(math.Float64frombits(v))
+		case 6:
+			if wireType != 1 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Amount", wireType)
+			}
+			var v uint64
+			if (iNdEx + 8) > l {
+				return io.ErrUnexpectedEOF
+			}
+			v = uint64(encoding_binary.LittleEndian.Uint64(dAtA[iNdEx:]))
+			iNdEx += 8
+			m.Amount = float64(math.Float64frombits(v))
+		default:
+			iNdEx = preIndex
+			skippy, err := skipProto(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthProto
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *CreateInvoiceRequest) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowProto
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: CreateInvoiceRequest: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: CreateInvoiceRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field ContractId", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowProto
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthProto
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthProto
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.ContractId = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Period", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowProto
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthProto
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthProto
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Period = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 3:
+			if wireType != 1 {
+				return fmt.Errorf("proto: wrong wireType = %d for field ElectricityUnitPrice", wireType)
+			}
+			var v uint64
+			if (iNdEx + 8) > l {
+				return io.ErrUnexpectedEOF
+			}
+			v = uint64(encoding_binary.LittleEndian.Uint64(dAtA[iNdEx:]))
+			iNdEx += 8
+			m.ElectricityUnitPrice = float64(math.Float64frombits(v))
+		case 4:
+			if wireType != 1 {
+				return fmt.Errorf("proto: wrong wireType = %d for field WaterUnitPrice", wireType)
+			}
+			var v uint64
+			if (iNdEx + 8) > l {
+				return io.ErrUnexpectedEOF
+			}
+			v = uint64(encoding_binary.LittleEndian.Uint64(dAtA[iNdEx:]))
+			iNdEx += 8
+			m.WaterUnitPrice = float64(math.Float64frombits(v))
+		default:
+			iNdEx = preIndex
+			skippy, err := skipProto(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthProto
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *CreateInvoiceResponse) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowProto
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: CreateInvoiceResponse: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: CreateInvoiceResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Invoice", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowProto
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthProto
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthProto
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.Invoice == nil {
+				m.Invoice = &Invoice{}
+			}
+			if err := m.Invoice.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field InvoiceItems", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowProto
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthProto
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthProto
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.InvoiceItems = append(m.InvoiceItems, &InvoiceItem{})
+			if err := m.InvoiceItems[len(m.InvoiceItems)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipProto(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthProto
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *UpdateInvoiceRequest) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowProto
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: UpdateInvoiceRequest: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: UpdateInvoiceRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Invoice", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowProto
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthProto
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthProto
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.Invoice == nil {
+				m.Invoice = &Invoice{}
+			}
+			if err := m.Invoice.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipProto(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthProto
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *UpdateInvoiceResponse) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowProto
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: UpdateInvoiceResponse: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: UpdateInvoiceResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Invoice", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowProto
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthProto
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthProto
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.Invoice == nil {
+				m.Invoice = &Invoice{}
+			}
+			if err := m.Invoice.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipProto(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthProto
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *DeleteInvoiceRequest) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowProto
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: DeleteInvoiceRequest: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: DeleteInvoiceRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field ContractId", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowProto
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthProto
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthProto
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.ContractId = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Period", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowProto
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthProto
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthProto
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Period = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipProto(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthProto
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *DeleteInvoiceResponse) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowProto
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: DeleteInvoiceResponse: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: DeleteInvoiceResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		default:
+			iNdEx = preIndex
+			skippy, err := skipProto(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthProto
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *GetInvoiceRequest) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowProto
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: GetInvoiceRequest: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: GetInvoiceRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field ContractId", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowProto
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthProto
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthProto
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.ContractId = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Period", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowProto
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthProto
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthProto
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Period = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipProto(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthProto
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *GetInvoiceResponse) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowProto
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: GetInvoiceResponse: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: GetInvoiceResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Invoice", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowProto
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthProto
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthProto
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.Invoice == nil {
+				m.Invoice = &Invoice{}
+			}
+			if err := m.Invoice.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipProto(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthProto
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *ListInvoicesRequest) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowProto
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: ListInvoicesRequest: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: ListInvoicesRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field ContractId", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowProto
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthProto
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthProto
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.ContractId = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipProto(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthProto
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *ListInvoicesResponse) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowProto
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: ListInvoicesResponse: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: ListInvoicesResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Invoices", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowProto
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthProto
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthProto
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Invoices = append(m.Invoices, &Invoice{})
+			if err := m.Invoices[len(m.Invoices)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipProto(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthProto
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *UpdateInvoiceItemRequest) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowProto
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: UpdateInvoiceItemRequest: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: UpdateInvoiceItemRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field InvoiceItem", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowProto
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthProto
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthProto
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.InvoiceItem == nil {
+				m.InvoiceItem = &InvoiceItem{}
+			}
+			if err := m.InvoiceItem.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipProto(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthProto
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *UpdateInvoiceItemResponse) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowProto
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: UpdateInvoiceItemResponse: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: UpdateInvoiceItemResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field InvoiceItem", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowProto
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthProto
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthProto
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.InvoiceItem == nil {
+				m.InvoiceItem = &InvoiceItem{}
+			}
+			if err := m.InvoiceItem.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipProto(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthProto
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *ListInvoiceItemsRequest) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowProto
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: ListInvoiceItemsRequest: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: ListInvoiceItemsRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field ContractId", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowProto
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthProto
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthProto
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.ContractId = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Period", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowProto
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthProto
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthProto
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Period = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipProto(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthProto
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *ListInvoiceItemsResponse) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowProto
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: ListInvoiceItemsResponse: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: ListInvoiceItemsResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field InvoiceItems", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowProto
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthProto
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthProto
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.InvoiceItems = append(m.InvoiceItems, &InvoiceItem{})
+			if err := m.InvoiceItems[len(m.InvoiceItems)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex

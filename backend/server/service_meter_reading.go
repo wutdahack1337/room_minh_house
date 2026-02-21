@@ -3,20 +3,9 @@ package server
 import (
 	"context"
 	"fmt"
-	"regexp"
 
 	types "github.com/wutdahack1337/room_minh_house/backend/pkg/pb"
 )
-
-// MM-YYYY
-var periodPattern = regexp.MustCompile(`^(0[1-9]|1[0-2])-\d{4}$`)
-
-func validatePeriod(period string) error {
-	if !periodPattern.MatchString(period) {
-		return fmt.Errorf("period must be in MM-YYYY format (e.g., \"08-2025\")")
-	}
-	return nil
-}
 
 func (s *Service) CreateMeterReading(ctx context.Context, request *types.CreateMeterReadingRequest) (*types.CreateMeterReadingResponse, error) {
 	if request == nil {

@@ -100,6 +100,42 @@ service Query {
 
     // ==============================================================
 
+    rpc CreateInvoice(CreateInvoiceRequest) returns (CreateInvoiceResponse) {
+        option (google.api.http) = {
+            post: "/api/contracts/{contract_id}/invoices"
+            body: "*"
+        };
+    }
+    rpc UpdateInvoice(UpdateInvoiceRequest) returns (UpdateInvoiceResponse) {
+        option (google.api.http) = {
+            put: "/api/contracts/{invoice.contract_id}/invoices/{invoice.period}"
+            body: "invoice"
+        };
+    }
+    rpc DeleteInvoice(DeleteInvoiceRequest) returns (DeleteInvoiceResponse) {
+        option (google.api.http).delete = "/api/contracts/{contract_id}/invoices/{period}";
+    }
+    rpc GetInvoice(GetInvoiceRequest) returns (GetInvoiceResponse) {
+        option (google.api.http).get = "/api/contracts/{contract_id}/invoices/{period}";
+    }
+    rpc ListInvoices(ListInvoicesRequest) returns (ListInvoicesResponse) {
+        option (google.api.http).get = "/api/contracts/{contract_id}/invoices";
+    }
+
+    // ==============================================================
+
+    rpc UpdateInvoiceItem(UpdateInvoiceItemRequest) returns (UpdateInvoiceItemResponse) {
+        option (google.api.http) = {
+            put: "/api/contracts/{invoice_item.contract_id}/invoices/{invoice_item.period}/items/{invoice_item.item_type}"
+            body: "invoice_item"
+        };
+    }
+    rpc ListInvoiceItems(ListInvoiceItemsRequest) returns (ListInvoiceItemsResponse) {
+        option (google.api.http).get = "/api/contracts/{contract_id}/invoices/{period}/items";
+    }
+
+    // ==============================================================
+
     rpc CheckHealth(CheckHealthRequest) returns (CheckHealthResponse) {
         option (google.api.http).get = "/api/health";
     }
@@ -275,6 +311,81 @@ message GetContractResponse {
 message ListContractsRequest {}
 message ListContractsResponse {
     repeated Contract contracts = 1;
+}
+
+
+// ==============================================================
+
+message Invoice {
+    string contract_id = 1 [(gogoproto.moretags) = "bson:\"contract_id\""];
+    string period = 2 [(gogoproto.moretags) = "bson:\"period\""];  // MM-YYYY
+    double total_amount = 3 [(gogoproto.moretags) = "bson:\"total_amount\""];
+    string status = 4 [(gogoproto.moretags) = "bson:\"status\""];  // unpaid/paid
+}
+
+message InvoiceItem {
+    string contract_id = 1 [(gogoproto.moretags) = "bson:\"contract_id\""];
+    string period = 2 [(gogoproto.moretags) = "bson:\"period\""];
+    string item_type = 3 [(gogoproto.moretags) = "bson:\"item_type\""];  // room_rent/electricity/water
+    double quantity = 4 [(gogoproto.moretags) = "bson:\"quantity\""];
+    double unit_price = 5 [(gogoproto.moretags) = "bson:\"unit_price\""];
+    double amount = 6 [(gogoproto.moretags) = "bson:\"amount\""];
+}
+
+message CreateInvoiceRequest {
+    string contract_id = 1;
+    string period = 2;
+    double electricity_unit_price = 3;
+    double water_unit_price = 4;
+}
+message CreateInvoiceResponse {
+    Invoice invoice = 1;
+    repeated InvoiceItem invoice_items = 2;
+}
+
+message UpdateInvoiceRequest {
+    Invoice invoice = 1;
+}
+message UpdateInvoiceResponse {
+    Invoice invoice = 1;
+}
+
+message DeleteInvoiceRequest {
+    string contract_id = 1;
+    string period = 2;
+}
+message DeleteInvoiceResponse {}
+
+message GetInvoiceRequest {
+    string contract_id = 1;
+    string period = 2;
+}
+message GetInvoiceResponse {
+    Invoice invoice = 1;
+}
+
+message ListInvoicesRequest {
+    string contract_id = 1;
+}
+message ListInvoicesResponse {
+    repeated Invoice invoices = 1;
+}
+
+// ==============================================================
+
+message UpdateInvoiceItemRequest {
+    InvoiceItem invoice_item = 1;
+}
+message UpdateInvoiceItemResponse {
+    InvoiceItem invoice_item = 1;
+}
+
+message ListInvoiceItemsRequest {
+    string contract_id = 1;
+    string period = 2;
+}
+message ListInvoiceItemsResponse {
+    repeated InvoiceItem invoice_items = 1;
 }
 
 // ==============================================================
