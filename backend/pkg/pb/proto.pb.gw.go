@@ -282,15 +282,15 @@ func request_Query_CreateMeterReading_0(ctx context.Context, marshaler runtime.M
 		_   = err
 	)
 
-	val, ok = pathParams["room_number"]
+	val, ok = pathParams["meter_reading.room_number"]
 	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "room_number")
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "meter_reading.room_number")
 	}
 
-	protoReq.RoomNumber, err = runtime.Int32(val)
+	err = runtime.PopulateFieldFromPath(&protoReq, "meter_reading.room_number", val)
 
 	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "room_number", err)
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "meter_reading.room_number", err)
 	}
 
 	msg, err := client.CreateMeterReading(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
@@ -317,15 +317,15 @@ func local_request_Query_CreateMeterReading_0(ctx context.Context, marshaler run
 		_   = err
 	)
 
-	val, ok = pathParams["room_number"]
+	val, ok = pathParams["meter_reading.room_number"]
 	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "room_number")
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "meter_reading.room_number")
 	}
 
-	protoReq.RoomNumber, err = runtime.Int32(val)
+	err = runtime.PopulateFieldFromPath(&protoReq, "meter_reading.room_number", val)
 
 	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "room_number", err)
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "meter_reading.room_number", err)
 	}
 
 	msg, err := server.CreateMeterReading(ctx, &protoReq)
@@ -352,15 +352,15 @@ func request_Query_UpdateMeterReading_0(ctx context.Context, marshaler runtime.M
 		_   = err
 	)
 
-	val, ok = pathParams["room_number"]
+	val, ok = pathParams["meter_reading.room_number"]
 	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "room_number")
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "meter_reading.room_number")
 	}
 
-	protoReq.RoomNumber, err = runtime.Int32(val)
+	err = runtime.PopulateFieldFromPath(&protoReq, "meter_reading.room_number", val)
 
 	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "room_number", err)
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "meter_reading.room_number", err)
 	}
 
 	val, ok = pathParams["meter_reading.period"]
@@ -398,15 +398,15 @@ func local_request_Query_UpdateMeterReading_0(ctx context.Context, marshaler run
 		_   = err
 	)
 
-	val, ok = pathParams["room_number"]
+	val, ok = pathParams["meter_reading.room_number"]
 	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "room_number")
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "meter_reading.room_number")
 	}
 
-	protoReq.RoomNumber, err = runtime.Int32(val)
+	err = runtime.PopulateFieldFromPath(&protoReq, "meter_reading.room_number", val)
 
 	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "room_number", err)
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "meter_reading.room_number", err)
 	}
 
 	val, ok = pathParams["meter_reading.period"]
@@ -1954,9 +1954,9 @@ var (
 
 	pattern_Query_ListRooms_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"api", "rooms"}, "", runtime.AssumeColonVerbOpt(false)))
 
-	pattern_Query_CreateMeterReading_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"api", "rooms", "room_number", "meter-readings"}, "", runtime.AssumeColonVerbOpt(false)))
+	pattern_Query_CreateMeterReading_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"api", "rooms", "meter_reading.room_number", "meter-readings"}, "", runtime.AssumeColonVerbOpt(false)))
 
-	pattern_Query_UpdateMeterReading_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3, 1, 0, 4, 1, 5, 4}, []string{"api", "rooms", "room_number", "meter-readings", "meter_reading.period"}, "", runtime.AssumeColonVerbOpt(false)))
+	pattern_Query_UpdateMeterReading_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3, 1, 0, 4, 1, 5, 4}, []string{"api", "rooms", "meter_reading.room_number", "meter-readings", "meter_reading.period"}, "", runtime.AssumeColonVerbOpt(false)))
 
 	pattern_Query_GetMeterReading_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3, 1, 0, 4, 1, 5, 4}, []string{"api", "rooms", "room_number", "meter-readings", "period"}, "", runtime.AssumeColonVerbOpt(false)))
 
