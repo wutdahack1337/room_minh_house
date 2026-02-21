@@ -17,6 +17,9 @@ func (s *Service) CreateUser(ctx context.Context, request *types.CreateUserReque
 	if request.User.Pid == "" {
 		return nil, fmt.Errorf("CreateUser error: pid is required")
 	}
+	if request.User.Role == "" {
+		return nil, fmt.Errorf("CreateUser error: role is required")
+	}
 
 	card := request.User.IdCard
 	if card == nil {
@@ -63,33 +66,36 @@ func (s *Service) UpdateUser(ctx context.Context, request *types.UpdateUserReque
 	if request.User.Pid == "" {
 		return nil, fmt.Errorf("UpdateUser error: pid is required")
 	}
+	if request.User.Role == "" {
+		return nil, fmt.Errorf("UpdateUser error: role is required")
+	}
 
 	card := request.User.IdCard
 	if card == nil {
-		return nil, fmt.Errorf("CreateUser error: id card is required")
+		return nil, fmt.Errorf("UpdateUser error: id card is required")
 	}
 	if card.Name == "" {
-		return nil, fmt.Errorf("CreateUser error: id card name is required")
+		return nil, fmt.Errorf("UpdateUser error: id card name is required")
 	}
 	if card.Sex == "" {
-		return nil, fmt.Errorf("CreateUser error: id card sex is required")
+		return nil, fmt.Errorf("UpdateUser error: id card sex is required")
 	}
 	if card.DateOfBirth == "" {
-		return nil, fmt.Errorf("CreateUser error: id card date of birth is required")
+		return nil, fmt.Errorf("UpdateUser error: id card date of birth is required")
 	}
 	if card.PlaceOfBirth == "" {
-		return nil, fmt.Errorf("CreateUser error: id card place of birth is required")
+		return nil, fmt.Errorf("UpdateUser error: id card place of birth is required")
 	}
 
 	account := request.User.Account
 	if account == nil {
-		return nil, fmt.Errorf("CreateUser error: account is required")
+		return nil, fmt.Errorf("UpdateUser error: account is required")
 	}
 	if account.Username == "" {
-		return nil, fmt.Errorf("CreateUser error: account username is required")
+		return nil, fmt.Errorf("UpdateUser error: account username is required")
 	}
 	if account.Password == "" {
-		return nil, fmt.Errorf("CreateUser error: account password is required")
+		return nil, fmt.Errorf("UpdateUser error: account password is required")
 	}
 
 	if err := s.dbService.UpdateUser(ctx, request.User); err != nil {

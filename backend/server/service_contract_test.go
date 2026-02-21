@@ -17,6 +17,7 @@ func TestCreateContract_HappyPath(t *testing.T) {
 	user := &types.User{
 		Pid:         P_ID,
 		PhoneNumber: PHONE_NUMBER,
+		Role:        ROLE,
 		IdCard:      newTestIdCard(),
 		Account:     newTestAccount(),
 	}
@@ -143,6 +144,7 @@ func TestCreateContract_RoomNotFound(t *testing.T) {
 	user := &types.User{
 		Pid:         P_ID,
 		PhoneNumber: PHONE_NUMBER,
+		Role:        ROLE,
 		IdCard:      newTestIdCard(),
 		Account:     newTestAccount(),
 	}
@@ -186,6 +188,7 @@ func TestUpdateContract_HappyPath(t *testing.T) {
 	user := &types.User{
 		Pid:         P_ID,
 		PhoneNumber: PHONE_NUMBER,
+		Role:        ROLE,
 		IdCard:      newTestIdCard(),
 		Account:     newTestAccount(),
 	}
@@ -254,6 +257,7 @@ func TestGetContract_HappyPath(t *testing.T) {
 	user := &types.User{
 		Pid:         P_ID,
 		PhoneNumber: PHONE_NUMBER,
+		Role:        ROLE,
 		IdCard:      newTestIdCard(),
 		Account:     newTestAccount(),
 	}
@@ -327,6 +331,7 @@ func TestDeleteContract_HappyPath(t *testing.T) {
 	user := &types.User{
 		Pid:         P_ID,
 		PhoneNumber: PHONE_NUMBER,
+		Role:        ROLE,
 		IdCard:      newTestIdCard(),
 		Account:     newTestAccount(),
 	}
@@ -388,9 +393,9 @@ func TestListContracts_HappyPath(t *testing.T) {
 	service := getServiceForContract()
 
 	users := []*types.User{
-		{Pid: "user1", PhoneNumber: "0111111111", IdCard: newTestIdCard(), Account: newTestAccount()},
-		{Pid: "user2", PhoneNumber: "0222222222", IdCard: newTestIdCard(), Account: newTestAccount()},
-		{Pid: "user3", PhoneNumber: "0333333333", IdCard: newTestIdCard(), Account: newTestAccount()},
+		{Pid: "user1", PhoneNumber: "0111111111", Role: ROLE, IdCard: newTestIdCard(), Account: newTestAccount()},
+		{Pid: "user2", PhoneNumber: "0222222222", Role: ROLE, IdCard: newTestIdCard(), Account: newTestAccount()},
+		{Pid: "user3", PhoneNumber: "0333333333", Role: ROLE, IdCard: newTestIdCard(), Account: newTestAccount()},
 	}
 	for _, user := range users {
 		_, err := service.CreateUser(ctx, &types.CreateUserRequest{User: user})
