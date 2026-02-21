@@ -49,7 +49,6 @@ func unaryLogStackTraceOnPanic(logger log.Logger) grpc.UnaryServerInterceptor {
 				panic(r)
 			}
 		}()
-
 		return handler(ctx, req)
 	}
 }
@@ -110,6 +109,7 @@ func StartServer(grpcAddr string, httpAddr string, dbService *database.MongoServ
 	if err != nil {
 		panic(err)
 	}
+
 	go server.Serve(listen)
 	go func() {
 		fmt.Println("serving http request:", httpAddr)

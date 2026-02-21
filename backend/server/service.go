@@ -14,19 +14,13 @@ type Service struct {
 }
 
 func NewService(dbService *database.MongoService) *Service {
-	return &Service{
-		dbService: dbService,
-	}
+	return &Service{dbService: dbService}
 }
 
 func (s *Service) CheckHealth(ctx context.Context, request *types.CheckHealthRequest) (*types.CheckHealthResponse, error) {
 	if err := s.dbService.CheckHealth(ctx); err != nil {
-		return &types.CheckHealthResponse{
-			Status: fmt.Sprintf("database error: %v", err),
-		}, err
+		return &types.CheckHealthResponse{Status: fmt.Sprintf("database error: %v", err)}, err
 	}
 
-	return &types.CheckHealthResponse{
-		Status: "i'm fine",
-	}, nil
+	return &types.CheckHealthResponse{Status: "i'm fine"}, nil
 }

@@ -30,7 +30,6 @@ func (s *MongoService) CreateContract(ctx context.Context, contract *types.Contr
 		return err
 	}
 
-	// insert contract
 	contractCollection := s.database.Collection(contractCollection)
 	_, err := contractCollection.InsertOne(ctx, contract)
 	return err
@@ -38,7 +37,6 @@ func (s *MongoService) CreateContract(ctx context.Context, contract *types.Contr
 
 func (s *MongoService) UpdateContract(ctx context.Context, contract *types.Contract) error {
 	collection := s.database.Collection(contractCollection)
-
 	res, err := collection.UpdateOne(ctx, bson.M{"contract_id": contract.ContractId}, bson.M{"$set": contract})
 	if err != nil {
 		return err
@@ -53,7 +51,6 @@ func (s *MongoService) UpdateContract(ctx context.Context, contract *types.Contr
 
 func (s *MongoService) DeleteContract(ctx context.Context, contractID string) error {
 	collection := s.database.Collection(contractCollection)
-
 	result, err := collection.DeleteOne(ctx, bson.M{"contract_id": contractID})
 	if err != nil {
 		return err
@@ -67,9 +64,8 @@ func (s *MongoService) DeleteContract(ctx context.Context, contractID string) er
 }
 
 func (s *MongoService) GetContract(ctx context.Context, contractID string) (*types.Contract, error) {
-	collection := s.database.Collection(contractCollection)
-
 	var contract types.Contract
+	collection := s.database.Collection(contractCollection)
 	if err := collection.FindOne(ctx, bson.M{"contract_id": contractID}).Decode(&contract); err != nil {
 		return nil, err
 	}

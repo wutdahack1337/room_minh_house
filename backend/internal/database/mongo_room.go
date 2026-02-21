@@ -16,7 +16,6 @@ func (s *MongoService) CreateRoom(ctx context.Context, room *types.Room) error {
 
 func (s *MongoService) UpdateRoom(ctx context.Context, room *types.Room) error {
 	collection := s.database.Collection(roomCollection)
-
 	res, err := collection.UpdateOne(ctx, bson.M{"room_number": room.RoomNumber}, bson.M{"$set": room})
 	if err != nil {
 		return err
@@ -31,7 +30,6 @@ func (s *MongoService) UpdateRoom(ctx context.Context, room *types.Room) error {
 
 func (s *MongoService) DeleteRoom(ctx context.Context, roomNumber int32) error {
 	collection := s.database.Collection(roomCollection)
-
 	result, err := collection.DeleteOne(ctx, bson.M{"room_number": roomNumber})
 	if err != nil {
 		return err
@@ -45,9 +43,8 @@ func (s *MongoService) DeleteRoom(ctx context.Context, roomNumber int32) error {
 }
 
 func (s *MongoService) GetRoom(ctx context.Context, roomNumber int32) (*types.Room, error) {
-	collection := s.database.Collection(roomCollection)
-
 	var room types.Room
+	collection := s.database.Collection(roomCollection)
 	if err := collection.FindOne(ctx, bson.M{"room_number": roomNumber}).Decode(&room); err != nil {
 		return nil, err
 	}

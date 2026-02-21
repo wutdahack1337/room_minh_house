@@ -8,6 +8,11 @@ import (
 	types "github.com/wutdahack1337/room_minh_house/backend/pkg/pb"
 )
 
+const (
+	P_ID         = "0123456789"
+	PHONE_NUMBER = "0949447156"
+)
+
 func newTestIdCard() *types.IdCard {
 	return &types.IdCard{
 		Name:         "Trần Quang Minh",
@@ -18,22 +23,19 @@ func newTestIdCard() *types.IdCard {
 }
 
 func TestCreateUser_HappyPath(t *testing.T) {
-	user := &types.User{
-		Pid:         "0123456789",
-		PhoneNumber: "0949447156",
-		IdCard:      newTestIdCard(),
-	}
-
 	service := getUserService()
-	response, err := service.CreateUser(context.Background(), &types.CreateUserRequest{
-		User: user,
-	})
 
+	response, err := service.CreateUser(context.Background(), &types.CreateUserRequest{
+		User: &types.User{
+			Pid:         P_ID,
+			PhoneNumber: PHONE_NUMBER,
+			IdCard:      newTestIdCard(),
+		},
+	})
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	t.Log(response)
 	if response == nil {
 		t.Fatal("CreateUser returned nil response")
 	}
@@ -41,14 +43,14 @@ func TestCreateUser_HappyPath(t *testing.T) {
 
 func TestCreateUser_DuplicatePid(t *testing.T) {
 	ctx := context.Background()
+	service := getUserService()
 
 	user := &types.User{
-		Pid:         "0123456789",
-		PhoneNumber: "0949447156",
+		Pid:         P_ID,
+		PhoneNumber: PHONE_NUMBER,
 		IdCard:      newTestIdCard(),
 	}
 
-	service := getUserService()
 	_, _ = service.CreateUser(ctx, &types.CreateUserRequest{
 		User: user,
 	})
@@ -57,7 +59,6 @@ func TestCreateUser_DuplicatePid(t *testing.T) {
 		User: user,
 	})
 
-	t.Log(err)
 	if err == nil {
 		t.Fatal("expected error for duplicate pid, got nil")
 	}
@@ -71,12 +72,11 @@ func TestCreateUser_MissingPid(t *testing.T) {
 	service := getUserService()
 	response, err := service.CreateUser(context.Background(), &types.CreateUserRequest{
 		User: &types.User{
-			PhoneNumber: "0949447156",
+			PhoneNumber: PHONE_NUMBER,
 			IdCard:      newTestIdCard(),
 		},
 	})
 
-	t.Log(err)
 	if err == nil {
 		t.Fatal("expected error for empty pid, got nil")
 	}
@@ -90,12 +90,11 @@ func TestCreateUser_MissingIdCard(t *testing.T) {
 	service := getUserService()
 	response, err := service.CreateUser(context.Background(), &types.CreateUserRequest{
 		User: &types.User{
-			Pid:         "0123456789",
-			PhoneNumber: "0949447156",
+			Pid:         P_ID,
+			PhoneNumber: PHONE_NUMBER,
 		},
 	})
 
-	t.Log(err)
 	if err == nil {
 		t.Fatal("expected error for missing IdCard, got nil")
 	}
@@ -107,18 +106,17 @@ func TestCreateUser_MissingIdCard(t *testing.T) {
 
 func TestCreateUser_IdCardMissingName(t *testing.T) {
 	service := getUserService()
+
 	idCard := newTestIdCard()
 	idCard.Name = ""
-
 	response, err := service.CreateUser(context.Background(), &types.CreateUserRequest{
 		User: &types.User{
-			Pid:         "0123456789",
-			PhoneNumber: "0949447156",
+			Pid:         P_ID,
+			PhoneNumber: PHONE_NUMBER,
 			IdCard:      idCard,
 		},
 	})
 
-	t.Log(err)
 	if err == nil {
 		t.Fatal("expected error for missing IdCard.Name, got nil")
 	}
@@ -130,18 +128,17 @@ func TestCreateUser_IdCardMissingName(t *testing.T) {
 
 func TestCreateUser_IdCardMissingSex(t *testing.T) {
 	service := getUserService()
+
 	idCard := newTestIdCard()
 	idCard.Sex = ""
-
 	response, err := service.CreateUser(context.Background(), &types.CreateUserRequest{
 		User: &types.User{
-			Pid:         "0123456789",
-			PhoneNumber: "0949447156",
+			Pid:         P_ID,
+			PhoneNumber: PHONE_NUMBER,
 			IdCard:      idCard,
 		},
 	})
 
-	t.Log(err)
 	if err == nil {
 		t.Fatal("expected error for missing IdCard.Sex, got nil")
 	}
@@ -153,18 +150,17 @@ func TestCreateUser_IdCardMissingSex(t *testing.T) {
 
 func TestCreateUser_IdCardMissingDateOfBirth(t *testing.T) {
 	service := getUserService()
+
 	idCard := newTestIdCard()
 	idCard.DateOfBirth = ""
-
 	response, err := service.CreateUser(context.Background(), &types.CreateUserRequest{
 		User: &types.User{
-			Pid:         "0123456789",
-			PhoneNumber: "0949447156",
+			Pid:         P_ID,
+			PhoneNumber: PHONE_NUMBER,
 			IdCard:      idCard,
 		},
 	})
 
-	t.Log(err)
 	if err == nil {
 		t.Fatal("expected error for missing IdCard.DateOfBirth, got nil")
 	}
@@ -176,18 +172,17 @@ func TestCreateUser_IdCardMissingDateOfBirth(t *testing.T) {
 
 func TestCreateUser_IdCardMissingPlaceOfBirth(t *testing.T) {
 	service := getUserService()
+
 	idCard := newTestIdCard()
 	idCard.PlaceOfBirth = ""
-
 	response, err := service.CreateUser(context.Background(), &types.CreateUserRequest{
 		User: &types.User{
-			Pid:         "0123456789",
-			PhoneNumber: "0949447156",
+			Pid:         P_ID,
+			PhoneNumber: PHONE_NUMBER,
 			IdCard:      idCard,
 		},
 	})
 
-	t.Log(err)
 	if err == nil {
 		t.Fatal("expected error for missing IdCard.PlaceOfBirth, got nil")
 	}
@@ -201,21 +196,23 @@ func TestUpdateUser_HappyPath(t *testing.T) {
 	ctx := context.Background()
 	service := getUserService()
 
+	_, _ = service.CreateUser(ctx, &types.CreateUserRequest{
+		User: &types.User{
+			Pid:         P_ID,
+			PhoneNumber: PHONE_NUMBER,
+			IdCard:      newTestIdCard(),
+		},
+	})
+
 	user := &types.User{
-		Pid:         "0123456789",
-		PhoneNumber: "0949447156",
+		Pid:         P_ID,
+		PhoneNumber: "0918441887",
 		IdCard:      newTestIdCard(),
 	}
 
-	_, _ = service.CreateUser(ctx, &types.CreateUserRequest{
-		User: user,
-	})
-
-	user.PhoneNumber = "0918441887"
 	_, err := service.UpdateUser(ctx, &types.UpdateUserRequest{
 		User: user,
 	})
-
 	if err != nil {
 		t.Fatal("UpdateUser failed: " + err.Error())
 	}
@@ -223,7 +220,6 @@ func TestUpdateUser_HappyPath(t *testing.T) {
 	response, err := service.GetUser(ctx, &types.GetUserRequest{
 		Pid: user.Pid,
 	})
-
 	if err != nil {
 		t.Fatal("GetUser failed: " + err.Error())
 	}
@@ -234,17 +230,14 @@ func TestUpdateUser_HappyPath(t *testing.T) {
 }
 
 func TestUpdateUser_MissingPid(t *testing.T) {
-	user := &types.User{
-		PhoneNumber: "0949447156",
-		IdCard:      newTestIdCard(),
-	}
-
 	service := getUserService()
 	response, err := service.UpdateUser(context.Background(), &types.UpdateUserRequest{
-		User: user,
+		User: &types.User{
+			PhoneNumber: PHONE_NUMBER,
+			IdCard:      newTestIdCard(),
+		},
 	})
 
-	t.Log(err)
 	if err == nil {
 		t.Fatal("expected error for missing pid, got nil")
 	}
@@ -255,18 +248,15 @@ func TestUpdateUser_MissingPid(t *testing.T) {
 }
 
 func TestUpdateUser_NotFound(t *testing.T) {
-	user := &types.User{
-		Pid:         "9999999999",
-		PhoneNumber: "0949447156",
-		IdCard:      newTestIdCard(),
-	}
-
 	service := getUserService()
 	response, err := service.UpdateUser(context.Background(), &types.UpdateUserRequest{
-		User: user,
+		User: &types.User{
+			Pid:         "9999999999",
+			PhoneNumber: PHONE_NUMBER,
+			IdCard:      newTestIdCard(),
+		},
 	})
 
-	t.Log(err)
 	if err == nil {
 		t.Fatal("expected error for user not found, got nil")
 	}
@@ -281,8 +271,8 @@ func TestUpdateUser_IdCardUpdated(t *testing.T) {
 	service := getUserService()
 
 	user := &types.User{
-		Pid:         "0123456789",
-		PhoneNumber: "0949447156",
+		Pid:         P_ID,
+		PhoneNumber: PHONE_NUMBER,
 		IdCard:      newTestIdCard(),
 	}
 
@@ -300,7 +290,6 @@ func TestUpdateUser_IdCardUpdated(t *testing.T) {
 	_, err := service.UpdateUser(ctx, &types.UpdateUserRequest{
 		User: user,
 	})
-
 	if err != nil {
 		t.Fatal("UpdateUser failed: " + err.Error())
 	}
@@ -309,7 +298,6 @@ func TestUpdateUser_IdCardUpdated(t *testing.T) {
 		Pid: user.Pid,
 	})
 
-	t.Log(response)
 	if err != nil {
 		t.Fatal("GetUser failed: " + err.Error())
 	}
@@ -321,14 +309,14 @@ func TestUpdateUser_IdCardUpdated(t *testing.T) {
 
 func TestDeleteUser_HappyPath(t *testing.T) {
 	ctx := context.Background()
+	service := getUserService()
 
 	user := &types.User{
-		Pid:         "0123456789",
-		PhoneNumber: "0949447156",
+		Pid:         P_ID,
+		PhoneNumber: PHONE_NUMBER,
 		IdCard:      newTestIdCard(),
 	}
 
-	service := getUserService()
 	_, _ = service.CreateUser(ctx, &types.CreateUserRequest{
 		User: user,
 	})
@@ -345,7 +333,6 @@ func TestDeleteUser_HappyPath(t *testing.T) {
 		Pid: user.Pid,
 	})
 
-	t.Log(err)
 	if err == nil {
 		t.Fatal("expected error for user not found after deletion, got nil")
 	}
@@ -356,14 +343,11 @@ func TestDeleteUser_HappyPath(t *testing.T) {
 }
 
 func TestDeleteUser_NotFound(t *testing.T) {
-	ctx := context.Background()
 	service := getUserService()
-
-	_, err := service.DeleteUser(ctx, &types.DeleteUserRequest{
+	_, err := service.DeleteUser(context.Background(), &types.DeleteUserRequest{
 		Pid: "9999999999",
 	})
 
-	t.Log(err)
 	if err == nil {
 		t.Fatal("expected error for user not found, got nil")
 	}
@@ -371,14 +355,14 @@ func TestDeleteUser_NotFound(t *testing.T) {
 
 func TestGetUser_HappyPath(t *testing.T) {
 	ctx := context.Background()
+	service := getUserService()
 
 	user := &types.User{
-		Pid:         "0123456789",
-		PhoneNumber: "0949447156",
+		Pid:         P_ID,
+		PhoneNumber: PHONE_NUMBER,
 		IdCard:      newTestIdCard(),
 	}
 
-	service := getUserService()
 	_, _ = service.CreateUser(ctx, &types.CreateUserRequest{
 		User: user,
 	})
@@ -386,10 +370,10 @@ func TestGetUser_HappyPath(t *testing.T) {
 	response, err := service.GetUser(ctx, &types.GetUserRequest{
 		Pid: user.Pid,
 	})
-
 	if err != nil {
 		t.Fatal("GetUser failed: " + err.Error())
 	}
+
 	if response == nil {
 		t.Fatal("GetUser returned nil response")
 	}
@@ -399,17 +383,15 @@ func TestGetUser_HappyPath(t *testing.T) {
 }
 
 func TestGetUser_NotFound(t *testing.T) {
-	ctx := context.Background()
 	service := getUserService()
 
-	response, err := service.GetUser(ctx, &types.GetUserRequest{
+	response, err := service.GetUser(context.Background(), &types.GetUserRequest{
 		Pid: "9999999999",
 	})
-
-	t.Log(err)
 	if err == nil {
 		t.Fatal("expected error for user not found, got nil")
 	}
+
 	if response != nil {
 		t.Fatal("expected nil response for user not found")
 	}
@@ -417,6 +399,7 @@ func TestGetUser_NotFound(t *testing.T) {
 
 func TestListUsers_HappyPath(t *testing.T) {
 	ctx := context.Background()
+	service := getUserService()
 
 	users := []*types.User{
 		{
@@ -430,8 +413,6 @@ func TestListUsers_HappyPath(t *testing.T) {
 			IdCard:      newTestIdCard(),
 		},
 	}
-
-	service := getUserService()
 	for _, user := range users {
 		_, _ = service.CreateUser(ctx, &types.CreateUserRequest{
 			User: user,
@@ -442,6 +423,7 @@ func TestListUsers_HappyPath(t *testing.T) {
 	if err != nil {
 		t.Fatal("ListUsers failed: " + err.Error())
 	}
+
 	if response == nil {
 		t.Fatal("ListUsers returned nil response")
 	}
@@ -457,13 +439,13 @@ func TestListUsers_HappyPath(t *testing.T) {
 }
 
 func TestListUsers_Empty(t *testing.T) {
-	ctx := context.Background()
 	service := getUserService()
 
-	response, err := service.ListUsers(ctx, &types.ListUsersRequest{})
+	response, err := service.ListUsers(context.Background(), &types.ListUsersRequest{})
 	if err != nil {
 		t.Fatal("ListUsers failed: " + err.Error())
 	}
+
 	if response == nil {
 		t.Fatal("ListUsers returned nil response")
 	}
@@ -474,21 +456,18 @@ func TestListUsers_Empty(t *testing.T) {
 
 // helper
 func getUserService() *Service {
-	ctx := context.Background()
-
 	db, err := connectDatabase("mongodb://localhost:27017/?directConnection=true", "room_minh_house")
 	if err != nil {
 		panic("Failed to connect to database: " + err.Error())
 	}
 
 	// removes all documents and indexes
-	db.Collection("users").Drop(ctx)
+	db.Collection("users").Drop(context.Background())
 
 	dbService, err := database.NewMongoService(db)
 	if err != nil {
 		panic("Failed to create database service: " + err.Error())
 	}
 
-	service := NewService(dbService)
-	return service
+	return NewService(dbService)
 }

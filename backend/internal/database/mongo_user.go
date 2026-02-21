@@ -16,7 +16,6 @@ func (s *MongoService) CreateUser(ctx context.Context, user *types.User) error {
 
 func (s *MongoService) UpdateUser(ctx context.Context, user *types.User) error {
 	collection := s.database.Collection(userCollection)
-
 	res, err := collection.UpdateOne(ctx, bson.M{"pid": user.Pid}, bson.M{"$set": user})
 	if err != nil {
 		return err
@@ -31,7 +30,6 @@ func (s *MongoService) UpdateUser(ctx context.Context, user *types.User) error {
 
 func (s *MongoService) DeleteUser(ctx context.Context, pid string) error {
 	collection := s.database.Collection(userCollection)
-
 	result, err := collection.DeleteOne(ctx, bson.M{"pid": pid})
 	if err != nil {
 		return err
@@ -45,9 +43,8 @@ func (s *MongoService) DeleteUser(ctx context.Context, pid string) error {
 }
 
 func (s *MongoService) GetUser(ctx context.Context, pid string) (*types.User, error) {
-	collection := s.database.Collection(userCollection)
-
 	var user types.User
+	collection := s.database.Collection(userCollection)
 	if err := collection.FindOne(ctx, bson.M{"pid": pid}).Decode(&user); err != nil {
 		return nil, err
 	}

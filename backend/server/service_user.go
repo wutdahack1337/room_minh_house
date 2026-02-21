@@ -38,9 +38,8 @@ func (s *Service) CreateUser(ctx context.Context, request *types.CreateUserReque
 	if err := s.dbService.CreateUser(ctx, request.User); err != nil {
 		return nil, err
 	}
-	return &types.CreateUserResponse{
-		User: request.User,
-	}, nil
+
+	return &types.CreateUserResponse{User: request.User}, nil
 }
 
 func (s *Service) UpdateUser(ctx context.Context, request *types.UpdateUserRequest) (*types.UpdateUserResponse, error) {
@@ -74,9 +73,8 @@ func (s *Service) UpdateUser(ctx context.Context, request *types.UpdateUserReque
 	if err := s.dbService.UpdateUser(ctx, request.User); err != nil {
 		return nil, err
 	}
-	return &types.UpdateUserResponse{
-		User: request.User,
-	}, nil
+
+	return &types.UpdateUserResponse{User: request.User}, nil
 }
 
 func (s *Service) DeleteUser(ctx context.Context, request *types.DeleteUserRequest) (*types.DeleteUserResponse, error) {
@@ -107,9 +105,7 @@ func (s *Service) GetUser(ctx context.Context, request *types.GetUserRequest) (*
 		return nil, err
 	}
 
-	return &types.GetUserResponse{
-		User: user,
-	}, nil
+	return &types.GetUserResponse{User: user}, nil
 }
 
 func (s *Service) ListUsers(ctx context.Context, request *types.ListUsersRequest) (*types.ListUsersResponse, error) {
@@ -118,7 +114,5 @@ func (s *Service) ListUsers(ctx context.Context, request *types.ListUsersRequest
 		return nil, err
 	}
 
-	return &types.ListUsersResponse{
-		Users: users,
-	}, nil
+	return &types.ListUsersResponse{Users: users}, nil
 }

@@ -9,9 +9,11 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/readpref"
 )
 
-const roomCollection = "rooms"
-const userCollection = "users"
-const contractCollection = "contracts"
+const (
+	roomCollection     = "rooms"
+	userCollection     = "users"
+	contractCollection = "contracts"
+)
 
 type MongoService struct {
 	database *mongo.Database
@@ -20,40 +22,35 @@ type MongoService struct {
 func NewMongoService(database *mongo.Database) (*MongoService, error) {
 	// set room_number as unique index
 	collection := database.Collection(roomCollection)
-	indexModel := mongo.IndexModel{
+	_, err := collection.Indexes().CreateOne(context.Background(), mongo.IndexModel{
 		Keys:    bson.D{{Key: "room_number", Value: 1}},
 		Options: options.Index().SetUnique(true),
-	}
-	_, err := collection.Indexes().CreateOne(context.Background(), indexModel)
+	})
 	if err != nil {
 		return nil, err
 	}
 
 	// set pid as unique index
 	collection = database.Collection(userCollection)
-	indexModel = mongo.IndexModel{
+	_, err = collection.Indexes().CreateOne(context.Background(), mongo.IndexModel{
 		Keys:    bson.D{{Key: "pid", Value: 1}},
 		Options: options.Index().SetUnique(true),
-	}
-	_, err = collection.Indexes().CreateOne(context.Background(), indexModel)
+	})
 	if err != nil {
 		return nil, err
 	}
 
 	// set contract id as unique index
 	collection = database.Collection(contractCollection)
-	indexModel = mongo.IndexModel{
+	_, err = collection.Indexes().CreateOne(context.Background(), mongo.IndexModel{
 		Keys:    bson.D{{Key: "contract_id", Value: 1}},
 		Options: options.Index().SetUnique(true),
-	}
-	_, err = collection.Indexes().CreateOne(context.Background(), indexModel)
+	})
 	if err != nil {
 		return nil, err
 	}
 
-	return &MongoService{
-		database: database,
-	}, nil
+	return &MongoService{database: database}, nil
 }
 
 func (s *MongoService) CheckHealth(ctx context.Context) error {
