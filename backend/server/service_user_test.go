@@ -22,6 +22,13 @@ func newTestIdCard() *types.IdCard {
 	}
 }
 
+func newTestAccount() *types.Account {
+	return &types.Account{
+		Username: "test_username",
+		Password: "test_password",
+	}
+}
+
 func TestCreateUser_HappyPath(t *testing.T) {
 	service := getUserService()
 
@@ -30,6 +37,7 @@ func TestCreateUser_HappyPath(t *testing.T) {
 			Pid:         P_ID,
 			PhoneNumber: PHONE_NUMBER,
 			IdCard:      newTestIdCard(),
+			Account:     newTestAccount(),
 		},
 	})
 	if err != nil {
@@ -49,6 +57,7 @@ func TestCreateUser_DuplicatePid(t *testing.T) {
 		Pid:         P_ID,
 		PhoneNumber: PHONE_NUMBER,
 		IdCard:      newTestIdCard(),
+		Account:     newTestAccount(),
 	}
 
 	_, _ = service.CreateUser(ctx, &types.CreateUserRequest{
@@ -74,6 +83,7 @@ func TestCreateUser_MissingPid(t *testing.T) {
 		User: &types.User{
 			PhoneNumber: PHONE_NUMBER,
 			IdCard:      newTestIdCard(),
+			Account:     newTestAccount(),
 		},
 	})
 
@@ -92,6 +102,7 @@ func TestCreateUser_MissingIdCard(t *testing.T) {
 		User: &types.User{
 			Pid:         P_ID,
 			PhoneNumber: PHONE_NUMBER,
+			Account:     newTestAccount(),
 		},
 	})
 
@@ -114,6 +125,7 @@ func TestCreateUser_IdCardMissingName(t *testing.T) {
 			Pid:         P_ID,
 			PhoneNumber: PHONE_NUMBER,
 			IdCard:      idCard,
+			Account:     newTestAccount(),
 		},
 	})
 
@@ -136,6 +148,7 @@ func TestCreateUser_IdCardMissingSex(t *testing.T) {
 			Pid:         P_ID,
 			PhoneNumber: PHONE_NUMBER,
 			IdCard:      idCard,
+			Account:     newTestAccount(),
 		},
 	})
 
@@ -158,6 +171,7 @@ func TestCreateUser_IdCardMissingDateOfBirth(t *testing.T) {
 			Pid:         P_ID,
 			PhoneNumber: PHONE_NUMBER,
 			IdCard:      idCard,
+			Account:     newTestAccount(),
 		},
 	})
 
@@ -180,6 +194,7 @@ func TestCreateUser_IdCardMissingPlaceOfBirth(t *testing.T) {
 			Pid:         P_ID,
 			PhoneNumber: PHONE_NUMBER,
 			IdCard:      idCard,
+			Account:     newTestAccount(),
 		},
 	})
 
@@ -201,6 +216,7 @@ func TestUpdateUser_HappyPath(t *testing.T) {
 			Pid:         P_ID,
 			PhoneNumber: PHONE_NUMBER,
 			IdCard:      newTestIdCard(),
+			Account:     newTestAccount(),
 		},
 	})
 
@@ -208,6 +224,7 @@ func TestUpdateUser_HappyPath(t *testing.T) {
 		Pid:         P_ID,
 		PhoneNumber: "0918441887",
 		IdCard:      newTestIdCard(),
+		Account:     newTestAccount(),
 	}
 
 	_, err := service.UpdateUser(ctx, &types.UpdateUserRequest{
@@ -235,6 +252,7 @@ func TestUpdateUser_MissingPid(t *testing.T) {
 		User: &types.User{
 			PhoneNumber: PHONE_NUMBER,
 			IdCard:      newTestIdCard(),
+			Account:     newTestAccount(),
 		},
 	})
 
@@ -254,6 +272,7 @@ func TestUpdateUser_NotFound(t *testing.T) {
 			Pid:         "9999999999",
 			PhoneNumber: PHONE_NUMBER,
 			IdCard:      newTestIdCard(),
+			Account:     newTestAccount(),
 		},
 	})
 
@@ -274,6 +293,7 @@ func TestUpdateUser_IdCardUpdated(t *testing.T) {
 		Pid:         P_ID,
 		PhoneNumber: PHONE_NUMBER,
 		IdCard:      newTestIdCard(),
+		Account:     newTestAccount(),
 	}
 
 	_, _ = service.CreateUser(ctx, &types.CreateUserRequest{
@@ -315,6 +335,7 @@ func TestDeleteUser_HappyPath(t *testing.T) {
 		Pid:         P_ID,
 		PhoneNumber: PHONE_NUMBER,
 		IdCard:      newTestIdCard(),
+		Account:     newTestAccount(),
 	}
 
 	_, _ = service.CreateUser(ctx, &types.CreateUserRequest{
@@ -361,6 +382,7 @@ func TestGetUser_HappyPath(t *testing.T) {
 		Pid:         P_ID,
 		PhoneNumber: PHONE_NUMBER,
 		IdCard:      newTestIdCard(),
+		Account:     newTestAccount(),
 	}
 
 	_, _ = service.CreateUser(ctx, &types.CreateUserRequest{
@@ -406,11 +428,13 @@ func TestListUsers_HappyPath(t *testing.T) {
 			Pid:         "0123456789",
 			PhoneNumber: "0949447156",
 			IdCard:      newTestIdCard(),
+			Account:     newTestAccount(),
 		},
 		{
 			Pid:         "9876543210",
 			PhoneNumber: "0918441887",
 			IdCard:      newTestIdCard(),
+			Account:     newTestAccount(),
 		},
 	}
 	for _, user := range users {
@@ -451,6 +475,161 @@ func TestListUsers_Empty(t *testing.T) {
 	}
 	if len(response.Users) != 0 {
 		t.Fatalf("expected 0 users, got %d", len(response.Users))
+	}
+}
+
+func TestCreateUser_MissingAccount(t *testing.T) {
+	service := getUserService()
+	response, err := service.CreateUser(context.Background(), &types.CreateUserRequest{
+		User: &types.User{
+			Pid:         P_ID,
+			PhoneNumber: PHONE_NUMBER,
+			IdCard:      newTestIdCard(),
+		},
+	})
+
+	if err == nil {
+		t.Fatal("expected error for missing account, got nil")
+	}
+	if response != nil {
+		t.Fatal("expected nil response for missing account, got non-nil")
+	}
+}
+
+func TestCreateUser_AccountMissingUsername(t *testing.T) {
+	service := getUserService()
+
+	account := newTestAccount()
+	account.Username = ""
+	response, err := service.CreateUser(context.Background(), &types.CreateUserRequest{
+		User: &types.User{
+			Pid:         P_ID,
+			PhoneNumber: PHONE_NUMBER,
+			IdCard:      newTestIdCard(),
+			Account:     account,
+		},
+	})
+
+	if err == nil {
+		t.Fatal("expected error for missing account username, got nil")
+	}
+	if response != nil {
+		t.Fatal("expected nil response for missing account username, got non-nil")
+	}
+}
+
+func TestCreateUser_AccountMissingPassword(t *testing.T) {
+	service := getUserService()
+
+	account := newTestAccount()
+	account.Password = ""
+	response, err := service.CreateUser(context.Background(), &types.CreateUserRequest{
+		User: &types.User{
+			Pid:         P_ID,
+			PhoneNumber: PHONE_NUMBER,
+			IdCard:      newTestIdCard(),
+			Account:     account,
+		},
+	})
+
+	if err == nil {
+		t.Fatal("expected error for missing account password, got nil")
+	}
+	if response != nil {
+		t.Fatal("expected nil response for missing account password, got non-nil")
+	}
+}
+
+func TestUpdateUser_MissingAccount(t *testing.T) {
+	ctx := context.Background()
+	service := getUserService()
+
+	_, _ = service.CreateUser(ctx, &types.CreateUserRequest{
+		User: &types.User{
+			Pid:         P_ID,
+			PhoneNumber: PHONE_NUMBER,
+			IdCard:      newTestIdCard(),
+			Account:     newTestAccount(),
+		},
+	})
+
+	response, err := service.UpdateUser(context.Background(), &types.UpdateUserRequest{
+		User: &types.User{
+			Pid:         P_ID,
+			PhoneNumber: PHONE_NUMBER,
+			IdCard:      newTestIdCard(),
+		},
+	})
+	if err == nil {
+		t.Fatal("expected error for missing account, got nil")
+	}
+
+	if response != nil {
+		t.Fatal("expected nil response for missing account, got non-nil")
+	}
+}
+
+func TestUpdateUser_AccountMissingUsername(t *testing.T) {
+	ctx := context.Background()
+	service := getUserService()
+
+	_, _ = service.CreateUser(ctx, &types.CreateUserRequest{
+		User: &types.User{
+			Pid:         P_ID,
+			PhoneNumber: PHONE_NUMBER,
+			IdCard:      newTestIdCard(),
+			Account:     newTestAccount(),
+		},
+	})
+
+	account := newTestAccount()
+	account.Username = ""
+	response, err := service.UpdateUser(context.Background(), &types.UpdateUserRequest{
+		User: &types.User{
+			Pid:         P_ID,
+			PhoneNumber: PHONE_NUMBER,
+			IdCard:      newTestIdCard(),
+			Account:     account,
+		},
+	})
+
+	if err == nil {
+		t.Fatal("expected error for missing account username, got nil")
+	}
+	if response != nil {
+		t.Fatal("expected nil response for missing account username, got non-nil")
+	}
+}
+
+func TestUpdateUser_AccountMissingPassword(t *testing.T) {
+	ctx := context.Background()
+	service := getUserService()
+
+	_, _ = service.CreateUser(ctx, &types.CreateUserRequest{
+		User: &types.User{
+			Pid:         P_ID,
+			PhoneNumber: PHONE_NUMBER,
+			IdCard:      newTestIdCard(),
+			Account:     newTestAccount(),
+		},
+	})
+
+	account := newTestAccount()
+	account.Password = ""
+	response, err := service.UpdateUser(context.Background(), &types.UpdateUserRequest{
+		User: &types.User{
+			Pid:         P_ID,
+			PhoneNumber: PHONE_NUMBER,
+			IdCard:      newTestIdCard(),
+			Account:     account,
+		},
+	})
+
+	if err == nil {
+		t.Fatal("expected error for missing account password, got nil")
+	}
+	if response != nil {
+		t.Fatal("expected nil response for missing account password, got non-nil")
 	}
 }
 

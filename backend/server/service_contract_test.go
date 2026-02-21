@@ -18,6 +18,7 @@ func TestCreateContract_HappyPath(t *testing.T) {
 		Pid:         P_ID,
 		PhoneNumber: PHONE_NUMBER,
 		IdCard:      newTestIdCard(),
+		Account:     newTestAccount(),
 	}
 	room := &types.Room{
 		RoomNumber:  ROOM_NUMBER,
@@ -136,17 +137,22 @@ func TestCreateContract_UserNotFound(t *testing.T) {
 
 func TestCreateContract_RoomNotFound(t *testing.T) {
 	ctx := context.Background()
+	service := getServiceForContract()
 
 	// create a valid user
-	service := getServiceForContract()
 	user := &types.User{
 		Pid:         P_ID,
 		PhoneNumber: PHONE_NUMBER,
 		IdCard:      newTestIdCard(),
+		Account:     newTestAccount(),
 	}
-	_, _ = service.CreateUser(ctx, &types.CreateUserRequest{
+
+	_, err := service.CreateUser(ctx, &types.CreateUserRequest{
 		User: user,
 	})
+	if err != nil {
+		t.Fatal("Failed to create user: " + err.Error())
+	}
 
 	contract := &types.Contract{
 		UserPid:        P_ID,
@@ -181,19 +187,26 @@ func TestUpdateContract_HappyPath(t *testing.T) {
 		Pid:         P_ID,
 		PhoneNumber: PHONE_NUMBER,
 		IdCard:      newTestIdCard(),
+		Account:     newTestAccount(),
 	}
 	room := &types.Room{
 		RoomNumber:  ROOM_NUMBER,
-		Price:       666_666,
+		Price:       PRICE,
 		IsAvailable: true,
 	}
 
-	_, _ = service.CreateUser(ctx, &types.CreateUserRequest{
+	_, err := service.CreateUser(ctx, &types.CreateUserRequest{
 		User: user,
 	})
-	_, _ = service.CreateRoom(ctx, &types.CreateRoomRequest{
+	if err != nil {
+		t.Fatal("Failed to create user: " + err.Error())
+	}
+	_, err = service.CreateRoom(ctx, &types.CreateRoomRequest{
 		Room: room,
 	})
+	if err != nil {
+		t.Fatal("Failed to create room: " + err.Error())
+	}
 
 	contract := &types.Contract{
 		UserPid:        P_ID,
@@ -211,7 +224,7 @@ func TestUpdateContract_HappyPath(t *testing.T) {
 	contract.ContractId = contractId
 	contract.Status = "expired"
 
-	_, err := service.UpdateContract(ctx, &types.UpdateContractRequest{
+	_, err = service.UpdateContract(ctx, &types.UpdateContractRequest{
 		Contract: contract,
 	})
 	if err != nil {
@@ -241,18 +254,27 @@ func TestGetContract_HappyPath(t *testing.T) {
 	user := &types.User{
 		Pid:         P_ID,
 		PhoneNumber: PHONE_NUMBER,
+		IdCard:      newTestIdCard(),
+		Account:     newTestAccount(),
 	}
 	room := &types.Room{
 		RoomNumber:  ROOM_NUMBER,
 		Price:       666_666,
 		IsAvailable: true,
 	}
-	_, _ = service.CreateUser(ctx, &types.CreateUserRequest{
+	_, err := service.CreateUser(ctx, &types.CreateUserRequest{
 		User: user,
 	})
-	_, _ = service.CreateRoom(ctx, &types.CreateRoomRequest{
+	if err != nil {
+		t.Fatal("Failed to create user: " + err.Error())
+	}
+
+	_, err = service.CreateRoom(ctx, &types.CreateRoomRequest{
 		Room: room,
 	})
+	if err != nil {
+		t.Fatal("Failed to create room: " + err.Error())
+	}
 
 	contract := &types.Contract{
 		UserPid:        P_ID,
@@ -305,6 +327,8 @@ func TestDeleteContract_HappyPath(t *testing.T) {
 	user := &types.User{
 		Pid:         P_ID,
 		PhoneNumber: PHONE_NUMBER,
+		IdCard:      newTestIdCard(),
+		Account:     newTestAccount(),
 	}
 	room := &types.Room{
 		RoomNumber:  ROOM_NUMBER,
@@ -312,12 +336,19 @@ func TestDeleteContract_HappyPath(t *testing.T) {
 		IsAvailable: true,
 	}
 
-	_, _ = service.CreateUser(ctx, &types.CreateUserRequest{
+	_, err := service.CreateUser(ctx, &types.CreateUserRequest{
 		User: user,
 	})
-	_, _ = service.CreateRoom(ctx, &types.CreateRoomRequest{
+	if err != nil {
+		t.Fatal("Failed to create user: " + err.Error())
+	}
+
+	_, err = service.CreateRoom(ctx, &types.CreateRoomRequest{
 		Room: room,
 	})
+	if err != nil {
+		t.Fatal("Failed to create room: " + err.Error())
+	}
 
 	contract := &types.Contract{
 		UserPid:        P_ID,
@@ -332,7 +363,7 @@ func TestDeleteContract_HappyPath(t *testing.T) {
 
 	contractId := createResponse.Contract.ContractId
 
-	_, err := service.DeleteContract(ctx, &types.DeleteContractRequest{
+	_, err = service.DeleteContract(ctx, &types.DeleteContractRequest{
 		ContractId: contractId,
 	})
 	if err != nil {
@@ -357,12 +388,15 @@ func TestListContracts_HappyPath(t *testing.T) {
 	service := getServiceForContract()
 
 	users := []*types.User{
-		{Pid: "user1", PhoneNumber: "0111111111", IdCard: newTestIdCard()},
-		{Pid: "user2", PhoneNumber: "0222222222", IdCard: newTestIdCard()},
-		{Pid: "user3", PhoneNumber: "0333333333", IdCard: newTestIdCard()},
+		{Pid: "user1", PhoneNumber: "0111111111", IdCard: newTestIdCard(), Account: newTestAccount()},
+		{Pid: "user2", PhoneNumber: "0222222222", IdCard: newTestIdCard(), Account: newTestAccount()},
+		{Pid: "user3", PhoneNumber: "0333333333", IdCard: newTestIdCard(), Account: newTestAccount()},
 	}
 	for _, user := range users {
-		_, _ = service.CreateUser(ctx, &types.CreateUserRequest{User: user})
+		_, err := service.CreateUser(ctx, &types.CreateUserRequest{User: user})
+		if err != nil {
+			t.Fatal("Failed to create user: " + err.Error())
+		}
 	}
 
 	rooms := []*types.Room{
@@ -438,7 +472,9 @@ func getServiceForContract() *Service {
 		panic("Failed to connect to database: " + err.Error())
 	}
 
-	// removes all documents and indexes for contracts
+	// removes all documents and indexes
+	db.Collection("users").Drop(context.Background())
+	db.Collection("rooms").Drop(context.Background())
 	db.Collection("contracts").Drop(context.Background())
 
 	dbService, err := database.NewMongoService(db)

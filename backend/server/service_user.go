@@ -35,6 +35,17 @@ func (s *Service) CreateUser(ctx context.Context, request *types.CreateUserReque
 		return nil, fmt.Errorf("CreateUser error: id card place of birth is required")
 	}
 
+	account := request.User.Account
+	if account == nil {
+		return nil, fmt.Errorf("CreateUser error: account is required")
+	}
+	if account.Username == "" {
+		return nil, fmt.Errorf("CreateUser error: account username is required")
+	}
+	if account.Password == "" {
+		return nil, fmt.Errorf("CreateUser error: account password is required")
+	}
+
 	if err := s.dbService.CreateUser(ctx, request.User); err != nil {
 		return nil, err
 	}
@@ -68,6 +79,17 @@ func (s *Service) UpdateUser(ctx context.Context, request *types.UpdateUserReque
 	}
 	if card.PlaceOfBirth == "" {
 		return nil, fmt.Errorf("CreateUser error: id card place of birth is required")
+	}
+
+	account := request.User.Account
+	if account == nil {
+		return nil, fmt.Errorf("CreateUser error: account is required")
+	}
+	if account.Username == "" {
+		return nil, fmt.Errorf("CreateUser error: account username is required")
+	}
+	if account.Password == "" {
+		return nil, fmt.Errorf("CreateUser error: account password is required")
 	}
 
 	if err := s.dbService.UpdateUser(ctx, request.User); err != nil {
