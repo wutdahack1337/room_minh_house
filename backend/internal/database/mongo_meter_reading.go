@@ -53,14 +53,7 @@ func (s *MongoService) GetMeterReading(ctx context.Context, roomNumber int32, pe
 func (s *MongoService) ListMeterReadings(ctx context.Context, roomNumber int32) ([]*types.MeterReading, error) {
 	collection := s.database.Collection(meterReadingCollection)
 
-	var filter bson.M
-	if roomNumber > 0 {
-		filter = bson.M{"room_number": roomNumber}
-	} else {
-		filter = bson.M{}
-	}
-
-	cursor, err := collection.Find(ctx, filter)
+	cursor, err := collection.Find(ctx, bson.M{"room_number": roomNumber})
 	if err != nil {
 		return nil, err
 	}
