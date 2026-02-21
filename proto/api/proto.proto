@@ -145,6 +145,45 @@ message ListRoomsResponse {
 
 // ==============================================================
 
+message MeterReading {
+    string period = 1 [(gogoproto.moretags) = "bson:\"period\""];
+    double electricity_reading = 2 [(gogoproto.moretags) = "bson:\"electricity_reading\""];
+    double water_reading = 3 [(gogoproto.moretags) = "bson:\"water_reading\""];
+}
+
+message CreateMeterReadingRequest {
+    int32 room_number = 1;
+    MeterReading meter_reading = 2;
+}
+message CreateMeterReadingResponse {
+    MeterReading meter_reading = 1;
+}
+
+message UpdateMeterReadingRequest {
+    int32 room_number = 1;
+    MeterReading meter_reading = 2; // must include room_number and period
+}
+message UpdateMeterReadingResponse {
+    MeterReading meter_reading = 1;
+}
+
+message GetMeterReadingRequest {
+    int32 room_number = 1;
+    string period = 2;
+}
+message GetMeterReadingResponse {
+    MeterReading meter_reading = 1;
+}
+
+message ListMeterReadingsRequest {
+    int32 room_number = 1;
+}
+message ListMeterReadingsResponse {
+    repeated MeterReading meter_readings = 1;
+}
+
+// ==============================================================
+
 message IdCard {
     string name = 1 [(gogoproto.moretags) = "bson:\"name\""];
     string sex = 2 [(gogoproto.moretags) = "bson:\"sex\""];
@@ -237,46 +276,6 @@ message GetContractResponse {
 message ListContractsRequest {}
 message ListContractsResponse {
     repeated Contract contracts = 1;
-}
-
-// ==============================================================
-
-message MeterReading {
-    int32 room_number = 1 [(gogoproto.moretags) = "bson:\"room_number\""];
-    string period = 2 [(gogoproto.moretags) = "bson:\"period\""];
-    double electricity_reading = 3 [(gogoproto.moretags) = "bson:\"electricity_reading\""];
-    double water_reading = 4 [(gogoproto.moretags) = "bson:\"water_reading\""];
-}
-
-message CreateMeterReadingRequest {
-    int32 room_number = 1;
-    MeterReading meter_reading = 2;
-}
-message CreateMeterReadingResponse {
-    MeterReading meter_reading = 1;
-}
-
-message UpdateMeterReadingRequest {
-    int32 room_number = 1;
-    MeterReading meter_reading = 2; // must include room_number and period
-}
-message UpdateMeterReadingResponse {
-    MeterReading meter_reading = 1;
-}
-
-message GetMeterReadingRequest {
-    int32 room_number = 1;
-    string period = 2;
-}
-message GetMeterReadingResponse {
-    MeterReading meter_reading = 1;
-}
-
-message ListMeterReadingsRequest {
-    int32 room_number = 1;
-}
-message ListMeterReadingsResponse {
-    repeated MeterReading meter_readings = 1;
 }
 
 // ==============================================================
