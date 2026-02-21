@@ -3,9 +3,20 @@ package server
 import (
 	"context"
 	"fmt"
+	"regexp"
 
 	types "github.com/wutdahack1337/room_minh_house/backend/pkg/pb"
 )
+
+// MM-YYYY
+var periodPattern = regexp.MustCompile(`^(0[1-9]|1[0-2])-\d{4}$`)
+
+func validatePeriod(period string) error {
+	if !periodPattern.MatchString(period) {
+		return fmt.Errorf("period must be in MM-YYYY format (e.g., \"08-2025\")")
+	}
+	return nil
+}
 
 func (s *Service) CreateMeterReading(ctx context.Context, request *types.CreateMeterReadingRequest) (*types.CreateMeterReadingResponse, error) {
 	if request == nil {
@@ -19,6 +30,9 @@ func (s *Service) CreateMeterReading(ctx context.Context, request *types.CreateM
 	}
 	if request.MeterReading.Period == "" {
 		return nil, fmt.Errorf("CreateMeterReading error: period is required")
+	}
+	if err := validatePeriod(request.MeterReading.Period); err != nil {
+		return nil, fmt.Errorf("CreateMeterReading error: %v", err)
 	}
 
 	if err := s.dbService.CreateMeterReading(ctx, request.MeterReading); err != nil {
@@ -41,6 +55,9 @@ func (s *Service) UpdateMeterReading(ctx context.Context, request *types.UpdateM
 	if request.MeterReading.Period == "" {
 		return nil, fmt.Errorf("UpdateMeterReading error: period is required")
 	}
+	if err := validatePeriod(request.MeterReading.Period); err != nil {
+		return nil, fmt.Errorf("UpdateMeterReading error: %v", err)
+	}
 
 	if err := s.dbService.UpdateMeterReading(ctx, request.MeterReading); err != nil {
 		return nil, err
@@ -58,6 +75,9 @@ func (s *Service) GetMeterReading(ctx context.Context, request *types.GetMeterRe
 	}
 	if request.Period == "" {
 		return nil, fmt.Errorf("GetMeterReading error: period is required")
+	}
+	if err := validatePeriod(request.Period); err != nil {
+		return nil, fmt.Errorf("GetMeterReading error: %v", err)
 	}
 
 	meterReading, err := s.dbService.GetMeterReading(ctx, request.RoomNumber, request.Period)

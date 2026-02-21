@@ -2,6 +2,7 @@ package server
 
 import (
 	"context"
+	"strings"
 	"testing"
 
 	"github.com/wutdahack1337/room_minh_house/backend/internal/database"
@@ -137,6 +138,56 @@ func TestCreateMeterReading_RoomNotFound(t *testing.T) {
 	}
 }
 
+func TestCreateMeterReading_InvalidPeriodFormat(t *testing.T) {
+	ctx := context.Background()
+	service := getServiceForMeterReading()
+
+	// Create a room first
+	room := &types.Room{
+		RoomNumber:  ROOM_NUMBER,
+		Price:       PRICE,
+		IsAvailable: false,
+	}
+	_, err := service.CreateRoom(ctx, &types.CreateRoomRequest{
+		Room: room,
+	})
+	if err != nil {
+		t.Fatal("Failed to create room: " + err.Error())
+	}
+
+	invalidPeriods := []string{
+		"2025-08",   // wrong order
+		"8-2025",    // missing leading zero
+		"13-2025",   // invalid month
+		"00-2025",   // month 00
+		"08-25",     // year too short
+		"08-202500", // year too long
+		"abc-defg",  // non-numeric
+		"08/2025",   // wrong separator
+	}
+
+	for _, invalidPeriod := range invalidPeriods {
+		response, err := service.CreateMeterReading(ctx, &types.CreateMeterReadingRequest{
+			MeterReading: &types.MeterReading{
+				RoomNumber:         ROOM_NUMBER,
+				Period:             invalidPeriod,
+				ElectricityReading: ELECTRICITY_READING,
+				WaterReading:       WATER_READING,
+			},
+		})
+		if err == nil {
+			t.Fatalf("expected error for invalid period format '%s', got nil", invalidPeriod)
+		}
+		if !containsSubstring(err.Error(), "period must be in MM-YYYY format") {
+			t.Fatalf("expected error to contain 'period must be in MM-YYYY format', got '%s'", err.Error())
+		}
+
+		if response != nil {
+			t.Fatal("expected nil response for invalid period format")
+		}
+	}
+}
+
 func TestUpdateMeterReading_HappyPath(t *testing.T) {
 	ctx := context.Background()
 	service := getServiceForMeterReading()
@@ -224,6 +275,54 @@ func TestUpdateMeterReading_NotFound(t *testing.T) {
 	}
 }
 
+func TestUpdateMeterReading_InvalidPeriodFormat(t *testing.T) {
+	ctx := context.Background()
+	service := getServiceForMeterReading()
+
+	// Create a room first
+	_, err := service.CreateRoom(ctx, &types.CreateRoomRequest{
+		Room: &types.Room{
+			RoomNumber:  ROOM_NUMBER,
+			Price:       PRICE,
+			IsAvailable: false,
+		},
+	})
+	if err != nil {
+		t.Fatal("Failed to create room: " + err.Error())
+	}
+
+	invalidPeriods := []string{
+		"2025-08",
+		"8-2025",
+		"13-2025",
+		"00-2025",
+		"08-25",
+		"08-202500",
+		"abc-defg",
+	}
+
+	for _, invalidPeriod := range invalidPeriods {
+		response, err := service.UpdateMeterReading(ctx, &types.UpdateMeterReadingRequest{
+			MeterReading: &types.MeterReading{
+				RoomNumber:         ROOM_NUMBER,
+				Period:             invalidPeriod,
+				ElectricityReading: ELECTRICITY_READING,
+				WaterReading:       WATER_READING,
+			},
+		})
+		if err == nil {
+			t.Fatalf("expected error for invalid period format '%s', got nil", invalidPeriod)
+		}
+		if !containsSubstring(err.Error(), "period must be in MM-YYYY format") {
+			t.Fatalf("expected error to contain 'period must be in MM-YYYY format', got '%s'", err.Error())
+		}
+
+		if response != nil {
+			t.Fatal("expected nil response for invalid period format")
+		}
+	}
+}
+
 func TestGetMeterReading_HappyPath(t *testing.T) {
 	ctx := context.Background()
 	service := getServiceForMeterReading()
@@ -289,6 +388,38 @@ func TestGetMeterReading_NotFound(t *testing.T) {
 
 	if response != nil {
 		t.Fatal("expected nil response for non-existent meter reading")
+	}
+}
+
+func TestGetMeterReading_InvalidPeriodFormat(t *testing.T) {
+	service := getServiceForMeterReading()
+
+	invalidPeriods := []string{
+		"2025-08",
+		"8-2025",
+		"13-2025",
+		"00-2025",
+		"08-25",
+		"08-202500",
+		"abc-defg",
+		"08/2025",
+	}
+
+	for _, invalidPeriod := range invalidPeriods {
+		response, err := service.GetMeterReading(context.Background(), &types.GetMeterReadingRequest{
+			RoomNumber: ROOM_NUMBER,
+			Period:     invalidPeriod,
+		})
+		if err == nil {
+			t.Fatalf("expected error for invalid period format '%s', got nil", invalidPeriod)
+		}
+		if !containsSubstring(err.Error(), "period must be in MM-YYYY format") {
+			t.Fatalf("expected error to contain 'period must be in MM-YYYY format', got '%s'", err.Error())
+		}
+
+		if response != nil {
+			t.Fatal("expected nil response for invalid period format")
+		}
 	}
 }
 
@@ -363,7 +494,7 @@ func TestListMeterReadings_Empty(t *testing.T) {
 	}
 }
 
-// helper
+// helpers
 func getServiceForMeterReading() *Service {
 	db, err := connectDatabase("mongodb://localhost:27017/?directConnection=true", "room_minh_house")
 	if err != nil {
@@ -380,4 +511,8 @@ func getServiceForMeterReading() *Service {
 	}
 
 	return NewService(dbService)
+}
+
+func containsSubstring(str, substr string) bool {
+	return strings.Contains(str, substr)
 }

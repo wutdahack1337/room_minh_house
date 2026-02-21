@@ -146,7 +146,7 @@ message ListRoomsResponse {
 // ==============================================================
 
 message MeterReading {
-    int32 room_number = 1 [(gogoproto.moretags) = "bson:\"room_number\""];
+    int32 room_number = 1 [(gogoproto.moretags) = "bson:\"room_number\""]; // format: MM-YYYY, e.g. "08-2025"
     string period = 2 [(gogoproto.moretags) = "bson:\"period\""];
     double electricity_reading = 3 [(gogoproto.moretags) = "bson:\"electricity_reading\""];
     double water_reading = 4 [(gogoproto.moretags) = "bson:\"water_reading\""];
