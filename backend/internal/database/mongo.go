@@ -56,6 +56,6 @@ func NewMongoService(database *mongo.Database) (*MongoService, error) {
 	}, nil
 }
 
-func (s *MongoService) Health(ctx context.Context) error {
+func (s *MongoService) CheckHealth(ctx context.Context) error {
 	return s.database.Client().Ping(ctx, readpref.Primary())
 }

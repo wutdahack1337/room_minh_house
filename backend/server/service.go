@@ -10,17 +10,17 @@ import (
 
 type Service struct {
 	types.UnimplementedQueryServer
-	dbService database.DatabaseService
+	dbService *database.MongoService
 }
 
-func NewService(dbService database.DatabaseService) *Service {
+func NewService(dbService *database.MongoService) *Service {
 	return &Service{
 		dbService: dbService,
 	}
 }
 
 func (s *Service) CheckHealth(ctx context.Context, request *types.CheckHealthRequest) (*types.CheckHealthResponse, error) {
-	if err := s.dbService.Health(ctx); err != nil {
+	if err := s.dbService.CheckHealth(ctx); err != nil {
 		return &types.CheckHealthResponse{
 			Status: fmt.Sprintf("database error: %v", err),
 		}, err
