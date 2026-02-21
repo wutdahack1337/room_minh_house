@@ -10,10 +10,10 @@ import (
 
 type Service struct {
 	types.UnimplementedQueryServer
-	dbService database.Database
+	dbService database.DatabaseService
 }
 
-func NewService(dbService database.Database) *Service {
+func NewService(dbService database.DatabaseService) *Service {
 	return &Service{
 		dbService: dbService,
 	}
