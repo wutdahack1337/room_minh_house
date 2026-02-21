@@ -496,14 +496,16 @@ func TestListMeterReadings_Empty(t *testing.T) {
 
 // helpers
 func getServiceForMeterReading() *Service {
+	ctx := context.Background()
+
 	db, err := connectDatabase("mongodb://localhost:27017/?directConnection=true", "room_minh_house")
 	if err != nil {
 		panic("Failed to connect to database: " + err.Error())
 	}
 
 	// removes all documents and indexes
-	db.Collection("rooms").Drop(context.Background())
-	db.Collection("meter_readings").Drop(context.Background())
+	db.Collection("rooms").Drop(ctx)
+	db.Collection("meter_readings").Drop(ctx)
 
 	dbService, err := database.NewMongoService(db)
 	if err != nil {
