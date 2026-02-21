@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	types "github.com/wutdahack1337/room_minh_house/backend/pkg/pb"
+	"golang.org/x/crypto/bcrypt"
 )
 
 func (s *Service) CreateUser(ctx context.Context, request *types.CreateUserRequest) (*types.CreateUserResponse, error) {
@@ -16,6 +17,9 @@ func (s *Service) CreateUser(ctx context.Context, request *types.CreateUserReque
 	}
 	if request.User.Pid == "" {
 		return nil, fmt.Errorf("CreateUser error: pid is required")
+	}
+	if request.User.Role == "" {
+		return nil, fmt.Errorf("CreateUser error: role is required")
 	}
 
 	card := request.User.IdCard
@@ -34,6 +38,24 @@ func (s *Service) CreateUser(ctx context.Context, request *types.CreateUserReque
 	if card.PlaceOfBirth == "" {
 		return nil, fmt.Errorf("CreateUser error: id card place of birth is required")
 	}
+
+	account := request.User.Account
+	if account == nil {
+		return nil, fmt.Errorf("CreateUser error: account is required")
+	}
+	if account.Username == "" {
+		return nil, fmt.Errorf("CreateUser error: account username is required")
+	}
+	if account.Password == "" {
+		return nil, fmt.Errorf("CreateUser error: account password is required")
+	}
+
+	// Hash the password before storing
+	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(account.Password), bcrypt.DefaultCost)
+	if err != nil {
+		return nil, fmt.Errorf("CreateUser error: failed to hash password: %w", err)
+	}
+	account.Password = string(hashedPassword)
 
 	if err := s.dbService.CreateUser(ctx, request.User); err != nil {
 		return nil, err
@@ -52,23 +74,44 @@ func (s *Service) UpdateUser(ctx context.Context, request *types.UpdateUserReque
 	if request.User.Pid == "" {
 		return nil, fmt.Errorf("UpdateUser error: pid is required")
 	}
+	if request.User.Role == "" {
+		return nil, fmt.Errorf("UpdateUser error: role is required")
+	}
 
 	card := request.User.IdCard
 	if card == nil {
-		return nil, fmt.Errorf("CreateUser error: id card is required")
+		return nil, fmt.Errorf("UpdateUser error: id card is required")
 	}
 	if card.Name == "" {
-		return nil, fmt.Errorf("CreateUser error: id card name is required")
+		return nil, fmt.Errorf("UpdateUser error: id card name is required")
 	}
 	if card.Sex == "" {
-		return nil, fmt.Errorf("CreateUser error: id card sex is required")
+		return nil, fmt.Errorf("UpdateUser error: id card sex is required")
 	}
 	if card.DateOfBirth == "" {
-		return nil, fmt.Errorf("CreateUser error: id card date of birth is required")
+		return nil, fmt.Errorf("UpdateUser error: id card date of birth is required")
 	}
 	if card.PlaceOfBirth == "" {
-		return nil, fmt.Errorf("CreateUser error: id card place of birth is required")
+		return nil, fmt.Errorf("UpdateUser error: id card place of birth is required")
 	}
+
+	account := request.User.Account
+	if account == nil {
+		return nil, fmt.Errorf("UpdateUser error: account is required")
+	}
+	if account.Username == "" {
+		return nil, fmt.Errorf("UpdateUser error: account username is required")
+	}
+	if account.Password == "" {
+		return nil, fmt.Errorf("UpdateUser error: account password is required")
+	}
+
+	// Hash the password before storing
+	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(account.Password), bcrypt.DefaultCost)
+	if err != nil {
+		return nil, fmt.Errorf("UpdateUser error: failed to hash password: %w", err)
+	}
+	account.Password = string(hashedPassword)
 
 	if err := s.dbService.UpdateUser(ctx, request.User); err != nil {
 		return nil, err

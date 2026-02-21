@@ -131,10 +131,17 @@ message IdCard {
     string place_of_birth = 4 [(gogoproto.moretags) = "bson:\"place_of_birth\""];
 }
 
+message Account {
+    string username = 1 [(gogoproto.moretags) = "bson:\"username\""];
+    string password = 2 [(gogoproto.moretags) = "bson:\"password\""];
+}
+
 message User {
     string pid = 1 [(gogoproto.moretags) = "bson:\"pid\""];
     string phone_number = 2 [(gogoproto.moretags) = "bson:\"phone_number\""];
-    IdCard id_card = 3 [(gogoproto.moretags) = "bson:\"id_card\""]; // embedded value object
+    string role = 3 [(gogoproto.moretags) = "bson:\"role\""];
+    IdCard id_card = 4 [(gogoproto.moretags) = "bson:\"id_card\""]; // embedded value object
+    Account account = 5 [(gogoproto.moretags) = "bson:\"account\""]; // embedded value object
 }
 
 message CreateUserRequest {
