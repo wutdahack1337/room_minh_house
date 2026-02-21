@@ -6,6 +6,7 @@ import (
 
 	"github.com/wutdahack1337/room_minh_house/backend/internal/database"
 	types "github.com/wutdahack1337/room_minh_house/backend/pkg/pb"
+	"golang.org/x/crypto/bcrypt"
 )
 
 const (
@@ -708,6 +709,104 @@ func TestUpdateUser_MissingRole(t *testing.T) {
 
 	if response != nil {
 		t.Fatal("expected nil response for missing role, got non-nil")
+	}
+}
+
+func TestGetUser_PasswordIsHashed(t *testing.T) {
+	ctx := context.Background()
+	service := getUserService()
+
+	plainPassword := "test_password_secure_123"
+	user := &types.User{
+		Pid:         P_ID,
+		PhoneNumber: PHONE_NUMBER,
+		Role:        ROLE,
+		IdCard:      newTestIdCard(),
+		Account: &types.Account{
+			Username: "test_user",
+			Password: plainPassword,
+		},
+	}
+
+	_, err := service.CreateUser(ctx, &types.CreateUserRequest{
+		User: user,
+	})
+	if err != nil {
+		t.Fatal("CreateUser failed: " + err.Error())
+	}
+
+	response, err := service.GetUser(ctx, &types.GetUserRequest{
+		Pid: user.Pid,
+	})
+	if err != nil {
+		t.Fatal("GetUser failed: " + err.Error())
+	}
+
+	if response.User.Account.Password == plainPassword {
+		t.Fatal("expected password to be hashed, but got plaintext")
+	}
+
+	// Verify the hash is valid bcrypt by comparing with plaintext
+	if err := bcrypt.CompareHashAndPassword([]byte(response.User.Account.Password), []byte(plainPassword)); err != nil {
+		t.Fatal("password hash does not match plaintext password: " + err.Error())
+	}
+}
+
+func TestListUsers_PasswordsAreHashed(t *testing.T) {
+	ctx := context.Background()
+	service := getUserService()
+
+	plainPassword := "test_password_list_456"
+	users := []*types.User{
+		{
+			Pid:         "0111111111",
+			PhoneNumber: "0911111111",
+			Role:        ROLE,
+			IdCard:      newTestIdCard(),
+			Account: &types.Account{
+				Username: "user1_list",
+				Password: plainPassword,
+			},
+		},
+		{
+			Pid:         "0222222222",
+			PhoneNumber: "0922222222",
+			Role:        ROLE,
+			IdCard:      newTestIdCard(),
+			Account: &types.Account{
+				Username: "user2_list",
+				Password: plainPassword,
+			},
+		},
+	}
+
+	for _, user := range users {
+		_, err := service.CreateUser(ctx, &types.CreateUserRequest{
+			User: user,
+		})
+		if err != nil {
+			t.Fatal("CreateUser failed for user " + user.Pid + ": " + err.Error())
+		}
+	}
+
+	response, err := service.ListUsers(ctx, &types.ListUsersRequest{})
+	if err != nil {
+		t.Fatal("ListUsers failed: " + err.Error())
+	}
+
+	if len(response.Users) == 0 {
+		t.Fatal("expected users in response, got empty list")
+	}
+
+	for _, user := range response.Users {
+		if user.Account.Password == plainPassword {
+			t.Fatal("expected password to be hashed for user " + user.Pid + ", but got plaintext")
+		}
+
+		// Verify the hash is valid bcrypt
+		if err := bcrypt.CompareHashAndPassword([]byte(user.Account.Password), []byte(plainPassword)); err != nil {
+			t.Fatal("password hash does not match plaintext password for user " + user.Pid + ": " + err.Error())
+		}
 	}
 }
 

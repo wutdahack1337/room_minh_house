@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	types "github.com/wutdahack1337/room_minh_house/backend/pkg/pb"
+	"golang.org/x/crypto/bcrypt"
 )
 
 func (s *Service) CreateUser(ctx context.Context, request *types.CreateUserRequest) (*types.CreateUserResponse, error) {
@@ -48,6 +49,13 @@ func (s *Service) CreateUser(ctx context.Context, request *types.CreateUserReque
 	if account.Password == "" {
 		return nil, fmt.Errorf("CreateUser error: account password is required")
 	}
+
+	// Hash the password before storing
+	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(account.Password), bcrypt.DefaultCost)
+	if err != nil {
+		return nil, fmt.Errorf("CreateUser error: failed to hash password: %w", err)
+	}
+	account.Password = string(hashedPassword)
 
 	if err := s.dbService.CreateUser(ctx, request.User); err != nil {
 		return nil, err
@@ -97,6 +105,13 @@ func (s *Service) UpdateUser(ctx context.Context, request *types.UpdateUserReque
 	if account.Password == "" {
 		return nil, fmt.Errorf("UpdateUser error: account password is required")
 	}
+
+	// Hash the password before storing
+	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(account.Password), bcrypt.DefaultCost)
+	if err != nil {
+		return nil, fmt.Errorf("UpdateUser error: failed to hash password: %w", err)
+	}
+	account.Password = string(hashedPassword)
 
 	if err := s.dbService.UpdateUser(ctx, request.User); err != nil {
 		return nil, err
