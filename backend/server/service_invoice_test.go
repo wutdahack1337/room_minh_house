@@ -153,7 +153,7 @@ func TestCreateInvoice_MissingPeriod(t *testing.T) {
 	service := getServiceForInvoice()
 
 	response, err := service.CreateInvoice(context.Background(), &types.CreateInvoiceRequest{
-		ContractId:           "some-id",
+		ContractId:           CONTRACT_ID,
 		ElectricityUnitPrice: ELEC_UNIT_PRICE,
 		WaterUnitPrice:       WATER_UNIT_PRICE,
 	})
@@ -173,7 +173,7 @@ func TestCreateInvoice_InvalidPeriodFormat(t *testing.T) {
 	service := getServiceForInvoice()
 
 	response, err := service.CreateInvoice(context.Background(), &types.CreateInvoiceRequest{
-		ContractId:           "some-id",
+		ContractId:           CONTRACT_ID,
 		Period:               "2026-02",
 		ElectricityUnitPrice: ELEC_UNIT_PRICE,
 		WaterUnitPrice:       WATER_UNIT_PRICE,

@@ -41,8 +41,6 @@ func (s *Service) CreateInvoice(ctx context.Context, request *types.CreateInvoic
 	if request.WaterUnitPrice <= 0 {
 		return nil, fmt.Errorf("CreateInvoice error: water_unit_price must be greater than 0")
 	}
-
-	// validate period format
 	if err := validatePeriod(request.Period); err != nil {
 		return nil, fmt.Errorf("CreateInvoice error: %v", err)
 	}
@@ -150,6 +148,9 @@ func (s *Service) UpdateInvoice(ctx context.Context, request *types.UpdateInvoic
 	if request.Invoice.Period == "" {
 		return nil, fmt.Errorf("UpdateInvoice error: period is required")
 	}
+	if err := validatePeriod(request.Invoice.Period); err != nil {
+		return nil, fmt.Errorf("UpdateInvoice error: %w", err)
+	}
 
 	if err := s.dbService.UpdateInvoice(ctx, request.Invoice); err != nil {
 		return nil, err
@@ -168,6 +169,9 @@ func (s *Service) DeleteInvoice(ctx context.Context, request *types.DeleteInvoic
 	if request.Period == "" {
 		return nil, fmt.Errorf("DeleteInvoice error: period is required")
 	}
+	if err := validatePeriod(request.Period); err != nil {
+		return nil, fmt.Errorf("DeleteInvoice error: %v", err)
+	}
 
 	if err := s.dbService.DeleteInvoice(ctx, request.ContractId, request.Period); err != nil {
 		return nil, err
@@ -185,6 +189,9 @@ func (s *Service) GetInvoice(ctx context.Context, request *types.GetInvoiceReque
 	}
 	if request.Period == "" {
 		return nil, fmt.Errorf("GetInvoice error: period is required")
+	}
+	if err := validatePeriod(request.Period); err != nil {
+		return nil, fmt.Errorf("GetInvoice error: %v", err)
 	}
 
 	invoice, err := s.dbService.GetInvoice(ctx, request.ContractId, request.Period)

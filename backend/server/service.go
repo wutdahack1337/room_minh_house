@@ -9,10 +9,9 @@ import (
 	types "github.com/wutdahack1337/room_minh_house/backend/pkg/pb"
 )
 
-// periodPattern validates MM-YYYY format
+// MM-YYYY
 var periodPattern = regexp.MustCompile(`^(0[1-9]|1[0-2])-\d{4}$`)
 
-// validatePeriod checks if period is in MM-YYYY format
 func validatePeriod(period string) error {
 	if !periodPattern.MatchString(period) {
 		return fmt.Errorf("period must be in MM-YYYY format (e.g., \"08-2025\")")

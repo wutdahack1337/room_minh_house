@@ -20,16 +20,17 @@ func (s *Service) UpdateInvoiceItem(ctx context.Context, request *types.UpdateIn
 	if request.InvoiceItem.Period == "" {
 		return nil, fmt.Errorf("UpdateInvoiceItem error: period is required")
 	}
+	if err := validatePeriod(request.InvoiceItem.Period); err != nil {
+		return nil, fmt.Errorf("UpdateInvoiceItem error: %v", err)
+	}
 	if request.InvoiceItem.ItemType == "" {
 		return nil, fmt.Errorf("UpdateInvoiceItem error: item_type is required")
 	}
 	if request.InvoiceItem.UnitPrice <= 0 {
 		return nil, fmt.Errorf("UpdateInvoiceItem error: unit_price must be greater than 0")
 	}
-
-	// validate period format
-	if err := validatePeriod(request.InvoiceItem.Period); err != nil {
-		return nil, fmt.Errorf("UpdateInvoiceItem error: %v", err)
+	if request.InvoiceItem.Quantity < 0 {
+		return nil, fmt.Errorf("UpdateInvoiceItem error: quantity cannot be negative")
 	}
 
 	// recalculate amount from quantity * unit_price
@@ -57,8 +58,6 @@ func (s *Service) ListInvoiceItems(ctx context.Context, request *types.ListInvoi
 	if request.Period == "" {
 		return nil, fmt.Errorf("ListInvoiceItems error: period is required")
 	}
-
-	// validate period format
 	if err := validatePeriod(request.Period); err != nil {
 		return nil, fmt.Errorf("ListInvoiceItems error: %v", err)
 	}
