@@ -6,7 +6,7 @@ import (
 	types "github.com/wutdahack1337/room_minh_house/backend/pkg/pb"
 )
 
-type DatabaseService interface {
+type Database interface {
 	CreateRoom(ctx context.Context, room *types.Room) error
 	UpdateRoom(ctx context.Context, room *types.Room) error
 	DeleteRoom(ctx context.Context, roomNumber int32) error

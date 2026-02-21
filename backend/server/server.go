@@ -69,7 +69,7 @@ func streamLogStackTraceOnPanic(logger log.Logger) grpc.StreamServerInterceptor 
 	}
 }
 
-func StartServer(grpcAddr string, httpAddr string, dbService database.DatabaseService) {
+func StartServer(grpcAddr string, httpAddr string, dbService database.Database) {
 	ctx := context.Background()
 	server := NewServer("apis")
 	service := &Service{
