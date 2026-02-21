@@ -10,9 +10,10 @@ import (
 )
 
 const (
-	roomCollection     = "rooms"
-	userCollection     = "users"
-	contractCollection = "contracts"
+	roomCollection         = "rooms"
+	userCollection         = "users"
+	contractCollection     = "contracts"
+	meterReadingCollection = "meter_readings"
 )
 
 type MongoService struct {
@@ -44,6 +45,16 @@ func NewMongoService(database *mongo.Database) (*MongoService, error) {
 	collection = database.Collection(contractCollection)
 	_, err = collection.Indexes().CreateOne(context.Background(), mongo.IndexModel{
 		Keys:    bson.D{{Key: "contract_id", Value: 1}},
+		Options: options.Index().SetUnique(true),
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	// set meter reading compound index on (room_number, period)
+	collection = database.Collection(meterReadingCollection)
+	_, err = collection.Indexes().CreateOne(context.Background(), mongo.IndexModel{
+		Keys:    bson.D{{Key: "room_number", Value: 1}, {Key: "period", Value: 1}},
 		Options: options.Index().SetUnique(true),
 	})
 	if err != nil {

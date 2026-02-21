@@ -514,6 +514,434 @@ func (m *ListRoomsResponse) GetRooms() []*Room {
 	return nil
 }
 
+type MeterReading struct {
+	RoomNumber         int32   `protobuf:"varint,1,opt,name=room_number,json=roomNumber,proto3" json:"room_number,omitempty" bson:"room_number"`
+	Period             string  `protobuf:"bytes,2,opt,name=period,proto3" json:"period,omitempty" bson:"period"`
+	ElectricityReading float64 `protobuf:"fixed64,3,opt,name=electricity_reading,json=electricityReading,proto3" json:"electricity_reading,omitempty" bson:"electricity_reading"`
+	WaterReading       float64 `protobuf:"fixed64,4,opt,name=water_reading,json=waterReading,proto3" json:"water_reading,omitempty" bson:"water_reading"`
+}
+
+func (m *MeterReading) Reset()         { *m = MeterReading{} }
+func (m *MeterReading) String() string { return proto.CompactTextString(m) }
+func (*MeterReading) ProtoMessage()    {}
+func (*MeterReading) Descriptor() ([]byte, []int) {
+	return fileDescriptor_be498c345e55ac46, []int{11}
+}
+func (m *MeterReading) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *MeterReading) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_MeterReading.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *MeterReading) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MeterReading.Merge(m, src)
+}
+func (m *MeterReading) XXX_Size() int {
+	return m.Size()
+}
+func (m *MeterReading) XXX_DiscardUnknown() {
+	xxx_messageInfo_MeterReading.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_MeterReading proto.InternalMessageInfo
+
+func (m *MeterReading) GetRoomNumber() int32 {
+	if m != nil {
+		return m.RoomNumber
+	}
+	return 0
+}
+
+func (m *MeterReading) GetPeriod() string {
+	if m != nil {
+		return m.Period
+	}
+	return ""
+}
+
+func (m *MeterReading) GetElectricityReading() float64 {
+	if m != nil {
+		return m.ElectricityReading
+	}
+	return 0
+}
+
+func (m *MeterReading) GetWaterReading() float64 {
+	if m != nil {
+		return m.WaterReading
+	}
+	return 0
+}
+
+type CreateMeterReadingRequest struct {
+	MeterReading *MeterReading `protobuf:"bytes,1,opt,name=meter_reading,json=meterReading,proto3" json:"meter_reading,omitempty"`
+}
+
+func (m *CreateMeterReadingRequest) Reset()         { *m = CreateMeterReadingRequest{} }
+func (m *CreateMeterReadingRequest) String() string { return proto.CompactTextString(m) }
+func (*CreateMeterReadingRequest) ProtoMessage()    {}
+func (*CreateMeterReadingRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_be498c345e55ac46, []int{12}
+}
+func (m *CreateMeterReadingRequest) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *CreateMeterReadingRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_CreateMeterReadingRequest.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *CreateMeterReadingRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_CreateMeterReadingRequest.Merge(m, src)
+}
+func (m *CreateMeterReadingRequest) XXX_Size() int {
+	return m.Size()
+}
+func (m *CreateMeterReadingRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_CreateMeterReadingRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_CreateMeterReadingRequest proto.InternalMessageInfo
+
+func (m *CreateMeterReadingRequest) GetMeterReading() *MeterReading {
+	if m != nil {
+		return m.MeterReading
+	}
+	return nil
+}
+
+type CreateMeterReadingResponse struct {
+	MeterReading *MeterReading `protobuf:"bytes,1,opt,name=meter_reading,json=meterReading,proto3" json:"meter_reading,omitempty"`
+}
+
+func (m *CreateMeterReadingResponse) Reset()         { *m = CreateMeterReadingResponse{} }
+func (m *CreateMeterReadingResponse) String() string { return proto.CompactTextString(m) }
+func (*CreateMeterReadingResponse) ProtoMessage()    {}
+func (*CreateMeterReadingResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_be498c345e55ac46, []int{13}
+}
+func (m *CreateMeterReadingResponse) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *CreateMeterReadingResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_CreateMeterReadingResponse.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *CreateMeterReadingResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_CreateMeterReadingResponse.Merge(m, src)
+}
+func (m *CreateMeterReadingResponse) XXX_Size() int {
+	return m.Size()
+}
+func (m *CreateMeterReadingResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_CreateMeterReadingResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_CreateMeterReadingResponse proto.InternalMessageInfo
+
+func (m *CreateMeterReadingResponse) GetMeterReading() *MeterReading {
+	if m != nil {
+		return m.MeterReading
+	}
+	return nil
+}
+
+type UpdateMeterReadingRequest struct {
+	MeterReading *MeterReading `protobuf:"bytes,1,opt,name=meter_reading,json=meterReading,proto3" json:"meter_reading,omitempty"`
+}
+
+func (m *UpdateMeterReadingRequest) Reset()         { *m = UpdateMeterReadingRequest{} }
+func (m *UpdateMeterReadingRequest) String() string { return proto.CompactTextString(m) }
+func (*UpdateMeterReadingRequest) ProtoMessage()    {}
+func (*UpdateMeterReadingRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_be498c345e55ac46, []int{14}
+}
+func (m *UpdateMeterReadingRequest) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *UpdateMeterReadingRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_UpdateMeterReadingRequest.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *UpdateMeterReadingRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_UpdateMeterReadingRequest.Merge(m, src)
+}
+func (m *UpdateMeterReadingRequest) XXX_Size() int {
+	return m.Size()
+}
+func (m *UpdateMeterReadingRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_UpdateMeterReadingRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_UpdateMeterReadingRequest proto.InternalMessageInfo
+
+func (m *UpdateMeterReadingRequest) GetMeterReading() *MeterReading {
+	if m != nil {
+		return m.MeterReading
+	}
+	return nil
+}
+
+type UpdateMeterReadingResponse struct {
+	MeterReading *MeterReading `protobuf:"bytes,1,opt,name=meter_reading,json=meterReading,proto3" json:"meter_reading,omitempty"`
+}
+
+func (m *UpdateMeterReadingResponse) Reset()         { *m = UpdateMeterReadingResponse{} }
+func (m *UpdateMeterReadingResponse) String() string { return proto.CompactTextString(m) }
+func (*UpdateMeterReadingResponse) ProtoMessage()    {}
+func (*UpdateMeterReadingResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_be498c345e55ac46, []int{15}
+}
+func (m *UpdateMeterReadingResponse) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *UpdateMeterReadingResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_UpdateMeterReadingResponse.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *UpdateMeterReadingResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_UpdateMeterReadingResponse.Merge(m, src)
+}
+func (m *UpdateMeterReadingResponse) XXX_Size() int {
+	return m.Size()
+}
+func (m *UpdateMeterReadingResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_UpdateMeterReadingResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_UpdateMeterReadingResponse proto.InternalMessageInfo
+
+func (m *UpdateMeterReadingResponse) GetMeterReading() *MeterReading {
+	if m != nil {
+		return m.MeterReading
+	}
+	return nil
+}
+
+type GetMeterReadingRequest struct {
+	RoomNumber int32  `protobuf:"varint,1,opt,name=room_number,json=roomNumber,proto3" json:"room_number,omitempty"`
+	Period     string `protobuf:"bytes,2,opt,name=period,proto3" json:"period,omitempty"`
+}
+
+func (m *GetMeterReadingRequest) Reset()         { *m = GetMeterReadingRequest{} }
+func (m *GetMeterReadingRequest) String() string { return proto.CompactTextString(m) }
+func (*GetMeterReadingRequest) ProtoMessage()    {}
+func (*GetMeterReadingRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_be498c345e55ac46, []int{16}
+}
+func (m *GetMeterReadingRequest) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *GetMeterReadingRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_GetMeterReadingRequest.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *GetMeterReadingRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_GetMeterReadingRequest.Merge(m, src)
+}
+func (m *GetMeterReadingRequest) XXX_Size() int {
+	return m.Size()
+}
+func (m *GetMeterReadingRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_GetMeterReadingRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_GetMeterReadingRequest proto.InternalMessageInfo
+
+func (m *GetMeterReadingRequest) GetRoomNumber() int32 {
+	if m != nil {
+		return m.RoomNumber
+	}
+	return 0
+}
+
+func (m *GetMeterReadingRequest) GetPeriod() string {
+	if m != nil {
+		return m.Period
+	}
+	return ""
+}
+
+type GetMeterReadingResponse struct {
+	MeterReading *MeterReading `protobuf:"bytes,1,opt,name=meter_reading,json=meterReading,proto3" json:"meter_reading,omitempty"`
+}
+
+func (m *GetMeterReadingResponse) Reset()         { *m = GetMeterReadingResponse{} }
+func (m *GetMeterReadingResponse) String() string { return proto.CompactTextString(m) }
+func (*GetMeterReadingResponse) ProtoMessage()    {}
+func (*GetMeterReadingResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_be498c345e55ac46, []int{17}
+}
+func (m *GetMeterReadingResponse) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *GetMeterReadingResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_GetMeterReadingResponse.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *GetMeterReadingResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_GetMeterReadingResponse.Merge(m, src)
+}
+func (m *GetMeterReadingResponse) XXX_Size() int {
+	return m.Size()
+}
+func (m *GetMeterReadingResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_GetMeterReadingResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_GetMeterReadingResponse proto.InternalMessageInfo
+
+func (m *GetMeterReadingResponse) GetMeterReading() *MeterReading {
+	if m != nil {
+		return m.MeterReading
+	}
+	return nil
+}
+
+type ListMeterReadingsRequest struct {
+	RoomNumber int32 `protobuf:"varint,1,opt,name=room_number,json=roomNumber,proto3" json:"room_number,omitempty"`
+}
+
+func (m *ListMeterReadingsRequest) Reset()         { *m = ListMeterReadingsRequest{} }
+func (m *ListMeterReadingsRequest) String() string { return proto.CompactTextString(m) }
+func (*ListMeterReadingsRequest) ProtoMessage()    {}
+func (*ListMeterReadingsRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_be498c345e55ac46, []int{18}
+}
+func (m *ListMeterReadingsRequest) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *ListMeterReadingsRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_ListMeterReadingsRequest.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *ListMeterReadingsRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_ListMeterReadingsRequest.Merge(m, src)
+}
+func (m *ListMeterReadingsRequest) XXX_Size() int {
+	return m.Size()
+}
+func (m *ListMeterReadingsRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_ListMeterReadingsRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_ListMeterReadingsRequest proto.InternalMessageInfo
+
+func (m *ListMeterReadingsRequest) GetRoomNumber() int32 {
+	if m != nil {
+		return m.RoomNumber
+	}
+	return 0
+}
+
+type ListMeterReadingsResponse struct {
+	MeterReadings []*MeterReading `protobuf:"bytes,1,rep,name=meter_readings,json=meterReadings,proto3" json:"meter_readings,omitempty"`
+}
+
+func (m *ListMeterReadingsResponse) Reset()         { *m = ListMeterReadingsResponse{} }
+func (m *ListMeterReadingsResponse) String() string { return proto.CompactTextString(m) }
+func (*ListMeterReadingsResponse) ProtoMessage()    {}
+func (*ListMeterReadingsResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_be498c345e55ac46, []int{19}
+}
+func (m *ListMeterReadingsResponse) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *ListMeterReadingsResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_ListMeterReadingsResponse.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *ListMeterReadingsResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_ListMeterReadingsResponse.Merge(m, src)
+}
+func (m *ListMeterReadingsResponse) XXX_Size() int {
+	return m.Size()
+}
+func (m *ListMeterReadingsResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_ListMeterReadingsResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_ListMeterReadingsResponse proto.InternalMessageInfo
+
+func (m *ListMeterReadingsResponse) GetMeterReadings() []*MeterReading {
+	if m != nil {
+		return m.MeterReadings
+	}
+	return nil
+}
+
 type IdCard struct {
 	Name         string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty" bson:"name"`
 	Sex          string `protobuf:"bytes,2,opt,name=sex,proto3" json:"sex,omitempty" bson:"sex"`
@@ -525,7 +953,7 @@ func (m *IdCard) Reset()         { *m = IdCard{} }
 func (m *IdCard) String() string { return proto.CompactTextString(m) }
 func (*IdCard) ProtoMessage()    {}
 func (*IdCard) Descriptor() ([]byte, []int) {
-	return fileDescriptor_be498c345e55ac46, []int{11}
+	return fileDescriptor_be498c345e55ac46, []int{20}
 }
 func (m *IdCard) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -591,7 +1019,7 @@ func (m *Account) Reset()         { *m = Account{} }
 func (m *Account) String() string { return proto.CompactTextString(m) }
 func (*Account) ProtoMessage()    {}
 func (*Account) Descriptor() ([]byte, []int) {
-	return fileDescriptor_be498c345e55ac46, []int{12}
+	return fileDescriptor_be498c345e55ac46, []int{21}
 }
 func (m *Account) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -646,7 +1074,7 @@ func (m *User) Reset()         { *m = User{} }
 func (m *User) String() string { return proto.CompactTextString(m) }
 func (*User) ProtoMessage()    {}
 func (*User) Descriptor() ([]byte, []int) {
-	return fileDescriptor_be498c345e55ac46, []int{13}
+	return fileDescriptor_be498c345e55ac46, []int{22}
 }
 func (m *User) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -718,7 +1146,7 @@ func (m *CreateUserRequest) Reset()         { *m = CreateUserRequest{} }
 func (m *CreateUserRequest) String() string { return proto.CompactTextString(m) }
 func (*CreateUserRequest) ProtoMessage()    {}
 func (*CreateUserRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_be498c345e55ac46, []int{14}
+	return fileDescriptor_be498c345e55ac46, []int{23}
 }
 func (m *CreateUserRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -762,7 +1190,7 @@ func (m *CreateUserResponse) Reset()         { *m = CreateUserResponse{} }
 func (m *CreateUserResponse) String() string { return proto.CompactTextString(m) }
 func (*CreateUserResponse) ProtoMessage()    {}
 func (*CreateUserResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_be498c345e55ac46, []int{15}
+	return fileDescriptor_be498c345e55ac46, []int{24}
 }
 func (m *CreateUserResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -806,7 +1234,7 @@ func (m *UpdateUserRequest) Reset()         { *m = UpdateUserRequest{} }
 func (m *UpdateUserRequest) String() string { return proto.CompactTextString(m) }
 func (*UpdateUserRequest) ProtoMessage()    {}
 func (*UpdateUserRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_be498c345e55ac46, []int{16}
+	return fileDescriptor_be498c345e55ac46, []int{25}
 }
 func (m *UpdateUserRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -850,7 +1278,7 @@ func (m *UpdateUserResponse) Reset()         { *m = UpdateUserResponse{} }
 func (m *UpdateUserResponse) String() string { return proto.CompactTextString(m) }
 func (*UpdateUserResponse) ProtoMessage()    {}
 func (*UpdateUserResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_be498c345e55ac46, []int{17}
+	return fileDescriptor_be498c345e55ac46, []int{26}
 }
 func (m *UpdateUserResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -894,7 +1322,7 @@ func (m *DeleteUserRequest) Reset()         { *m = DeleteUserRequest{} }
 func (m *DeleteUserRequest) String() string { return proto.CompactTextString(m) }
 func (*DeleteUserRequest) ProtoMessage()    {}
 func (*DeleteUserRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_be498c345e55ac46, []int{18}
+	return fileDescriptor_be498c345e55ac46, []int{27}
 }
 func (m *DeleteUserRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -937,7 +1365,7 @@ func (m *DeleteUserResponse) Reset()         { *m = DeleteUserResponse{} }
 func (m *DeleteUserResponse) String() string { return proto.CompactTextString(m) }
 func (*DeleteUserResponse) ProtoMessage()    {}
 func (*DeleteUserResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_be498c345e55ac46, []int{19}
+	return fileDescriptor_be498c345e55ac46, []int{28}
 }
 func (m *DeleteUserResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -974,7 +1402,7 @@ func (m *GetUserRequest) Reset()         { *m = GetUserRequest{} }
 func (m *GetUserRequest) String() string { return proto.CompactTextString(m) }
 func (*GetUserRequest) ProtoMessage()    {}
 func (*GetUserRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_be498c345e55ac46, []int{20}
+	return fileDescriptor_be498c345e55ac46, []int{29}
 }
 func (m *GetUserRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -1018,7 +1446,7 @@ func (m *GetUserResponse) Reset()         { *m = GetUserResponse{} }
 func (m *GetUserResponse) String() string { return proto.CompactTextString(m) }
 func (*GetUserResponse) ProtoMessage()    {}
 func (*GetUserResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_be498c345e55ac46, []int{21}
+	return fileDescriptor_be498c345e55ac46, []int{30}
 }
 func (m *GetUserResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -1061,7 +1489,7 @@ func (m *ListUsersRequest) Reset()         { *m = ListUsersRequest{} }
 func (m *ListUsersRequest) String() string { return proto.CompactTextString(m) }
 func (*ListUsersRequest) ProtoMessage()    {}
 func (*ListUsersRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_be498c345e55ac46, []int{22}
+	return fileDescriptor_be498c345e55ac46, []int{31}
 }
 func (m *ListUsersRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -1098,7 +1526,7 @@ func (m *ListUsersResponse) Reset()         { *m = ListUsersResponse{} }
 func (m *ListUsersResponse) String() string { return proto.CompactTextString(m) }
 func (*ListUsersResponse) ProtoMessage()    {}
 func (*ListUsersResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_be498c345e55ac46, []int{23}
+	return fileDescriptor_be498c345e55ac46, []int{32}
 }
 func (m *ListUsersResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -1148,7 +1576,7 @@ func (m *Contract) Reset()         { *m = Contract{} }
 func (m *Contract) String() string { return proto.CompactTextString(m) }
 func (*Contract) ProtoMessage()    {}
 func (*Contract) Descriptor() ([]byte, []int) {
-	return fileDescriptor_be498c345e55ac46, []int{24}
+	return fileDescriptor_be498c345e55ac46, []int{33}
 }
 func (m *Contract) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -1234,7 +1662,7 @@ func (m *CreateContractRequest) Reset()         { *m = CreateContractRequest{} }
 func (m *CreateContractRequest) String() string { return proto.CompactTextString(m) }
 func (*CreateContractRequest) ProtoMessage()    {}
 func (*CreateContractRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_be498c345e55ac46, []int{25}
+	return fileDescriptor_be498c345e55ac46, []int{34}
 }
 func (m *CreateContractRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -1278,7 +1706,7 @@ func (m *CreateContractResponse) Reset()         { *m = CreateContractResponse{}
 func (m *CreateContractResponse) String() string { return proto.CompactTextString(m) }
 func (*CreateContractResponse) ProtoMessage()    {}
 func (*CreateContractResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_be498c345e55ac46, []int{26}
+	return fileDescriptor_be498c345e55ac46, []int{35}
 }
 func (m *CreateContractResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -1322,7 +1750,7 @@ func (m *UpdateContractRequest) Reset()         { *m = UpdateContractRequest{} }
 func (m *UpdateContractRequest) String() string { return proto.CompactTextString(m) }
 func (*UpdateContractRequest) ProtoMessage()    {}
 func (*UpdateContractRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_be498c345e55ac46, []int{27}
+	return fileDescriptor_be498c345e55ac46, []int{36}
 }
 func (m *UpdateContractRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -1366,7 +1794,7 @@ func (m *UpdateContractResponse) Reset()         { *m = UpdateContractResponse{}
 func (m *UpdateContractResponse) String() string { return proto.CompactTextString(m) }
 func (*UpdateContractResponse) ProtoMessage()    {}
 func (*UpdateContractResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_be498c345e55ac46, []int{28}
+	return fileDescriptor_be498c345e55ac46, []int{37}
 }
 func (m *UpdateContractResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -1410,7 +1838,7 @@ func (m *DeleteContractRequest) Reset()         { *m = DeleteContractRequest{} }
 func (m *DeleteContractRequest) String() string { return proto.CompactTextString(m) }
 func (*DeleteContractRequest) ProtoMessage()    {}
 func (*DeleteContractRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_be498c345e55ac46, []int{29}
+	return fileDescriptor_be498c345e55ac46, []int{38}
 }
 func (m *DeleteContractRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -1453,7 +1881,7 @@ func (m *DeleteContractResponse) Reset()         { *m = DeleteContractResponse{}
 func (m *DeleteContractResponse) String() string { return proto.CompactTextString(m) }
 func (*DeleteContractResponse) ProtoMessage()    {}
 func (*DeleteContractResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_be498c345e55ac46, []int{30}
+	return fileDescriptor_be498c345e55ac46, []int{39}
 }
 func (m *DeleteContractResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -1490,7 +1918,7 @@ func (m *GetContractRequest) Reset()         { *m = GetContractRequest{} }
 func (m *GetContractRequest) String() string { return proto.CompactTextString(m) }
 func (*GetContractRequest) ProtoMessage()    {}
 func (*GetContractRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_be498c345e55ac46, []int{31}
+	return fileDescriptor_be498c345e55ac46, []int{40}
 }
 func (m *GetContractRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -1534,7 +1962,7 @@ func (m *GetContractResponse) Reset()         { *m = GetContractResponse{} }
 func (m *GetContractResponse) String() string { return proto.CompactTextString(m) }
 func (*GetContractResponse) ProtoMessage()    {}
 func (*GetContractResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_be498c345e55ac46, []int{32}
+	return fileDescriptor_be498c345e55ac46, []int{41}
 }
 func (m *GetContractResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -1577,7 +2005,7 @@ func (m *ListContractsRequest) Reset()         { *m = ListContractsRequest{} }
 func (m *ListContractsRequest) String() string { return proto.CompactTextString(m) }
 func (*ListContractsRequest) ProtoMessage()    {}
 func (*ListContractsRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_be498c345e55ac46, []int{33}
+	return fileDescriptor_be498c345e55ac46, []int{42}
 }
 func (m *ListContractsRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -1614,7 +2042,7 @@ func (m *ListContractsResponse) Reset()         { *m = ListContractsResponse{} }
 func (m *ListContractsResponse) String() string { return proto.CompactTextString(m) }
 func (*ListContractsResponse) ProtoMessage()    {}
 func (*ListContractsResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_be498c345e55ac46, []int{34}
+	return fileDescriptor_be498c345e55ac46, []int{43}
 }
 func (m *ListContractsResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -1657,7 +2085,7 @@ func (m *CheckHealthRequest) Reset()         { *m = CheckHealthRequest{} }
 func (m *CheckHealthRequest) String() string { return proto.CompactTextString(m) }
 func (*CheckHealthRequest) ProtoMessage()    {}
 func (*CheckHealthRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_be498c345e55ac46, []int{35}
+	return fileDescriptor_be498c345e55ac46, []int{44}
 }
 func (m *CheckHealthRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -1694,7 +2122,7 @@ func (m *CheckHealthResponse) Reset()         { *m = CheckHealthResponse{} }
 func (m *CheckHealthResponse) String() string { return proto.CompactTextString(m) }
 func (*CheckHealthResponse) ProtoMessage()    {}
 func (*CheckHealthResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_be498c345e55ac46, []int{36}
+	return fileDescriptor_be498c345e55ac46, []int{45}
 }
 func (m *CheckHealthResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -1742,6 +2170,15 @@ func init() {
 	proto.RegisterType((*GetRoomResponse)(nil), "api.GetRoomResponse")
 	proto.RegisterType((*ListRoomsRequest)(nil), "api.ListRoomsRequest")
 	proto.RegisterType((*ListRoomsResponse)(nil), "api.ListRoomsResponse")
+	proto.RegisterType((*MeterReading)(nil), "api.MeterReading")
+	proto.RegisterType((*CreateMeterReadingRequest)(nil), "api.CreateMeterReadingRequest")
+	proto.RegisterType((*CreateMeterReadingResponse)(nil), "api.CreateMeterReadingResponse")
+	proto.RegisterType((*UpdateMeterReadingRequest)(nil), "api.UpdateMeterReadingRequest")
+	proto.RegisterType((*UpdateMeterReadingResponse)(nil), "api.UpdateMeterReadingResponse")
+	proto.RegisterType((*GetMeterReadingRequest)(nil), "api.GetMeterReadingRequest")
+	proto.RegisterType((*GetMeterReadingResponse)(nil), "api.GetMeterReadingResponse")
+	proto.RegisterType((*ListMeterReadingsRequest)(nil), "api.ListMeterReadingsRequest")
+	proto.RegisterType((*ListMeterReadingsResponse)(nil), "api.ListMeterReadingsResponse")
 	proto.RegisterType((*IdCard)(nil), "api.IdCard")
 	proto.RegisterType((*Account)(nil), "api.Account")
 	proto.RegisterType((*User)(nil), "api.User")
@@ -1773,97 +2210,118 @@ func init() {
 func init() { proto.RegisterFile("api/proto.proto", fileDescriptor_be498c345e55ac46) }
 
 var fileDescriptor_be498c345e55ac46 = []byte{
-	// 1438 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xa4, 0x58, 0xdd, 0x6e, 0x1b, 0xc5,
-	0x17, 0xef, 0x36, 0x9f, 0x3e, 0x4e, 0x9c, 0x64, 0x12, 0xbb, 0xee, 0xfe, 0x5b, 0x6f, 0x34, 0xfd,
-	0x17, 0xf5, 0x43, 0xd8, 0x34, 0x29, 0x6a, 0x15, 0x90, 0xa0, 0x4e, 0x51, 0xa9, 0x04, 0x05, 0x56,
-	0x2a, 0x48, 0x5c, 0xb0, 0x5a, 0x7b, 0xa7, 0xf1, 0x92, 0x78, 0x77, 0xd9, 0x5d, 0xd3, 0xa2, 0xaa,
-	0x37, 0xbd, 0x47, 0x42, 0xe2, 0x11, 0x78, 0x19, 0xae, 0x50, 0x25, 0x6e, 0xb8, 0xb2, 0x50, 0xcb,
-	0x13, 0xf8, 0x05, 0x40, 0x73, 0x66, 0x76, 0x77, 0x66, 0xed, 0x96, 0x58, 0xdc, 0xc4, 0x3b, 0xe7,
-	0xcc, 0xf9, 0xfd, 0xce, 0xcc, 0xf9, 0x1a, 0x05, 0x36, 0xdc, 0xc8, 0xef, 0x44, 0x71, 0x98, 0x86,
-	0x6d, 0xfc, 0x4b, 0x16, 0xdc, 0xc8, 0x37, 0x2f, 0x1c, 0x85, 0xe1, 0xd1, 0x09, 0xeb, 0x70, 0xa5,
-	0x1b, 0x04, 0x61, 0xea, 0xa6, 0x7e, 0x18, 0x24, 0x62, 0x8b, 0xb9, 0x73, 0x14, 0x1e, 0x85, 0xf8,
-	0xd9, 0xe1, 0x5f, 0x42, 0x4a, 0x7f, 0x31, 0x60, 0xd1, 0x0e, 0xc3, 0x21, 0xb9, 0x05, 0xd5, 0x38,
-	0x0c, 0x87, 0x4e, 0x30, 0x1a, 0xf6, 0x58, 0xdc, 0x34, 0x76, 0x8d, 0x2b, 0x4b, 0xdd, 0xc6, 0x64,
-	0x6c, 0x91, 0x5e, 0x12, 0x06, 0x07, 0x54, 0x51, 0x52, 0x1b, 0xf8, 0xea, 0x01, 0x2e, 0xc8, 0x5b,
-	0xb0, 0x14, 0xc5, 0x7e, 0x9f, 0x35, 0xcf, 0xee, 0x1a, 0x57, 0x8c, 0xee, 0xe6, 0x64, 0x6c, 0xad,
-	0x09, 0x13, 0x14, 0x53, 0x5b, 0xa8, 0xc9, 0x01, 0xac, 0xf9, 0x89, 0xe3, 0x7e, 0xef, 0xfa, 0x27,
-	0x6e, 0xef, 0x84, 0x35, 0x17, 0x76, 0x8d, 0x2b, 0xab, 0xdd, 0x73, 0x93, 0xb1, 0xb5, 0x2d, 0xb6,
-	0xab, 0x5a, 0x6a, 0x57, 0xfd, 0xe4, 0x4e, 0xbe, 0xda, 0x83, 0xad, 0xc3, 0x98, 0xb9, 0x29, 0xe3,
-	0xae, 0xda, 0xec, 0xbb, 0x11, 0x4b, 0x52, 0x72, 0x11, 0x16, 0xb9, 0x1b, 0xe8, 0x6a, 0x75, 0xaf,
-	0xd2, 0x76, 0x23, 0xbf, 0x8d, 0x7a, 0x14, 0xd3, 0x7d, 0x20, 0xaa, 0x4d, 0x12, 0x85, 0x41, 0xc2,
-	0xfe, 0xcd, 0x68, 0x0f, 0xb6, 0x1e, 0x46, 0xde, 0xdc, 0x44, 0xaa, 0xcd, 0xe9, 0x88, 0x6e, 0xc2,
-	0xd6, 0x5d, 0x76, 0xc2, 0x74, 0x22, 0x6b, 0x46, 0x0c, 0xd4, 0xbb, 0xa6, 0x3b, 0x40, 0x54, 0x2b,
-	0x41, 0x45, 0x6f, 0x40, 0xed, 0x1e, 0x4b, 0xe7, 0x02, 0x7a, 0x07, 0x36, 0x72, 0x93, 0xd3, 0x39,
-	0x4c, 0x60, 0xf3, 0x13, 0x3f, 0x41, 0x93, 0x44, 0xd2, 0xf0, 0x43, 0x28, 0x32, 0x89, 0x63, 0xc1,
-	0x12, 0x37, 0x48, 0x9a, 0xc6, 0xee, 0x82, 0x0e, 0x24, 0xe4, 0xf4, 0x37, 0x03, 0x96, 0xef, 0x7b,
-	0x87, 0x6e, 0xec, 0x91, 0x4b, 0xb0, 0x18, 0xb8, 0x43, 0x86, 0x9c, 0x95, 0xee, 0xc6, 0x64, 0x6c,
-	0x55, 0x45, 0x2e, 0x70, 0x29, 0xb5, 0x51, 0x49, 0x76, 0x61, 0x21, 0x61, 0x4f, 0x30, 0xbd, 0x2a,
-	0xdd, 0xda, 0x64, 0x6c, 0x81, 0xd8, 0x93, 0xb0, 0x27, 0xd4, 0xe6, 0x2a, 0xf2, 0x3e, 0xac, 0xf3,
-	0xfb, 0x77, 0xc2, 0x47, 0x4e, 0xcf, 0x8f, 0xd3, 0x01, 0xe6, 0x56, 0xa5, 0xdb, 0x9c, 0x8c, 0xad,
-	0x1d, 0xb1, 0x57, 0x53, 0x53, 0xbb, 0xca, 0xd7, 0x9f, 0x3d, 0xea, 0xf2, 0x15, 0xf9, 0x00, 0x6a,
-	0xd1, 0x89, 0xdb, 0x57, 0xcc, 0x17, 0xd1, 0xfc, 0xfc, 0x64, 0x6c, 0xd5, 0x65, 0x26, 0x6b, 0x7a,
-	0x6a, 0xaf, 0xa1, 0x40, 0x02, 0xd0, 0x63, 0x58, 0xb9, 0xd3, 0xef, 0x87, 0xa3, 0x20, 0x25, 0x1d,
-	0x58, 0x1d, 0x25, 0x2c, 0x56, 0x0e, 0xb5, 0x3d, 0x19, 0x5b, 0x1b, 0x02, 0x25, 0xd3, 0x50, 0x3b,
-	0xdf, 0xc4, 0x0d, 0x22, 0x37, 0x49, 0x1e, 0x87, 0xb1, 0x27, 0x4f, 0xa8, 0x18, 0x64, 0x1a, 0x6a,
-	0xe7, 0x9b, 0xe8, 0xdf, 0x06, 0x2c, 0x3e, 0x4c, 0x58, 0xcc, 0xaf, 0x25, 0xf2, 0x3d, 0xc9, 0xa2,
-	0x5c, 0x4b, 0xe4, 0x7b, 0xd4, 0xe6, 0x2a, 0x5e, 0x71, 0xd1, 0x20, 0x0c, 0x58, 0x96, 0x06, 0x02,
-	0x5f, 0xa9, 0x38, 0x55, 0x4b, 0xed, 0x2a, 0x2e, 0x65, 0x55, 0x5f, 0xe2, 0xd9, 0x20, 0xab, 0x54,
-	0x8b, 0x0c, 0x97, 0x52, 0x1b, 0x95, 0xe4, 0x36, 0xac, 0xf8, 0x9e, 0xd3, 0x77, 0x63, 0x0f, 0xaf,
-	0xac, 0xba, 0x57, 0xc5, 0x60, 0x8b, 0xe0, 0x76, 0xc9, 0x64, 0x6c, 0xd5, 0x64, 0x69, 0x8b, 0x5d,
-	0xd4, 0x5e, 0xf6, 0x45, 0xe0, 0x0f, 0x60, 0xc5, 0x15, 0x57, 0xd6, 0x5c, 0x42, 0xcb, 0x35, 0xb4,
-	0x94, 0xd7, 0xa8, 0x9a, 0xca, 0x6d, 0xd4, 0xce, 0x0c, 0x8a, 0x66, 0xc0, 0xaf, 0x41, 0xa9, 0x51,
-	0x7e, 0xa7, 0x5a, 0xf6, 0xa2, 0x1e, 0xc5, 0x45, 0x33, 0x10, 0x36, 0x45, 0xca, 0xbf, 0xc9, 0x28,
-	0x6f, 0x06, 0xf3, 0x11, 0xa9, 0x36, 0xa7, 0x23, 0xba, 0x9c, 0x35, 0x03, 0x95, 0x68, 0x53, 0x89,
-	0x2f, 0xc6, 0xb3, 0xa8, 0x7e, 0x15, 0x9b, 0x52, 0xac, 0xfe, 0x37, 0x5b, 0x8a, 0x72, 0x9f, 0xc7,
-	0x25, 0x59, 0xee, 0x5c, 0x52, 0x2e, 0x77, 0x29, 0x2b, 0xca, 0x9d, 0x1b, 0xe8, 0xe5, 0x8e, 0x40,
-	0x42, 0x4e, 0x9f, 0x2f, 0xc0, 0xea, 0x61, 0x18, 0xa4, 0xb1, 0xdb, 0x4f, 0xf9, 0x94, 0xe9, 0xcb,
-	0x6f, 0x27, 0x4f, 0x5e, 0x65, 0xca, 0x28, 0x4a, 0x6a, 0x43, 0xb6, 0xba, 0xef, 0x91, 0xb6, 0x28,
-	0x2c, 0x87, 0x1f, 0xec, 0xec, 0xac, 0xc2, 0x72, 0x30, 0xef, 0x57, 0xf8, 0xe7, 0xe7, 0xbe, 0x57,
-	0x1e, 0x67, 0x0b, 0xa7, 0x1e, 0x67, 0x37, 0x01, 0x92, 0xd4, 0x8d, 0x53, 0x87, 0x07, 0x51, 0x76,
-	0x82, 0xfa, 0x64, 0x6c, 0x6d, 0xc9, 0xa6, 0x93, 0xeb, 0xa8, 0x5d, 0xc1, 0xc5, 0x5d, 0x37, 0x65,
-	0xdc, 0x3d, 0x16, 0x78, 0xc2, 0x66, 0xa9, 0xec, 0x5e, 0xa6, 0xa1, 0xf6, 0x0a, 0x0b, 0x3c, 0xdc,
-	0x7f, 0x08, 0x1b, 0xde, 0x28, 0xc6, 0xf9, 0xec, 0x0c, 0xc3, 0x20, 0x1d, 0x24, 0xcd, 0x65, 0x74,
-	0xd1, 0x9c, 0x8c, 0xad, 0x86, 0xec, 0x59, 0xfa, 0x06, 0x6a, 0xd7, 0x32, 0xc9, 0xa7, 0x28, 0x20,
-	0x57, 0x61, 0x39, 0x49, 0xdd, 0x74, 0x94, 0x34, 0x57, 0x90, 0x72, 0x6b, 0x32, 0xb6, 0xd6, 0x73,
-	0x37, 0xd3, 0x51, 0x42, 0x6d, 0xb9, 0x81, 0x76, 0xa1, 0x2e, 0xf2, 0x3f, 0x8b, 0x44, 0x96, 0x2b,
-	0x57, 0x61, 0x35, 0xbb, 0x65, 0x99, 0x0a, 0xeb, 0x18, 0xc1, 0x7c, 0x5f, 0xae, 0xa6, 0x87, 0xd0,
-	0x28, 0x63, 0xc8, 0x1c, 0x98, 0x03, 0xa4, 0x0b, 0x75, 0x51, 0x1f, 0xff, 0xcd, 0x91, 0x32, 0xc6,
-	0xfc, 0x8e, 0xdc, 0x86, 0xba, 0x28, 0xa6, 0xb2, 0x23, 0xd6, 0x8c, 0x14, 0x55, 0x53, 0x91, 0x36,
-	0xa1, 0x51, 0xb6, 0x94, 0xa5, 0xf8, 0x2e, 0x90, 0x7b, 0x2c, 0x9d, 0x1b, 0xf0, 0x43, 0xd8, 0xd6,
-	0xcc, 0xe6, 0x3f, 0x4c, 0x03, 0x76, 0x78, 0x65, 0x66, 0x9a, 0xbc, 0x62, 0xef, 0x42, 0xbd, 0x24,
-	0x97, 0xd8, 0xd7, 0xa1, 0x92, 0x19, 0x67, 0x95, 0x5b, 0x02, 0x2f, 0xf4, 0xbc, 0xef, 0x1c, 0x0e,
-	0x58, 0xff, 0xf8, 0x63, 0xe6, 0x9e, 0xa4, 0x83, 0x0c, 0xfb, 0x6d, 0xd8, 0xd6, 0xa4, 0x12, 0xb9,
-	0x91, 0x27, 0xa5, 0x38, 0xa8, 0x5c, 0xed, 0xfd, 0xb8, 0x06, 0x4b, 0x5f, 0x8c, 0x58, 0xfc, 0x03,
-	0xf9, 0x0a, 0xa0, 0x78, 0x98, 0x91, 0x86, 0xa0, 0x2d, 0xbf, 0xee, 0xcc, 0x73, 0x53, 0x72, 0x79,
-	0xc9, 0xcd, 0xe7, 0xbf, 0xff, 0xf5, 0xf3, 0x59, 0x72, 0x20, 0x9e, 0x25, 0x80, 0xaf, 0x5d, 0x7c,
-	0x58, 0x90, 0x6f, 0x01, 0x8a, 0x87, 0x98, 0x04, 0x9e, 0x7a, 0xcd, 0x49, 0xe0, 0xe9, 0x17, 0x1b,
-	0xbd, 0x8e, 0xc0, 0x97, 0x05, 0xb0, 0x79, 0xb1, 0x00, 0xee, 0x3c, 0xe5, 0x3f, 0x6d, 0xa5, 0x65,
-	0x3c, 0x23, 0x0e, 0x40, 0xf1, 0x12, 0x93, 0x5c, 0x53, 0x0f, 0x3a, 0xc9, 0x35, 0xe3, 0xc9, 0xb6,
-	0x8b, 0x5c, 0xe6, 0xb5, 0x66, 0x99, 0x25, 0x27, 0xf8, 0x12, 0x56, 0xe4, 0x0b, 0x8d, 0x6c, 0x23,
-	0x8a, 0xfe, 0xc4, 0x33, 0x77, 0x74, 0xa1, 0x8e, 0x4b, 0x5e, 0x8f, 0xfb, 0x00, 0x2a, 0xf9, 0x9b,
-	0x8d, 0xd4, 0x11, 0xa4, 0xfc, 0xae, 0x33, 0x1b, 0x65, 0xb1, 0x44, 0x27, 0x88, 0xbe, 0x46, 0xd4,
-	0x4b, 0xcf, 0xa3, 0x89, 0x8f, 0x12, 0x35, 0x9a, 0xca, 0x48, 0xd2, 0xa2, 0xa9, 0x4d, 0xaf, 0x3c,
-	0x9a, 0x38, 0x75, 0x04, 0x30, 0xce, 0x0d, 0xd2, 0xcb, 0xa2, 0xa9, 0x00, 0x4f, 0x8d, 0x63, 0x2d,
-	0x9a, 0x1a, 0xf0, 0x25, 0x04, 0xbe, 0x28, 0x80, 0xcd, 0x7a, 0x01, 0xdc, 0x79, 0xca, 0x7f, 0xda,
-	0x91, 0xef, 0x3d, 0xe3, 0xce, 0x17, 0x13, 0x55, 0x8b, 0xe2, 0x34, 0xc7, 0x8c, 0xd1, 0x2b, 0x9d,
-	0xbf, 0xb6, 0xa9, 0xa2, 0x23, 0xf0, 0x03, 0x8c, 0x1e, 0xa2, 0xe6, 0xd1, 0x53, 0x21, 0x77, 0x74,
-	0xa1, 0x8e, 0x47, 0x66, 0xe1, 0x55, 0xf2, 0xd1, 0xab, 0x44, 0x4d, 0x1d, 0xcf, 0x4a, 0xd4, 0xb4,
-	0x09, 0x5d, 0x8a, 0x9a, 0xb8, 0xdc, 0x63, 0xa8, 0xe9, 0xbd, 0x9c, 0x98, 0x4a, 0x84, 0x4a, 0x1d,
-	0xcc, 0xfc, 0xdf, 0x4c, 0x9d, 0x9e, 0x72, 0x07, 0x45, 0x37, 0xaa, 0x21, 0x51, 0xde, 0x3f, 0xc8,
-	0x73, 0x03, 0x6a, 0x7a, 0xc3, 0x96, 0x6c, 0x33, 0x27, 0x81, 0x64, 0x9b, 0xdd, 0xe1, 0xe9, 0x2d,
-	0x64, 0xbb, 0x51, 0xb0, 0x99, 0x97, 0x75, 0xb6, 0xce, 0xd3, 0xec, 0xb3, 0xad, 0x74, 0xdd, 0x67,
-	0x24, 0x84, 0x9a, 0xde, 0xb5, 0xa5, 0x0f, 0x33, 0x87, 0x80, 0xf4, 0xe1, 0x35, 0x6d, 0xfe, 0xff,
-	0xe8, 0x43, 0xeb, 0xda, 0x85, 0xd7, 0x31, 0x23, 0xe1, 0x23, 0xa8, 0x2a, 0x5d, 0x9d, 0x9c, 0xcb,
-	0x22, 0x5e, 0xa6, 0x6a, 0x4e, 0x2b, 0x74, 0x1e, 0xf2, 0x66, 0x9e, 0x6f, 0x60, 0x5d, 0xeb, 0xf1,
-	0xe4, 0x7c, 0x9e, 0x07, 0xe5, 0x79, 0x60, 0x9a, 0xb3, 0x54, 0x92, 0xad, 0x81, 0x6c, 0x9b, 0xa4,
-	0x1c, 0xbd, 0x87, 0x50, 0x55, 0xfa, 0xbc, 0x3c, 0xc7, 0xf4, 0x3c, 0x90, 0xe7, 0x98, 0x31, 0x12,
-	0xe8, 0x36, 0x22, 0xaf, 0x93, 0x2a, 0x22, 0x0f, 0x50, 0xd9, 0xfd, 0xe8, 0xd7, 0x97, 0x2d, 0xe3,
-	0xc5, 0xcb, 0x96, 0xf1, 0xe7, 0xcb, 0x96, 0xf1, 0xd3, 0xab, 0xd6, 0x99, 0x17, 0xaf, 0x5a, 0x67,
-	0xfe, 0x78, 0xd5, 0x3a, 0xf3, 0xf5, 0xf5, 0x23, 0x3f, 0x1d, 0x8c, 0x7a, 0xed, 0x7e, 0x38, 0xec,
-	0x3c, 0x1e, 0xa5, 0x9e, 0x3b, 0x70, 0xfb, 0xc7, 0x37, 0xf6, 0xf7, 0x6f, 0x61, 0xc7, 0x71, 0x86,
-	0x7e, 0x30, 0x70, 0x06, 0xe1, 0x28, 0x61, 0xef, 0x45, 0xbd, 0xde, 0x32, 0xfe, 0x1b, 0x63, 0xff,
-	0x9f, 0x00, 0x00, 0x00, 0xff, 0xff, 0x76, 0xfa, 0x53, 0x2e, 0x12, 0x11, 0x00, 0x00,
+	// 1772 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xac, 0x58, 0x5f, 0x6f, 0x1b, 0xc7,
+	0x11, 0xf7, 0xe9, 0x3f, 0x87, 0x7f, 0x24, 0xad, 0x44, 0x8a, 0xba, 0x58, 0x3c, 0x61, 0x5d, 0xb7,
+	0xfe, 0x83, 0x90, 0xb1, 0x94, 0xd4, 0x82, 0xd2, 0xa2, 0x0d, 0xe5, 0xd6, 0x0d, 0xe0, 0x38, 0xf5,
+	0xa5, 0x6a, 0x81, 0x02, 0x2d, 0x71, 0xe4, 0xad, 0xc5, 0xab, 0x44, 0x1e, 0x7b, 0x77, 0xac, 0x13,
+	0x18, 0x7a, 0x51, 0x81, 0x3e, 0x17, 0xe8, 0x47, 0xc8, 0xb7, 0xe8, 0x27, 0xe8, 0x53, 0x11, 0xa0,
+	0x2f, 0x7d, 0x22, 0x0a, 0xbb, 0x9f, 0x80, 0x5f, 0x20, 0xc5, 0xce, 0xee, 0x1d, 0x77, 0x8f, 0x47,
+	0x47, 0xb4, 0xfb, 0x62, 0x71, 0x67, 0x76, 0x7e, 0xf3, 0xbb, 0x9d, 0xd9, 0x99, 0x59, 0xc3, 0xba,
+	0x33, 0xf0, 0x1a, 0x83, 0xc0, 0x8f, 0xfc, 0x3a, 0xfe, 0x4b, 0x16, 0x9d, 0x81, 0x67, 0xde, 0x3c,
+	0xf3, 0xfd, 0xb3, 0x0b, 0xd6, 0xe0, 0x4a, 0xa7, 0xdf, 0xf7, 0x23, 0x27, 0xf2, 0xfc, 0x7e, 0x28,
+	0xb6, 0x98, 0xdb, 0x67, 0xfe, 0x99, 0x8f, 0x3f, 0x1b, 0xfc, 0x97, 0x90, 0xd2, 0xaf, 0x0d, 0x58,
+	0xb2, 0x7d, 0xbf, 0x47, 0x1e, 0x42, 0x3e, 0xf0, 0xfd, 0x5e, 0xab, 0x3f, 0xec, 0xb5, 0x59, 0x50,
+	0x35, 0xf6, 0x8d, 0x3b, 0xcb, 0xcd, 0xca, 0x78, 0x64, 0x91, 0x76, 0xe8, 0xf7, 0x8f, 0xa9, 0xa2,
+	0xa4, 0x36, 0xf0, 0xd5, 0x53, 0x5c, 0x90, 0xef, 0xc3, 0xf2, 0x20, 0xf0, 0x3a, 0xac, 0xba, 0xb0,
+	0x6f, 0xdc, 0x31, 0x9a, 0x1b, 0xe3, 0x91, 0x55, 0x10, 0x26, 0x28, 0xa6, 0xb6, 0x50, 0x93, 0x63,
+	0x28, 0x78, 0x61, 0xcb, 0xf9, 0x93, 0xe3, 0x5d, 0x38, 0xed, 0x0b, 0x56, 0x5d, 0xdc, 0x37, 0xee,
+	0xac, 0x35, 0x77, 0xc6, 0x23, 0x6b, 0x4b, 0x6c, 0x57, 0xb5, 0xd4, 0xce, 0x7b, 0xe1, 0x27, 0xc9,
+	0xea, 0x00, 0x36, 0x4f, 0x02, 0xe6, 0x44, 0x8c, 0x53, 0xb5, 0xd9, 0x1f, 0x87, 0x2c, 0x8c, 0xc8,
+	0x1e, 0x2c, 0x71, 0x1a, 0x48, 0x35, 0x7f, 0x90, 0xab, 0x3b, 0x03, 0xaf, 0x8e, 0x7a, 0x14, 0xd3,
+	0x43, 0x20, 0xaa, 0x4d, 0x38, 0xf0, 0xfb, 0x21, 0xfb, 0x2e, 0xa3, 0x03, 0xd8, 0x3c, 0x1d, 0xb8,
+	0x73, 0x3b, 0x52, 0x6d, 0xae, 0xe7, 0xe8, 0x43, 0xd8, 0x7c, 0xc4, 0x2e, 0x98, 0xee, 0xc8, 0xca,
+	0x88, 0x81, 0x7a, 0xd6, 0x74, 0x1b, 0x88, 0x6a, 0x25, 0x5c, 0xd1, 0x07, 0x50, 0x7a, 0xcc, 0xa2,
+	0xb9, 0x80, 0x3e, 0x80, 0xf5, 0xc4, 0xe4, 0x7a, 0x84, 0x09, 0x6c, 0x3c, 0xf1, 0x42, 0x34, 0x09,
+	0xa5, 0x1b, 0xfe, 0x11, 0x8a, 0x4c, 0xe2, 0x58, 0xb0, 0xcc, 0x0d, 0xc2, 0xaa, 0xb1, 0xbf, 0xa8,
+	0x03, 0x09, 0x39, 0xbd, 0x5a, 0x80, 0xc2, 0x67, 0x2c, 0x62, 0x81, 0xcd, 0x1c, 0xd7, 0xeb, 0x9f,
+	0xbd, 0x7d, 0xea, 0xdd, 0x85, 0x95, 0x01, 0x0b, 0x3c, 0xdf, 0xc5, 0xdc, 0xcb, 0x35, 0x37, 0xc7,
+	0x23, 0xab, 0x28, 0x73, 0x0f, 0xe5, 0xd4, 0x96, 0x1b, 0xc8, 0xe7, 0xb0, 0xc5, 0x2e, 0x58, 0x27,
+	0x0a, 0xbc, 0x8e, 0x17, 0x7d, 0xd5, 0x0a, 0x84, 0x6b, 0x4c, 0x42, 0xa3, 0x59, 0x1b, 0x8f, 0x2c,
+	0x53, 0xd8, 0x65, 0x6c, 0xa2, 0x36, 0x51, 0xa4, 0x31, 0xe9, 0x1f, 0x43, 0xf1, 0x85, 0x13, 0xb1,
+	0x20, 0x81, 0x5a, 0x42, 0xa8, 0xea, 0x78, 0x64, 0x6d, 0x0b, 0x28, 0x4d, 0x4d, 0xed, 0x02, 0xae,
+	0xa5, 0x39, 0xfd, 0x02, 0x76, 0x45, 0x76, 0xaa, 0x27, 0x11, 0x87, 0xef, 0x87, 0x50, 0xec, 0x31,
+	0x15, 0x5b, 0xc4, 0x64, 0x13, 0x8f, 0x52, 0x33, 0x28, 0xf4, 0x94, 0x15, 0xfd, 0x15, 0x98, 0x59,
+	0xa0, 0x32, 0x30, 0x6f, 0x8b, 0xfa, 0x05, 0xec, 0x8a, 0xfc, 0xfe, 0x3f, 0x53, 0xcd, 0x02, 0x7d,
+	0x47, 0xaa, 0xcf, 0xa0, 0xf2, 0x98, 0x45, 0x59, 0x3c, 0xbf, 0xeb, 0x46, 0x90, 0x8a, 0x9e, 0x4b,
+	0x71, 0xe2, 0xd0, 0x67, 0xb0, 0x33, 0x05, 0xf9, 0x8e, 0x2c, 0x3f, 0x86, 0x2a, 0xbf, 0x36, 0xea,
+	0x8e, 0xf0, 0xda, 0x37, 0xf7, 0x14, 0x76, 0x33, 0x8c, 0x25, 0xa3, 0x23, 0x28, 0x69, 0x8c, 0xe2,
+	0x4b, 0x98, 0x41, 0xa9, 0xa8, 0x52, 0x0a, 0xe9, 0x3f, 0x0d, 0x58, 0xf9, 0xd4, 0x3d, 0x71, 0x02,
+	0x97, 0xdc, 0x82, 0xa5, 0xbe, 0xd3, 0x63, 0xe8, 0x3b, 0xd7, 0x5c, 0x1f, 0x8f, 0xac, 0xbc, 0x48,
+	0x68, 0x2e, 0xa5, 0x36, 0x2a, 0xc9, 0x3e, 0x2c, 0x86, 0xec, 0x4b, 0x79, 0xef, 0x4a, 0xe3, 0x91,
+	0x05, 0x62, 0x4f, 0xc8, 0xbe, 0xa4, 0x36, 0x57, 0x91, 0x1f, 0x41, 0x91, 0xc7, 0xb7, 0xe5, 0x3f,
+	0x6f, 0xb5, 0xbd, 0x20, 0xea, 0xe2, 0x5d, 0xcb, 0xa9, 0x17, 0x44, 0x53, 0x53, 0x3b, 0xcf, 0xd7,
+	0x9f, 0x3f, 0x6f, 0xf2, 0x15, 0xf9, 0x09, 0x94, 0x06, 0x17, 0x4e, 0x47, 0x31, 0x5f, 0x42, 0xf3,
+	0xdd, 0xf1, 0xc8, 0x2a, 0xcb, 0x2b, 0xae, 0xe9, 0xa9, 0x5d, 0x40, 0x81, 0x04, 0xa0, 0xe7, 0xb0,
+	0xfa, 0x49, 0xa7, 0xe3, 0x0f, 0xfb, 0x11, 0x69, 0xc0, 0xda, 0x30, 0x64, 0x81, 0xf2, 0x51, 0x5b,
+	0xe3, 0x91, 0xb5, 0x2e, 0x50, 0x62, 0x0d, 0xb5, 0x93, 0x4d, 0xdc, 0x60, 0xe0, 0x84, 0xe1, 0x0b,
+	0x3f, 0x88, 0x2b, 0x8b, 0x62, 0x10, 0x6b, 0xa8, 0x9d, 0x6c, 0xa2, 0xdf, 0x1a, 0xb0, 0x74, 0x1a,
+	0xb2, 0x80, 0x1f, 0xcb, 0xc0, 0x73, 0xa5, 0x17, 0xe5, 0x58, 0x06, 0x9e, 0x4b, 0x6d, 0xae, 0xe2,
+	0x6d, 0x70, 0xd0, 0xf5, 0xfb, 0x2c, 0x8e, 0xb0, 0xc0, 0x57, 0xda, 0xa0, 0xaa, 0xa5, 0x76, 0x1e,
+	0x97, 0x32, 0x47, 0x6f, 0xf1, 0x12, 0x2d, 0x5b, 0xa7, 0x16, 0x19, 0x2e, 0xa5, 0x36, 0x2a, 0xc9,
+	0x11, 0xac, 0x7a, 0x6e, 0xab, 0xe3, 0x04, 0x2e, 0x1e, 0x59, 0xfe, 0x20, 0x8f, 0xc1, 0x17, 0xc1,
+	0x6d, 0x92, 0xf1, 0xc8, 0x2a, 0xc9, 0x7e, 0x2b, 0x76, 0x51, 0x7b, 0xc5, 0x13, 0x81, 0x3f, 0x86,
+	0x55, 0x47, 0x1c, 0x59, 0x75, 0x19, 0x2d, 0x0b, 0x68, 0x29, 0x8f, 0x51, 0x35, 0x95, 0xdb, 0xa8,
+	0x1d, 0x1b, 0x4c, 0x3a, 0x34, 0x3f, 0x06, 0xa5, 0x71, 0xf2, 0x33, 0xd5, 0x5a, 0x0a, 0xea, 0x51,
+	0x3c, 0xe9, 0xd0, 0xc2, 0x66, 0xd2, 0x87, 0xde, 0x64, 0x94, 0x74, 0xe8, 0xf9, 0x1c, 0xa9, 0x36,
+	0xd7, 0x73, 0x74, 0x3b, 0xee, 0xd0, 0xaa, 0xa3, 0x0d, 0x25, 0xbe, 0x18, 0xcf, 0x49, 0x4b, 0x56,
+	0xb1, 0x29, 0xc5, 0x96, 0xfc, 0x66, 0x4b, 0xd1, 0x83, 0xe7, 0xa1, 0x24, 0x7b, 0x30, 0x97, 0xa4,
+	0x7b, 0xb0, 0x94, 0x4d, 0x7a, 0x30, 0x37, 0xd0, 0x7b, 0x30, 0x02, 0x09, 0x39, 0xbd, 0x5a, 0x84,
+	0xb5, 0x13, 0xbf, 0x1f, 0x05, 0x4e, 0x27, 0xe2, 0xfd, 0xb7, 0x23, 0x7f, 0xb7, 0x92, 0xe4, 0x55,
+	0xfa, 0xaf, 0xa2, 0xa4, 0x36, 0xc4, 0xab, 0x4f, 0x5d, 0x52, 0x17, 0x17, 0xab, 0xc5, 0x3f, 0x6c,
+	0x21, 0xeb, 0x62, 0xb5, 0x30, 0xef, 0x57, 0xf9, 0xcf, 0x5f, 0x7a, 0x6e, 0xba, 0xd1, 0x2f, 0x5e,
+	0xbb, 0xd1, 0x7f, 0x08, 0x10, 0x46, 0x4e, 0x10, 0xb5, 0x78, 0x10, 0x65, 0x25, 0x28, 0x8f, 0x47,
+	0xd6, 0xa6, 0x2c, 0x3a, 0x89, 0x8e, 0xda, 0x39, 0x5c, 0x3c, 0x72, 0x22, 0xc6, 0xe9, 0xb1, 0xbe,
+	0x2b, 0x6c, 0x96, 0xd3, 0xf4, 0x62, 0x0d, 0xb5, 0x57, 0x59, 0xdf, 0xc5, 0xfd, 0x27, 0xb0, 0xee,
+	0x0e, 0x03, 0x1c, 0x9a, 0x5b, 0x3d, 0xbf, 0x1f, 0x75, 0xc3, 0xea, 0x0a, 0x52, 0x34, 0xc7, 0x23,
+	0xab, 0x22, 0x6b, 0x96, 0xbe, 0x81, 0xda, 0xa5, 0x58, 0xf2, 0x19, 0x0a, 0xf8, 0x4c, 0x12, 0x46,
+	0x4e, 0x34, 0x0c, 0xab, 0xab, 0xe9, 0x99, 0x44, 0xc8, 0xa9, 0x2d, 0x37, 0xd0, 0x26, 0x94, 0x45,
+	0xfe, 0xc7, 0x91, 0x88, 0x73, 0xe5, 0x2e, 0xac, 0xc5, 0xa7, 0x2c, 0x53, 0xa1, 0x88, 0x11, 0x4c,
+	0xf6, 0x25, 0x6a, 0x7a, 0x02, 0x95, 0x34, 0x86, 0xcc, 0x81, 0x39, 0x40, 0x9a, 0x50, 0x16, 0xf7,
+	0xe3, 0xdd, 0x88, 0xa4, 0x31, 0xe6, 0x27, 0x72, 0x04, 0x65, 0x71, 0x99, 0xd2, 0x44, 0xac, 0x8c,
+	0x14, 0x55, 0x53, 0x91, 0x56, 0xa1, 0x92, 0xb6, 0x94, 0x57, 0xf1, 0x23, 0x20, 0x8f, 0x59, 0x34,
+	0x37, 0xe0, 0x4f, 0x61, 0x4b, 0x33, 0x9b, 0xff, 0x63, 0x2a, 0xb0, 0xcd, 0x6f, 0x66, 0xac, 0x49,
+	0x6e, 0xec, 0x23, 0x28, 0xa7, 0xe4, 0x12, 0xfb, 0x3e, 0xe4, 0x62, 0xe3, 0xf8, 0xe6, 0xa6, 0xc0,
+	0x27, 0x7a, 0x5e, 0x77, 0x4e, 0xba, 0xac, 0x73, 0xfe, 0x0b, 0xe6, 0x5c, 0x44, 0xdd, 0x18, 0xfb,
+	0x7d, 0xd8, 0xd2, 0xa4, 0x12, 0xb9, 0x92, 0x24, 0xa5, 0xf8, 0x50, 0xb9, 0x3a, 0xf8, 0x76, 0x03,
+	0x96, 0x9f, 0x0d, 0x59, 0xf0, 0x15, 0xf9, 0x0d, 0xc0, 0xe4, 0xb5, 0x44, 0x2a, 0xc2, 0x6d, 0xfa,
+	0xc9, 0x65, 0xee, 0x4c, 0xc9, 0xe5, 0x21, 0x57, 0xaf, 0xfe, 0xf5, 0xdf, 0xbf, 0x2d, 0x90, 0x63,
+	0xf1, 0x56, 0x00, 0x7c, 0x82, 0xe2, 0xb4, 0x4f, 0xfe, 0x00, 0x30, 0x79, 0x1d, 0x49, 0xe0, 0xa9,
+	0x27, 0x96, 0x04, 0x9e, 0x7e, 0x46, 0xd1, 0xfb, 0x08, 0x7c, 0x5b, 0x00, 0x9b, 0x7b, 0x13, 0xe0,
+	0xc6, 0x4b, 0xfe, 0xa7, 0xae, 0x94, 0x8c, 0x4b, 0xd2, 0x02, 0x98, 0x3c, 0x8f, 0xa4, 0xaf, 0xa9,
+	0x57, 0x96, 0xf4, 0x95, 0xf1, 0x8e, 0xda, 0x47, 0x5f, 0xe6, 0xbd, 0x6a, 0xda, 0x4b, 0xe2, 0xe0,
+	0xd7, 0xb0, 0x2a, 0x9f, 0x4d, 0x64, 0x0b, 0x51, 0xf4, 0x77, 0x97, 0xb9, 0xad, 0x0b, 0x75, 0x5c,
+	0x32, 0x1b, 0xf7, 0x29, 0xe4, 0x92, 0x87, 0x14, 0x29, 0x23, 0x48, 0xfa, 0xb1, 0x65, 0x56, 0xd2,
+	0x62, 0x89, 0x4e, 0x10, 0xbd, 0x40, 0xd4, 0x43, 0xff, 0xda, 0x88, 0x5b, 0xab, 0xf6, 0xd0, 0xaa,
+	0x29, 0xe1, 0xcb, 0x18, 0x92, 0x4d, 0x6b, 0xa6, 0x5e, 0xfa, 0x7a, 0x82, 0xbe, 0x7e, 0x7e, 0xac,
+	0xcf, 0xbd, 0xf4, 0x23, 0xf5, 0xc3, 0x34, 0x95, 0x16, 0x9f, 0x06, 0xaa, 0xde, 0x8f, 0x67, 0x53,
+	0xf2, 0x77, 0x23, 0xee, 0xcb, 0x19, 0x2c, 0x67, 0x3e, 0x39, 0x24, 0xcb, 0xd9, 0xaf, 0x07, 0xda,
+	0x41, 0x96, 0xbf, 0x4b, 0xb1, 0x34, 0x9f, 0xbc, 0x15, 0xcb, 0xf4, 0x56, 0xf1, 0x2c, 0xb8, 0x24,
+	0x7f, 0x31, 0xb0, 0x7d, 0x6b, 0xcc, 0xdf, 0x8b, 0xc3, 0x9f, 0x45, 0xfb, 0x66, 0xb6, 0x52, 0x72,
+	0x3e, 0x42, 0xce, 0x07, 0xe4, 0x83, 0x59, 0x39, 0x32, 0x45, 0x2b, 0x26, 0xf2, 0x67, 0x43, 0x4c,
+	0x00, 0xda, 0x8b, 0x80, 0xec, 0x25, 0xd9, 0x92, 0xf5, 0xcc, 0x30, 0x6b, 0xb3, 0xd4, 0x92, 0x4e,
+	0x03, 0xe9, 0xdc, 0x25, 0x3f, 0xb8, 0x26, 0x9d, 0x49, 0xfd, 0xc0, 0x31, 0x58, 0xad, 0x1f, 0xca,
+	0x10, 0xa4, 0xd5, 0x0f, 0x6d, 0x5e, 0x4a, 0xea, 0x07, 0xce, 0x39, 0x22, 0x95, 0x71, 0x52, 0x21,
+	0xed, 0xb8, 0x7e, 0x28, 0xc0, 0x53, 0x03, 0xa0, 0x56, 0x3f, 0x34, 0xe0, 0x5b, 0x08, 0xbc, 0x27,
+	0x80, 0xcd, 0xf2, 0x04, 0xb8, 0xf1, 0x92, 0xff, 0xa9, 0x0f, 0x3c, 0xf7, 0x92, 0x93, 0x9f, 0xcc,
+	0x70, 0x5a, 0xdd, 0x98, 0xf6, 0x91, 0x31, 0xec, 0x49, 0xf2, 0xf7, 0x36, 0x54, 0x74, 0x04, 0x7e,
+	0x8a, 0xf5, 0x02, 0x51, 0x93, 0x7a, 0xa1, 0x42, 0x6e, 0xeb, 0x42, 0x1d, 0x8f, 0x64, 0xe1, 0xe5,
+	0x92, 0x61, 0x4f, 0xa9, 0x13, 0xea, 0x40, 0xa8, 0xd4, 0x09, 0x6d, 0x26, 0x4c, 0xd5, 0x09, 0x71,
+	0xb8, 0xe7, 0x50, 0xd2, 0xa7, 0x07, 0x62, 0x2a, 0x11, 0x4a, 0xf5, 0x4c, 0xf3, 0xbd, 0x4c, 0x9d,
+	0x5e, 0xe4, 0x8e, 0x27, 0xfd, 0xaf, 0x84, 0x8e, 0x92, 0x8e, 0x45, 0xae, 0x0c, 0x28, 0xe9, 0x23,
+	0x82, 0xf4, 0x96, 0x39, 0x7b, 0x48, 0x6f, 0xd9, 0x33, 0x05, 0x7d, 0x88, 0xde, 0x1e, 0x4c, 0xbc,
+	0x99, 0xb7, 0x75, 0x6f, 0x8d, 0x97, 0xf1, 0xcf, 0xba, 0xd2, 0xe7, 0x2f, 0x89, 0x0f, 0x25, 0x7d,
+	0x4e, 0x90, 0x1c, 0x32, 0xc7, 0x0e, 0xc9, 0x61, 0xc6, 0x60, 0xf1, 0x3d, 0xe4, 0x50, 0xbb, 0x77,
+	0x73, 0x96, 0x67, 0x74, 0xf8, 0x1c, 0xf2, 0xca, 0x1c, 0x41, 0x76, 0xe2, 0x88, 0xa7, 0x5d, 0x55,
+	0xa7, 0x15, 0xba, 0x1f, 0xf2, 0x66, 0x3f, 0xbf, 0x87, 0xa2, 0x36, 0x55, 0x90, 0xdd, 0x24, 0x0f,
+	0xd2, 0x13, 0x88, 0x69, 0x66, 0xa9, 0xa4, 0xb7, 0x0a, 0x7a, 0xdb, 0x20, 0xe9, 0xe8, 0x9d, 0x42,
+	0x5e, 0x99, 0x2c, 0xe4, 0x77, 0x4c, 0x4f, 0x20, 0xf2, 0x3b, 0x32, 0x86, 0x10, 0xba, 0x85, 0xc8,
+	0x45, 0x92, 0x47, 0xe4, 0x2e, 0x2a, 0x9b, 0x3f, 0xfb, 0xc7, 0xab, 0x9a, 0xf1, 0xcd, 0xab, 0x9a,
+	0xf1, 0x9f, 0x57, 0x35, 0xe3, 0xaf, 0xaf, 0x6b, 0x37, 0xbe, 0x79, 0x5d, 0xbb, 0xf1, 0xef, 0xd7,
+	0xb5, 0x1b, 0xbf, 0xbd, 0x7f, 0xe6, 0x45, 0xdd, 0x61, 0xbb, 0xde, 0xf1, 0x7b, 0x8d, 0x17, 0xc3,
+	0xc8, 0x75, 0xba, 0x4e, 0xe7, 0xfc, 0xc1, 0xe1, 0xe1, 0x43, 0x2c, 0x47, 0xad, 0x9e, 0xd7, 0xef,
+	0xb6, 0xba, 0xfe, 0x30, 0x64, 0x1f, 0x0f, 0xda, 0xed, 0x15, 0xfc, 0xdf, 0xec, 0xc3, 0xff, 0x05,
+	0x00, 0x00, 0xff, 0xff, 0x64, 0xa1, 0xfa, 0xf2, 0x19, 0x17, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -1883,6 +2341,10 @@ type QueryClient interface {
 	DeleteRoom(ctx context.Context, in *DeleteRoomRequest, opts ...grpc.CallOption) (*DeleteRoomResponse, error)
 	GetRoom(ctx context.Context, in *GetRoomRequest, opts ...grpc.CallOption) (*GetRoomResponse, error)
 	ListRooms(ctx context.Context, in *ListRoomsRequest, opts ...grpc.CallOption) (*ListRoomsResponse, error)
+	CreateMeterReading(ctx context.Context, in *CreateMeterReadingRequest, opts ...grpc.CallOption) (*CreateMeterReadingResponse, error)
+	UpdateMeterReading(ctx context.Context, in *UpdateMeterReadingRequest, opts ...grpc.CallOption) (*UpdateMeterReadingResponse, error)
+	GetMeterReading(ctx context.Context, in *GetMeterReadingRequest, opts ...grpc.CallOption) (*GetMeterReadingResponse, error)
+	ListMeterReadings(ctx context.Context, in *ListMeterReadingsRequest, opts ...grpc.CallOption) (*ListMeterReadingsResponse, error)
 	CreateUser(ctx context.Context, in *CreateUserRequest, opts ...grpc.CallOption) (*CreateUserResponse, error)
 	UpdateUser(ctx context.Context, in *UpdateUserRequest, opts ...grpc.CallOption) (*UpdateUserResponse, error)
 	DeleteUser(ctx context.Context, in *DeleteUserRequest, opts ...grpc.CallOption) (*DeleteUserResponse, error)
@@ -1943,6 +2405,42 @@ func (c *queryClient) GetRoom(ctx context.Context, in *GetRoomRequest, opts ...g
 func (c *queryClient) ListRooms(ctx context.Context, in *ListRoomsRequest, opts ...grpc.CallOption) (*ListRoomsResponse, error) {
 	out := new(ListRoomsResponse)
 	err := c.cc.Invoke(ctx, "/api.Query/ListRooms", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *queryClient) CreateMeterReading(ctx context.Context, in *CreateMeterReadingRequest, opts ...grpc.CallOption) (*CreateMeterReadingResponse, error) {
+	out := new(CreateMeterReadingResponse)
+	err := c.cc.Invoke(ctx, "/api.Query/CreateMeterReading", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *queryClient) UpdateMeterReading(ctx context.Context, in *UpdateMeterReadingRequest, opts ...grpc.CallOption) (*UpdateMeterReadingResponse, error) {
+	out := new(UpdateMeterReadingResponse)
+	err := c.cc.Invoke(ctx, "/api.Query/UpdateMeterReading", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *queryClient) GetMeterReading(ctx context.Context, in *GetMeterReadingRequest, opts ...grpc.CallOption) (*GetMeterReadingResponse, error) {
+	out := new(GetMeterReadingResponse)
+	err := c.cc.Invoke(ctx, "/api.Query/GetMeterReading", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *queryClient) ListMeterReadings(ctx context.Context, in *ListMeterReadingsRequest, opts ...grpc.CallOption) (*ListMeterReadingsResponse, error) {
+	out := new(ListMeterReadingsResponse)
+	err := c.cc.Invoke(ctx, "/api.Query/ListMeterReadings", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -2055,6 +2553,10 @@ type QueryServer interface {
 	DeleteRoom(context.Context, *DeleteRoomRequest) (*DeleteRoomResponse, error)
 	GetRoom(context.Context, *GetRoomRequest) (*GetRoomResponse, error)
 	ListRooms(context.Context, *ListRoomsRequest) (*ListRoomsResponse, error)
+	CreateMeterReading(context.Context, *CreateMeterReadingRequest) (*CreateMeterReadingResponse, error)
+	UpdateMeterReading(context.Context, *UpdateMeterReadingRequest) (*UpdateMeterReadingResponse, error)
+	GetMeterReading(context.Context, *GetMeterReadingRequest) (*GetMeterReadingResponse, error)
+	ListMeterReadings(context.Context, *ListMeterReadingsRequest) (*ListMeterReadingsResponse, error)
 	CreateUser(context.Context, *CreateUserRequest) (*CreateUserResponse, error)
 	UpdateUser(context.Context, *UpdateUserRequest) (*UpdateUserResponse, error)
 	DeleteUser(context.Context, *DeleteUserRequest) (*DeleteUserResponse, error)
@@ -2086,6 +2588,18 @@ func (*UnimplementedQueryServer) GetRoom(ctx context.Context, req *GetRoomReques
 }
 func (*UnimplementedQueryServer) ListRooms(ctx context.Context, req *ListRoomsRequest) (*ListRoomsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListRooms not implemented")
+}
+func (*UnimplementedQueryServer) CreateMeterReading(ctx context.Context, req *CreateMeterReadingRequest) (*CreateMeterReadingResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateMeterReading not implemented")
+}
+func (*UnimplementedQueryServer) UpdateMeterReading(ctx context.Context, req *UpdateMeterReadingRequest) (*UpdateMeterReadingResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateMeterReading not implemented")
+}
+func (*UnimplementedQueryServer) GetMeterReading(ctx context.Context, req *GetMeterReadingRequest) (*GetMeterReadingResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetMeterReading not implemented")
+}
+func (*UnimplementedQueryServer) ListMeterReadings(ctx context.Context, req *ListMeterReadingsRequest) (*ListMeterReadingsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListMeterReadings not implemented")
 }
 func (*UnimplementedQueryServer) CreateUser(ctx context.Context, req *CreateUserRequest) (*CreateUserResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateUser not implemented")
@@ -2211,6 +2725,78 @@ func _Query_ListRooms_Handler(srv interface{}, ctx context.Context, dec func(int
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(QueryServer).ListRooms(ctx, req.(*ListRoomsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Query_CreateMeterReading_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateMeterReadingRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(QueryServer).CreateMeterReading(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/api.Query/CreateMeterReading",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(QueryServer).CreateMeterReading(ctx, req.(*CreateMeterReadingRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Query_UpdateMeterReading_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateMeterReadingRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(QueryServer).UpdateMeterReading(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/api.Query/UpdateMeterReading",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(QueryServer).UpdateMeterReading(ctx, req.(*UpdateMeterReadingRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Query_GetMeterReading_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetMeterReadingRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(QueryServer).GetMeterReading(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/api.Query/GetMeterReading",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(QueryServer).GetMeterReading(ctx, req.(*GetMeterReadingRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Query_ListMeterReadings_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListMeterReadingsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(QueryServer).ListMeterReadings(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/api.Query/ListMeterReadings",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(QueryServer).ListMeterReadings(ctx, req.(*ListMeterReadingsRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -2436,6 +3022,22 @@ var _Query_serviceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ListRooms",
 			Handler:    _Query_ListRooms_Handler,
+		},
+		{
+			MethodName: "CreateMeterReading",
+			Handler:    _Query_CreateMeterReading_Handler,
+		},
+		{
+			MethodName: "UpdateMeterReading",
+			Handler:    _Query_UpdateMeterReading_Handler,
+		},
+		{
+			MethodName: "GetMeterReading",
+			Handler:    _Query_GetMeterReading_Handler,
+		},
+		{
+			MethodName: "ListMeterReadings",
+			Handler:    _Query_ListMeterReadings_Handler,
 		},
 		{
 			MethodName: "CreateUser",
@@ -2831,6 +3433,328 @@ func (m *ListRoomsResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 		for iNdEx := len(m.Rooms) - 1; iNdEx >= 0; iNdEx-- {
 			{
 				size, err := m.Rooms[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintProto(dAtA, i, uint64(size))
+			}
+			i--
+			dAtA[i] = 0xa
+		}
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *MeterReading) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *MeterReading) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *MeterReading) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.WaterReading != 0 {
+		i -= 8
+		encoding_binary.LittleEndian.PutUint64(dAtA[i:], uint64(math.Float64bits(float64(m.WaterReading))))
+		i--
+		dAtA[i] = 0x21
+	}
+	if m.ElectricityReading != 0 {
+		i -= 8
+		encoding_binary.LittleEndian.PutUint64(dAtA[i:], uint64(math.Float64bits(float64(m.ElectricityReading))))
+		i--
+		dAtA[i] = 0x19
+	}
+	if len(m.Period) > 0 {
+		i -= len(m.Period)
+		copy(dAtA[i:], m.Period)
+		i = encodeVarintProto(dAtA, i, uint64(len(m.Period)))
+		i--
+		dAtA[i] = 0x12
+	}
+	if m.RoomNumber != 0 {
+		i = encodeVarintProto(dAtA, i, uint64(m.RoomNumber))
+		i--
+		dAtA[i] = 0x8
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *CreateMeterReadingRequest) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *CreateMeterReadingRequest) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *CreateMeterReadingRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.MeterReading != nil {
+		{
+			size, err := m.MeterReading.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintProto(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *CreateMeterReadingResponse) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *CreateMeterReadingResponse) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *CreateMeterReadingResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.MeterReading != nil {
+		{
+			size, err := m.MeterReading.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintProto(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *UpdateMeterReadingRequest) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *UpdateMeterReadingRequest) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *UpdateMeterReadingRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.MeterReading != nil {
+		{
+			size, err := m.MeterReading.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintProto(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *UpdateMeterReadingResponse) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *UpdateMeterReadingResponse) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *UpdateMeterReadingResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.MeterReading != nil {
+		{
+			size, err := m.MeterReading.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintProto(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *GetMeterReadingRequest) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *GetMeterReadingRequest) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *GetMeterReadingRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if len(m.Period) > 0 {
+		i -= len(m.Period)
+		copy(dAtA[i:], m.Period)
+		i = encodeVarintProto(dAtA, i, uint64(len(m.Period)))
+		i--
+		dAtA[i] = 0x12
+	}
+	if m.RoomNumber != 0 {
+		i = encodeVarintProto(dAtA, i, uint64(m.RoomNumber))
+		i--
+		dAtA[i] = 0x8
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *GetMeterReadingResponse) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *GetMeterReadingResponse) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *GetMeterReadingResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.MeterReading != nil {
+		{
+			size, err := m.MeterReading.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintProto(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *ListMeterReadingsRequest) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *ListMeterReadingsRequest) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *ListMeterReadingsRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.RoomNumber != 0 {
+		i = encodeVarintProto(dAtA, i, uint64(m.RoomNumber))
+		i--
+		dAtA[i] = 0x8
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *ListMeterReadingsResponse) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *ListMeterReadingsResponse) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *ListMeterReadingsResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if len(m.MeterReadings) > 0 {
+		for iNdEx := len(m.MeterReadings) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size, err := m.MeterReadings[iNdEx].MarshalToSizedBuffer(dAtA[:i])
 				if err != nil {
 					return 0, err
 				}
@@ -3901,6 +4825,136 @@ func (m *ListRoomsResponse) Size() (n int) {
 	_ = l
 	if len(m.Rooms) > 0 {
 		for _, e := range m.Rooms {
+			l = e.Size()
+			n += 1 + l + sovProto(uint64(l))
+		}
+	}
+	return n
+}
+
+func (m *MeterReading) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.RoomNumber != 0 {
+		n += 1 + sovProto(uint64(m.RoomNumber))
+	}
+	l = len(m.Period)
+	if l > 0 {
+		n += 1 + l + sovProto(uint64(l))
+	}
+	if m.ElectricityReading != 0 {
+		n += 9
+	}
+	if m.WaterReading != 0 {
+		n += 9
+	}
+	return n
+}
+
+func (m *CreateMeterReadingRequest) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.MeterReading != nil {
+		l = m.MeterReading.Size()
+		n += 1 + l + sovProto(uint64(l))
+	}
+	return n
+}
+
+func (m *CreateMeterReadingResponse) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.MeterReading != nil {
+		l = m.MeterReading.Size()
+		n += 1 + l + sovProto(uint64(l))
+	}
+	return n
+}
+
+func (m *UpdateMeterReadingRequest) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.MeterReading != nil {
+		l = m.MeterReading.Size()
+		n += 1 + l + sovProto(uint64(l))
+	}
+	return n
+}
+
+func (m *UpdateMeterReadingResponse) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.MeterReading != nil {
+		l = m.MeterReading.Size()
+		n += 1 + l + sovProto(uint64(l))
+	}
+	return n
+}
+
+func (m *GetMeterReadingRequest) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.RoomNumber != 0 {
+		n += 1 + sovProto(uint64(m.RoomNumber))
+	}
+	l = len(m.Period)
+	if l > 0 {
+		n += 1 + l + sovProto(uint64(l))
+	}
+	return n
+}
+
+func (m *GetMeterReadingResponse) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.MeterReading != nil {
+		l = m.MeterReading.Size()
+		n += 1 + l + sovProto(uint64(l))
+	}
+	return n
+}
+
+func (m *ListMeterReadingsRequest) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.RoomNumber != 0 {
+		n += 1 + sovProto(uint64(m.RoomNumber))
+	}
+	return n
+}
+
+func (m *ListMeterReadingsResponse) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if len(m.MeterReadings) > 0 {
+		for _, e := range m.MeterReadings {
 			l = e.Size()
 			n += 1 + l + sovProto(uint64(l))
 		}
@@ -5118,6 +6172,813 @@ func (m *ListRoomsResponse) Unmarshal(dAtA []byte) error {
 			}
 			m.Rooms = append(m.Rooms, &Room{})
 			if err := m.Rooms[len(m.Rooms)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipProto(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthProto
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *MeterReading) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowProto
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: MeterReading: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: MeterReading: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field RoomNumber", wireType)
+			}
+			m.RoomNumber = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowProto
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.RoomNumber |= int32(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Period", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowProto
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthProto
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthProto
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Period = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 3:
+			if wireType != 1 {
+				return fmt.Errorf("proto: wrong wireType = %d for field ElectricityReading", wireType)
+			}
+			var v uint64
+			if (iNdEx + 8) > l {
+				return io.ErrUnexpectedEOF
+			}
+			v = uint64(encoding_binary.LittleEndian.Uint64(dAtA[iNdEx:]))
+			iNdEx += 8
+			m.ElectricityReading = float64(math.Float64frombits(v))
+		case 4:
+			if wireType != 1 {
+				return fmt.Errorf("proto: wrong wireType = %d for field WaterReading", wireType)
+			}
+			var v uint64
+			if (iNdEx + 8) > l {
+				return io.ErrUnexpectedEOF
+			}
+			v = uint64(encoding_binary.LittleEndian.Uint64(dAtA[iNdEx:]))
+			iNdEx += 8
+			m.WaterReading = float64(math.Float64frombits(v))
+		default:
+			iNdEx = preIndex
+			skippy, err := skipProto(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthProto
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *CreateMeterReadingRequest) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowProto
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: CreateMeterReadingRequest: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: CreateMeterReadingRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field MeterReading", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowProto
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthProto
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthProto
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.MeterReading == nil {
+				m.MeterReading = &MeterReading{}
+			}
+			if err := m.MeterReading.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipProto(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthProto
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *CreateMeterReadingResponse) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowProto
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: CreateMeterReadingResponse: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: CreateMeterReadingResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field MeterReading", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowProto
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthProto
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthProto
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.MeterReading == nil {
+				m.MeterReading = &MeterReading{}
+			}
+			if err := m.MeterReading.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipProto(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthProto
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *UpdateMeterReadingRequest) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowProto
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: UpdateMeterReadingRequest: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: UpdateMeterReadingRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field MeterReading", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowProto
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthProto
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthProto
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.MeterReading == nil {
+				m.MeterReading = &MeterReading{}
+			}
+			if err := m.MeterReading.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipProto(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthProto
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *UpdateMeterReadingResponse) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowProto
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: UpdateMeterReadingResponse: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: UpdateMeterReadingResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field MeterReading", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowProto
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthProto
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthProto
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.MeterReading == nil {
+				m.MeterReading = &MeterReading{}
+			}
+			if err := m.MeterReading.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipProto(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthProto
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *GetMeterReadingRequest) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowProto
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: GetMeterReadingRequest: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: GetMeterReadingRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field RoomNumber", wireType)
+			}
+			m.RoomNumber = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowProto
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.RoomNumber |= int32(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Period", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowProto
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthProto
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthProto
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Period = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipProto(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthProto
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *GetMeterReadingResponse) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowProto
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: GetMeterReadingResponse: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: GetMeterReadingResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field MeterReading", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowProto
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthProto
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthProto
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.MeterReading == nil {
+				m.MeterReading = &MeterReading{}
+			}
+			if err := m.MeterReading.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipProto(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthProto
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *ListMeterReadingsRequest) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowProto
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: ListMeterReadingsRequest: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: ListMeterReadingsRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field RoomNumber", wireType)
+			}
+			m.RoomNumber = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowProto
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.RoomNumber |= int32(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		default:
+			iNdEx = preIndex
+			skippy, err := skipProto(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthProto
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *ListMeterReadingsResponse) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowProto
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: ListMeterReadingsResponse: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: ListMeterReadingsResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field MeterReadings", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowProto
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthProto
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthProto
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.MeterReadings = append(m.MeterReadings, &MeterReading{})
+			if err := m.MeterReadings[len(m.MeterReadings)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex
