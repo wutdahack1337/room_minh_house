@@ -1,15 +1,7 @@
 <script setup lang="ts">
-import HealthCheck from './components/HealthCheck.vue'
+import MainLayout from './layouts/MainLayout.vue'
 </script>
 
 <template>
-  <div id="app">
-    <HealthCheck />
-  </div>
+  <MainLayout />
 </template>
-
-<style>
-body {
-  background-color: #f5f5f5;
-}
-</style>
