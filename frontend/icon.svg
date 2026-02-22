@@ -1,0 +1,12 @@
+<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- House -->
+  <path d="M8 30L32 10L56 30V54C56 56 54 58 52 58H12C10 58 8 56 8 54V30Z" stroke="#2563EB" stroke-width="3" fill="none"></path>
+  
+  <!-- Door -->
+  <rect x="28" y="38" width="8" height="20" stroke="#2563EB" stroke-width="3" fill="none"></rect>
+
+  <!-- Key -->
+  <circle cx="48" cy="20" r="5" stroke="#F59E0B" stroke-width="3"></circle>
+  <line x1="48" y1="25" x2="48" y2="35" stroke="#F59E0B" stroke-width="3"></line>
+  <line x1="48" y1="32" x2="52" y2="32" stroke="#F59E0B" stroke-width="3"></line>
+</svg>
