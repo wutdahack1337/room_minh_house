@@ -57,10 +57,6 @@ const formatPrice = (price: number) =>
 <template>
   <div>
     <div class="mb-6 flex items-start justify-between">
-      <div>
-        <h2 class="text-2xl font-bold text-gray-800">Phòng</h2>
-        <p class="text-sm text-gray-500 mt-1">Danh sách tất cả các phòng trong hệ thống</p>
-      </div>
       <button @click="openModal" class="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors">
         <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
         Thêm phòng
@@ -120,7 +116,7 @@ const formatPrice = (price: number) =>
           >
             <td class="px-6 py-4 text-left font-medium text-gray-800">{{ room.room_number }}</td>
             <td class="px-6 py-4 text-left text-gray-700">{{ formatPrice(room.price) }}</td>
-            <td class="px-6 py-4 text-left">
+            <td class="px-6 py- text-left">
               <span
                 class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium"
                 :class="room.is_available
