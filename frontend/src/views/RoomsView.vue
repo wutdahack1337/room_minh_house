@@ -23,6 +23,7 @@ const fetchRooms = async () => {
   loading.value = true
   try {
     rooms.value = await getRooms()
+    error.value = ''
   } catch (e: any) {
     error.value = e.message || 'Không thể tải danh sách phòng'
   } finally {
@@ -116,7 +117,7 @@ const formatPrice = (price: number) =>
           >
             <td class="px-6 py-4 text-left font-medium text-gray-800">{{ room.room_number }}</td>
             <td class="px-6 py-4 text-left text-gray-700">{{ formatPrice(room.price) }}</td>
-            <td class="px-6 py- text-left">
+            <td class="px-6 py-4 text-left">
               <span
                 class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium"
                 :class="room.is_available

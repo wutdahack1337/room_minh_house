@@ -27,6 +27,7 @@ const fetchContracts = async () => {
   loading.value = true
   try {
     contracts.value = await getContracts()
+    error.value = ''
   } catch (e: any) {
     error.value = e.message || 'Không thể tải danh sách hợp đồng'
   } finally {
@@ -48,7 +49,7 @@ const handleSubmit = async () => {
     await createContract({
       user_pid: form.user_pid,
       room_number: Number(form.room_number),
-      start_date: new Date(form.start_date).toISOString(),
+      start_date: `${form.start_date}T00:00:00Z`,
       duration_months: Number(form.duration_months),
     })
     closeModal()
