@@ -13,6 +13,7 @@ require (
 	github.com/rs/cors v1.11.1
 	go.elastic.co/apm/module/apmgrpc v1.15.0
 	go.mongodb.org/mongo-driver v1.17.7
+	golang.org/x/crypto v0.47.0
 	google.golang.org/genproto/googleapis/api v0.0.0-20260122232226-8e98ce8d340d
 	google.golang.org/grpc v1.78.0
 )
@@ -51,7 +52,6 @@ require (
 	go.elastic.co/fastjson v1.1.0 // indirect
 	go.opentelemetry.io/otel v1.39.0 // indirect
 	go.opentelemetry.io/otel/sdk/metric v1.39.0 // indirect
-	golang.org/x/crypto v0.47.0 // indirect
 	golang.org/x/lint v0.0.0-20201208152925-83fdc39ff7b5 // indirect
 	golang.org/x/mod v0.31.0 // indirect
 	golang.org/x/net v0.49.0 // indirect
