@@ -14,7 +14,7 @@ export interface HealthResponse {
   status: string;
 }
 
-export const getRooms = async () => {
+export const listRooms = async () => {
   const response = await apiClient.get('/api/rooms');
   return response.data?.rooms ?? response.data ?? [];
 };
@@ -23,7 +23,21 @@ export const createRoom = async (data: { room_number: number; price: number; is_
   return r.data;
 };
 
-export const getUsers = async () => {
+export const listMeterReadings = async (roomNumber: number) => {
+  const r = await apiClient.get(`/api/rooms/${roomNumber}/meter-readings`);
+  return r.data?.meter_readings ?? r.data ?? [];
+};
+export const createMeterReading = async (data: {
+  room_number: number;
+  period: string;
+  electricity_reading: number;
+  water_reading: number;
+}) => {
+  const r = await apiClient.post(`/api/rooms/${data.room_number}/meter-readings`, data);
+  return r.data;
+};
+
+export const listUsers = async () => {
   const response = await apiClient.get('/api/users');
   return response.data?.users ?? response.data ?? [];
 };
@@ -38,7 +52,7 @@ export const createUser = async (data: {
   return r.data;
 };
 
-export const getContracts = async () => {
+export const listContracts = async () => {
   const response = await apiClient.get('/api/contracts');
   return response.data?.contracts ?? response.data ?? [];
 };
@@ -49,6 +63,40 @@ export const createContract = async (data: {
   duration_months: number;
 }) => {
   const r = await apiClient.post('/api/contracts', data);
+  return r.data;
+};
+
+export const listInvoices = async (contractId: string) => {
+  const r = await apiClient.get(`/api/contracts/${contractId}/invoices`);
+  return r.data?.invoices ?? r.data ?? [];
+};
+export const createInvoice = async (data: {
+  contract_id: string;
+  period: string;
+  electricity_unit_price: number;
+  water_unit_price: number;
+}) => {
+  const r = await apiClient.post(`/api/contracts/${data.contract_id}/invoices`, data);
+  return r.data;
+};
+
+export const listInvoiceItems = async (contractId: string, period: string) => {
+  const r = await apiClient.get(`/api/contracts/${contractId}/invoices/${period}/items`);
+  return r.data?.invoice_items ?? r.data ?? [];
+};
+
+export const updateInvoiceItem = async (item: {
+  contract_id: string;
+  period: string;
+  item_type: string;
+  unit_price: number;
+  quantity: number;
+  amount: number;
+}) => {
+  const r = await apiClient.put(
+    `/api/contracts/${item.contract_id}/invoices/${item.period}/items/${item.item_type}`,
+    item
+  );
   return r.data;
 };
 

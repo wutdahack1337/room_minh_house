@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted, reactive } from 'vue'
-import { getContracts, createContract } from '../services/api'
+import { listContracts, createContract } from '../services/api'
 
 interface Contract {
   contract_id: string
@@ -26,7 +26,7 @@ const resetForm = () => { form.user_pid = ''; form.room_number = ''; form.start_
 const fetchContracts = async () => {
   loading.value = true
   try {
-    contracts.value = await getContracts()
+    contracts.value = await listContracts()
     error.value = ''
   } catch (e: any) {
     error.value = e.message || 'Không thể tải danh sách hợp đồng'
