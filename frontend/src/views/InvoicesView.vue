@@ -62,6 +62,8 @@ const editingItem = reactive<Record<string, number>>({})
 const savingItem = ref('')
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
+const PERIOD_REGEX = /^\d{2}-\d{4}$/
+
 const formatCurrency = (value: number) =>
   new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(value)
 
@@ -86,8 +88,8 @@ const fetchContracts = async () => {
   contractsLoading.value = true
   try {
     contracts.value = await listContracts()
-  } catch {
-    error.value = 'Không thể tải danh sách hợp đồng.'
+  } catch (e: any) {
+    error.value = e?.response?.data?.message ?? e?.message ?? 'Không thể tải danh sách hợp đồng.'
   } finally {
     contractsLoading.value = false
   }
@@ -102,8 +104,8 @@ const fetchInvoices = async () => {
   error.value = ''
   try {
     invoices.value = await listInvoices(selectedContractId.value)
-  } catch {
-    error.value = 'Không thể tải danh sách hóa đơn.'
+  } catch (e: any) {
+    error.value = e?.response?.data?.message ?? e?.message ?? 'Không thể tải danh sách hóa đơn.'
     invoices.value = []
   } finally {
     loading.value = false
@@ -132,7 +134,7 @@ const handleCreate = async () => {
     formError.value = 'Vui lòng chọn hợp đồng trước.'
     return
   }
-  if (!/^\d{2}-\d{4}$/.test(form.period)) {
+  if (!PERIOD_REGEX.test(form.period)) {
     formError.value = 'Kỳ hóa đơn phải có định dạng MM-YYYY (ví dụ: 01-2026).'
     return
   }
@@ -171,8 +173,8 @@ const openDetail = async (invoice: Invoice) => {
     items.forEach((item: InvoiceItem) => {
       editingItem[item.item_type] = item.unit_price
     })
-  } catch {
-    itemsError.value = 'Không thể tải mục hóa đơn.'
+  } catch (e: any) {
+    itemsError.value = e?.response?.data?.message ?? e?.message ?? 'Không thể tải mục hóa đơn.'
   } finally {
     itemsLoading.value = false
   }
@@ -204,8 +206,8 @@ const saveItem = async (item: InvoiceItem) => {
       (inv) => inv.period === item.period && inv.contract_id === item.contract_id
     )
     if (refreshed) detailInvoice.value = refreshed
-  } catch {
-    itemsError.value = 'Lưu thất bại.'
+  } catch (e: any) {
+    itemsError.value = e?.response?.data?.message ?? e?.message ?? 'Lưu thất bại.'
   } finally {
     savingItem.value = ''
   }
