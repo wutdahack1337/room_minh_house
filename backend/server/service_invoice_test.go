@@ -334,10 +334,10 @@ func getServiceForInvoice() *Service {
 		panic("Failed to connect to database: " + err.Error())
 	}
 
+	db.Collection("meter_readings").Drop(ctx)
 	db.Collection("users").Drop(ctx)
 	db.Collection("rooms").Drop(ctx)
 	db.Collection("contracts").Drop(ctx)
-	db.Collection("meter_readings").Drop(ctx)
 	db.Collection("invoices").Drop(ctx)
 	db.Collection("invoice_items").Drop(ctx)
 

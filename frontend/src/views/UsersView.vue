@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted, reactive } from 'vue'
-import { getUsers, createUser } from '../services/api'
+import { listUsers, createUser } from '../services/api'
 
 interface IdCard {
   name?: string
@@ -39,7 +39,7 @@ const resetForm = () => {
 const fetchUsers = async () => {
   loading.value = true
   try {
-    users.value = await getUsers()
+    users.value = await listUsers()
   } catch (e: any) {
     error.value = e.message || 'Không thể tải danh sách người thuê'
   } finally {

@@ -23,6 +23,20 @@ export const createRoom = async (data: { room_number: number; price: number; is_
   return r.data;
 };
 
+export const listMeterReadings = async (roomNumber: number) => {
+  const r = await apiClient.get(`/api/rooms/${roomNumber}/meter-readings`);
+  return r.data?.meter_readings ?? r.data ?? [];
+};
+export const createMeterReading = async (data: {
+  room_number: number;
+  period: string;
+  electricity_reading: number;
+  water_reading: number;
+}) => {
+  const r = await apiClient.post(`/api/rooms/${data.room_number}/meter-readings`, data);
+  return r.data;
+};
+
 export const listUsers = async () => {
   const response = await apiClient.get('/api/users');
   return response.data?.users ?? response.data ?? [];

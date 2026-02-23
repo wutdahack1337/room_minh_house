@@ -48,8 +48,8 @@ const submitting = ref(false)
 const formError = ref('')
 const form = reactive({
   period: '',
-  electricity_unit_price: 0,
-  water_unit_price: 0,
+  electricity_unit_price: 3000,
+  water_unit_price: 10000,
 })
 
 // Detail modal (items)
@@ -118,8 +118,8 @@ onMounted(fetchContracts)
 const openCreateModal = () => {
   formError.value = ''
   form.period = ''
-  form.electricity_unit_price = 0
-  form.water_unit_price = 0
+  form.electricity_unit_price = 3000
+  form.water_unit_price = 10000
   showCreateModal.value = true
 }
 
