@@ -18,7 +18,7 @@ const isActive = (to: string) => {
 </script>
 
 <template>
-  <div class="flex h-screen bg-gray-100 font-sans rounded-lg border-2 border-gray-300 m-2 overflow-hidden">
+  <div class="flex h-screen bg-gray-100 font-sans overflow-hidden">
     <!-- Sidebar -->
     <aside class="w-60 bg-gray-900 text-white flex flex-col flex-shrink-0">
       <!-- Logo -->
