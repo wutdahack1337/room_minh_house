@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted, reactive } from 'vue'
-import { listContracts, createContract } from '../services/api'
+import { listContracts, createContract, updateContract, deleteContract } from '../services/api'
+import ConfirmDialog from '../components/ConfirmDialog.vue'
 
 interface Contract {
   contract_id: string
@@ -61,6 +62,78 @@ const handleSubmit = async () => {
   }
 }
 
+// ─── Edit contract ────────────────────────────────────────────────────────────
+const showEditModal = ref(false)
+const editSubmitting = ref(false)
+const editError = ref('')
+const editForm = reactive({
+  contract_id: '',
+  user_pid: '',
+  room_number: 0,
+  start_date: '',
+  duration_months: 0,
+  status: 'active',
+})
+
+const openEditModal = (c: Contract) => {
+  editForm.contract_id = c.contract_id
+  editForm.user_pid = c.user_pid
+  editForm.room_number = c.room_number
+  // strip time part for date input
+  editForm.start_date = c.start_date ? c.start_date.substring(0, 10) : ''
+  editForm.duration_months = c.duration_months || 1
+  editForm.status = c.status || 'active'
+  editError.value = ''
+  showEditModal.value = true
+}
+const closeEditModal = () => { showEditModal.value = false }
+
+const handleEditSubmit = async () => {
+  if (!editForm.user_pid || !editForm.room_number || !editForm.start_date || !editForm.duration_months) {
+    editError.value = 'Vui lòng điền đầy đủ thông tin'; return
+  }
+  editSubmitting.value = true; editError.value = ''
+  try {
+    await updateContract({
+      contract_id: editForm.contract_id,
+      user_pid: editForm.user_pid,
+      room_number: Number(editForm.room_number),
+      start_date: `${editForm.start_date}T00:00:00Z`,
+      duration_months: Number(editForm.duration_months),
+      status: editForm.status,
+    })
+    closeEditModal()
+    await fetchContracts()
+  } catch (e: any) {
+    editError.value = e.response?.data?.message || e.message || 'Không thể cập nhật hợp đồng'
+  } finally {
+    editSubmitting.value = false
+  }
+}
+
+// ─── Delete contract ──────────────────────────────────────────────────────────
+const showDeleteConfirm = ref(false)
+const deletingContract = ref<Contract | null>(null)
+const deleteSubmitting = ref(false)
+
+const openDeleteConfirm = (c: Contract) => { deletingContract.value = c; showDeleteConfirm.value = true }
+const closeDeleteConfirm = () => { showDeleteConfirm.value = false; deletingContract.value = null }
+
+const handleDelete = async () => {
+  if (!deletingContract.value) return
+  deleteSubmitting.value = true
+  try {
+    await deleteContract(deletingContract.value.contract_id)
+    closeDeleteConfirm()
+    await fetchContracts()
+  } catch (e: any) {
+    error.value = e.response?.data?.message || e.message || 'Không thể xóa hợp đồng'
+    closeDeleteConfirm()
+  } finally {
+    deleteSubmitting.value = false
+  }
+}
+
 const statusLabel = (status?: string) => {
   switch (status) {
     case 'active': return 'Đang hiệu lực'
@@ -117,7 +190,7 @@ const statusClass = (status?: string) => {
           </div>
           <p v-if="formError" class="text-xs text-red-500">{{ formError }}</p>
           <div class="flex gap-3 pt-2">
-            <button type="button" @click="closeModal" class="flex-1 px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 disabled:opacity-50 transition-colors">Hủy</button>
+            <button type="button" @click="closeModal" class="flex-1 px-4 py-2 border border-gray-300 text-gray-700 text-sm font-medium rounded-lg hover:bg-gray-50 transition-colors">Hủy</button>
             <button type="submit" :disabled="submitting" class="flex-1 px-4 py-2 bg-green-600 text-white text-sm font-medium rounded-lg hover:bg-green-700 disabled:opacity-50 transition-colors">
               {{ submitting ? 'Đang lưu...' : 'Thêm hợp đồng' }}
             </button>
@@ -125,6 +198,64 @@ const statusClass = (status?: string) => {
         </form>
       </div>
     </div>
+
+    <!-- Modal sửa hợp đồng -->
+    <div v-if="showEditModal" class="fixed inset-0 z-50 flex items-center justify-center">
+      <div class="absolute inset-0 bg-black/40" @click="closeEditModal"></div>
+      <div class="relative bg-white rounded-xl shadow-xl w-full max-w-md mx-4 p-6">
+        <h3 class="text-lg font-semibold text-gray-800 mb-5">Sửa hợp đồng</h3>
+        <p class="text-xs text-gray-400 mb-4 font-mono">{{ editForm.contract_id }}</p>
+        <form @submit.prevent="handleEditSubmit" class="space-y-4">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">CCCD người thuê <span class="text-red-500">*</span></label>
+            <input v-model="editForm.user_pid" type="text" required
+              class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500" />
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Số phòng <span class="text-red-500">*</span></label>
+            <input v-model="editForm.room_number" type="number" min="1" required
+              class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500" />
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Ngày bắt đầu <span class="text-red-500">*</span></label>
+            <input v-model="editForm.start_date" type="date" required
+              class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500" />
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Thời hạn (tháng) <span class="text-red-500">*</span></label>
+            <input v-model="editForm.duration_months" type="number" min="1" required
+              class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500" />
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Trạng thái</label>
+            <select v-model="editForm.status" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500">
+              <option value="active">Đang hiệu lực</option>
+              <option value="expired">Hết hạn</option>
+              <option value="terminated">Đã chấm dứt</option>
+            </select>
+          </div>
+          <p v-if="editError" class="text-xs text-red-500">{{ editError }}</p>
+          <div class="flex gap-3 pt-2">
+            <button type="button" @click="closeEditModal" class="flex-1 px-4 py-2 border border-gray-300 text-gray-700 text-sm font-medium rounded-lg hover:bg-gray-50 transition-colors">Hủy</button>
+            <button type="submit" :disabled="editSubmitting" class="flex-1 px-4 py-2 bg-green-600 text-white text-sm font-medium rounded-lg hover:bg-green-700 disabled:opacity-50 transition-colors">
+              {{ editSubmitting ? 'Đang lưu...' : 'Lưu thay đổi' }}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Confirm xóa hợp đồng -->
+    <ConfirmDialog
+      :show="showDeleteConfirm"
+      title="Xóa hợp đồng"
+      :message="`Xóa hợp đồng này sẽ xóa toàn bộ hóa đơn liên quan. Thao tác này không thể hoàn tác.`"
+      confirm-text="Xóa"
+      :danger="true"
+      :loading="deleteSubmitting"
+      @confirm="handleDelete"
+      @cancel="closeDeleteConfirm"
+    />
 
     <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
       <div v-if="loading" class="p-8 text-center text-gray-500 text-sm">Đang tải...</div>
@@ -137,11 +268,12 @@ const statusClass = (status?: string) => {
             <th class="px-6 py-3 text-left font-semibold text-gray-600">CCCD</th>
             <th class="px-6 py-3 text-left font-semibold text-gray-600">Thời hạn</th>
             <th class="px-6 py-3 text-left font-semibold text-gray-600">Trạng thái</th>
+            <th class="px-6 py-3 text-left font-semibold text-gray-600">Thao tác</th>
           </tr>
         </thead>
         <tbody>
           <tr v-if="contracts.length === 0">
-            <td colspan="5" class="px-6 py-8 text-center text-gray-400">Chưa có hợp đồng nào</td>
+            <td colspan="6" class="px-6 py-8 text-center text-gray-400">Chưa có hợp đồng nào</td>
           </tr>
           <tr
             v-for="c in contracts"
@@ -159,6 +291,18 @@ const statusClass = (status?: string) => {
               >
                 {{ statusLabel(c.status) }}
               </span>
+            </td>
+            <td class="px-6 py-4 text-left">
+              <div class="flex items-center gap-2">
+                <button @click="openEditModal(c)"
+                  class="px-2.5 py-1 text-xs font-medium text-blue-600 bg-blue-50 hover:bg-blue-100 rounded-md transition-colors">
+                  Sửa
+                </button>
+                <button @click="openDeleteConfirm(c)"
+                  class="px-2.5 py-1 text-xs font-medium text-red-600 bg-red-50 hover:bg-red-100 rounded-md transition-colors">
+                  Xóa
+                </button>
+              </div>
             </td>
           </tr>
         </tbody>

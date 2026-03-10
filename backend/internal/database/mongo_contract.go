@@ -92,3 +92,41 @@ func (s *MongoService) ListContracts(ctx context.Context) ([]*types.Contract, er
 
 	return res, cursor.Err()
 }
+
+func (s *MongoService) ListContractsByUserPid(ctx context.Context, pid string) ([]*types.Contract, error) {
+	collection := s.database.Collection(contractCollection)
+	cursor, err := collection.Find(ctx, bson.M{"user_pid": pid})
+	if err != nil {
+		return nil, err
+	}
+	defer cursor.Close(ctx)
+
+	var res []*types.Contract
+	for cursor.Next(ctx) {
+		var contract types.Contract
+		if err := cursor.Decode(&contract); err != nil {
+			return nil, err
+		}
+		res = append(res, &contract)
+	}
+	return res, cursor.Err()
+}
+
+func (s *MongoService) ListContractsByRoomNumber(ctx context.Context, roomNumber int32) ([]*types.Contract, error) {
+	collection := s.database.Collection(contractCollection)
+	cursor, err := collection.Find(ctx, bson.M{"room_number": roomNumber})
+	if err != nil {
+		return nil, err
+	}
+	defer cursor.Close(ctx)
+
+	var res []*types.Contract
+	for cursor.Next(ctx) {
+		var contract types.Contract
+		if err := cursor.Decode(&contract); err != nil {
+			return nil, err
+		}
+		res = append(res, &contract)
+	}
+	return res, cursor.Err()
+}

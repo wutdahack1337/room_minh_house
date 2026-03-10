@@ -55,6 +55,22 @@ func (s *Service) DeleteRoom(ctx context.Context, request *types.DeleteRoomReque
 		return nil, fmt.Errorf("DeleteRoom error: room number is required")
 	}
 
+	// cascade: delete all contracts (each call also deletes invoices + invoice_items)
+	contracts, err := s.dbService.ListContractsByRoomNumber(ctx, request.RoomNumber)
+	if err != nil {
+		return nil, fmt.Errorf("DeleteRoom error: failed to list contracts: %w", err)
+	}
+	for _, c := range contracts {
+		if _, err := s.DeleteContract(ctx, &types.DeleteContractRequest{ContractId: c.ContractId}); err != nil {
+			return nil, fmt.Errorf("DeleteRoom error: failed to delete contract %s: %w", c.ContractId, err)
+		}
+	}
+
+	// cascade: delete all meter readings
+	if err := s.dbService.DeleteMeterReadingsByRoomNumber(ctx, request.RoomNumber); err != nil {
+		return nil, fmt.Errorf("DeleteRoom error: failed to delete meter readings: %w", err)
+	}
+
 	if err := s.dbService.DeleteRoom(ctx, request.RoomNumber); err != nil {
 		return nil, err
 	}

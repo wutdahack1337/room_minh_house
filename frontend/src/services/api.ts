@@ -22,6 +22,14 @@ export const createRoom = async (data: { room_number: number; price: number; is_
   const r = await apiClient.post('/api/rooms', data);
   return r.data;
 };
+export const updateRoom = async (data: { room_number: number; price: number; is_available: boolean }) => {
+  const r = await apiClient.put(`/api/rooms/${data.room_number}`, data);
+  return r.data;
+};
+export const deleteRoom = async (roomNumber: number) => {
+  const r = await apiClient.delete(`/api/rooms/${roomNumber}`);
+  return r.data;
+};
 
 export const listMeterReadings = async (roomNumber: number) => {
   const r = await apiClient.get(`/api/rooms/${roomNumber}/meter-readings`);
@@ -36,6 +44,15 @@ export const createMeterReading = async (data: {
   const r = await apiClient.post(`/api/rooms/${data.room_number}/meter-readings`, data);
   return r.data;
 };
+export const updateMeterReading = async (data: {
+  room_number: number;
+  period: string;
+  electricity_reading: number;
+  water_reading: number;
+}) => {
+  const r = await apiClient.put(`/api/rooms/${data.room_number}/meter-readings/${data.period}`, data);
+  return r.data;
+};
 
 export const listUsers = async () => {
   const response = await apiClient.get('/api/users');
@@ -46,9 +63,21 @@ export const createUser = async (data: {
   phone_number: string;
   role: string;
   id_card: { name: string; sex: string; date_of_birth: string; place_of_birth: string };
-  account: { username: string; password: string };
 }) => {
   const r = await apiClient.post('/api/users', data);
+  return r.data;
+};
+export const updateUser = async (data: {
+  pid: string;
+  phone_number: string;
+  role: string;
+  id_card: { name: string; sex: string; date_of_birth: string; place_of_birth: string };
+}) => {
+  const r = await apiClient.put(`/api/users/${data.pid}`, data);
+  return r.data;
+};
+export const deleteUser = async (pid: string) => {
+  const r = await apiClient.delete(`/api/users/${pid}`);
   return r.data;
 };
 
@@ -65,6 +94,21 @@ export const createContract = async (data: {
   const r = await apiClient.post('/api/contracts', data);
   return r.data;
 };
+export const updateContract = async (data: {
+  contract_id: string;
+  user_pid: string;
+  room_number: number;
+  start_date: string;
+  duration_months: number;
+  status: string;
+}) => {
+  const r = await apiClient.put(`/api/contracts/${data.contract_id}`, data);
+  return r.data;
+};
+export const deleteContract = async (contractId: string) => {
+  const r = await apiClient.delete(`/api/contracts/${contractId}`);
+  return r.data;
+};
 
 export const listInvoices = async (contractId: string) => {
   const r = await apiClient.get(`/api/contracts/${contractId}/invoices`);
@@ -77,6 +121,19 @@ export const createInvoice = async (data: {
   water_unit_price: number;
 }) => {
   const r = await apiClient.post(`/api/contracts/${data.contract_id}/invoices`, data);
+  return r.data;
+};
+export const updateInvoice = async (data: {
+  contract_id: string;
+  period: string;
+  status: string;
+  total_amount: number;
+}) => {
+  const r = await apiClient.put(`/api/contracts/${data.contract_id}/invoices/${data.period}`, data);
+  return r.data;
+};
+export const deleteInvoice = async (contractId: string, period: string) => {
+  const r = await apiClient.delete(`/api/contracts/${contractId}/invoices/${period}`);
   return r.data;
 };
 

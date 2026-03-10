@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted, reactive } from 'vue'
-import { listRooms, createRoom, listMeterReadings, createMeterReading } from '../services/api'
+import { listRooms, createRoom, updateRoom, deleteRoom, listMeterReadings, createMeterReading, updateMeterReading } from '../services/api'
+import ConfirmDialog from '../components/ConfirmDialog.vue'
 
 interface Room {
   room_number: number
@@ -57,6 +58,55 @@ const handleSubmit = async () => {
   }
 }
 
+// ─── Modal sửa phòng ──────────────────────────────────────────────────────────
+const showEditModal = ref(false)
+const editSubmitting = ref(false)
+const editError = ref('')
+const editForm = reactive({ room_number: 0, price: 0, is_available: false })
+
+const openEditModal = (room: Room) => {
+  editForm.room_number = room.room_number
+  editForm.price = room.price
+  editForm.is_available = room.is_available
+  editError.value = ''
+  showEditModal.value = true
+}
+const closeEditModal = () => { showEditModal.value = false }
+
+const handleEditSubmit = async () => {
+  editSubmitting.value = true; editError.value = ''
+  try {
+    await updateRoom({ room_number: editForm.room_number, price: Number(editForm.price), is_available: editForm.is_available })
+    closeEditModal(); await fetchRooms()
+  } catch (e: any) {
+    editError.value = e.response?.data?.message || e.message || 'Không thể cập nhật phòng'
+  } finally {
+    editSubmitting.value = false
+  }
+}
+
+// ─── Xóa phòng ────────────────────────────────────────────────────────────────
+const showDeleteConfirm = ref(false)
+const deletingRoom = ref<Room | null>(null)
+const deleteSubmitting = ref(false)
+
+const openDeleteConfirm = (room: Room) => { deletingRoom.value = room; showDeleteConfirm.value = true }
+const closeDeleteConfirm = () => { showDeleteConfirm.value = false; deletingRoom.value = null }
+
+const handleDelete = async () => {
+  if (!deletingRoom.value) return
+  deleteSubmitting.value = true
+  try {
+    await deleteRoom(deletingRoom.value.room_number)
+    closeDeleteConfirm(); await fetchRooms()
+  } catch (e: any) {
+    error.value = e.response?.data?.message || e.message || 'Không thể xóa phòng'
+    closeDeleteConfirm()
+  } finally {
+    deleteSubmitting.value = false
+  }
+}
+
 // ─── Modal chỉ số điện nước ───────────────────────────────────────────────────
 const showMeterModal = ref(false)
 const selectedRoom = ref<number | null>(null)
@@ -79,6 +129,7 @@ const openMeterModal = async (room: Room) => {
   selectedRoom.value = room.room_number
   showMeterModal.value = true
   showAddForm.value = false
+  editingMeter.value = null
   await fetchMeterReadings(room.room_number)
 }
 const closeMeterModal = () => { showMeterModal.value = false; selectedRoom.value = null }
@@ -91,7 +142,7 @@ const addForm = reactive({ period: '', electricity_reading: '' as number | '', w
 const PERIOD_REGEX = /^\d{2}-\d{4}$/
 
 const resetAddForm = () => { addForm.period = ''; addForm.electricity_reading = ''; addForm.water_reading = ''; addError.value = '' }
-const openAddForm = () => { resetAddForm(); showAddForm.value = true }
+const openAddForm = () => { resetAddForm(); showAddForm.value = true; editingMeter.value = null }
 const cancelAddForm = () => { showAddForm.value = false }
 
 const handleAddMeterReading = async () => {
@@ -111,6 +162,40 @@ const handleAddMeterReading = async () => {
     addError.value = e.response?.data?.message || e.message || 'Không thể thêm chỉ số'
   } finally {
     addSubmitting.value = false
+  }
+}
+
+// ── Edit meter reading ────────────────────────────────────────────────────────
+const editingMeter = ref<MeterReading | null>(null)
+const editMeterForm = reactive({ electricity_reading: 0, water_reading: 0 })
+const editMeterSubmitting = ref(false)
+const editMeterError = ref('')
+
+const openEditMeter = (r: MeterReading) => {
+  editingMeter.value = r
+  editMeterForm.electricity_reading = r.electricity_reading
+  editMeterForm.water_reading = r.water_reading
+  editMeterError.value = ''
+  showAddForm.value = false
+}
+const cancelEditMeter = () => { editingMeter.value = null }
+
+const handleEditMeterReading = async () => {
+  if (!editingMeter.value) return
+  editMeterSubmitting.value = true; editMeterError.value = ''
+  try {
+    await updateMeterReading({
+      room_number: selectedRoom.value!,
+      period: editingMeter.value.period,
+      electricity_reading: Number(editMeterForm.electricity_reading),
+      water_reading: Number(editMeterForm.water_reading),
+    })
+    editingMeter.value = null
+    await fetchMeterReadings(selectedRoom.value!)
+  } catch (e: any) {
+    editMeterError.value = e.response?.data?.message || e.message || 'Không thể cập nhật chỉ số'
+  } finally {
+    editMeterSubmitting.value = false
   }
 }
 
@@ -152,6 +237,32 @@ const formatPrice = (price: number) =>
             <button type="button" @click="closeModal" class="flex-1 px-4 py-2 border border-gray-300 text-gray-700 text-sm font-medium rounded-lg hover:bg-gray-50 transition-colors">Hủy</button>
             <button type="submit" :disabled="submitting" class="flex-1 px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 disabled:opacity-50 transition-colors">
               {{ submitting ? 'Đang lưu...' : 'Thêm phòng' }}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Modal sửa phòng -->
+    <div v-if="showEditModal" class="fixed inset-0 z-50 flex items-center justify-center">
+      <div class="absolute inset-0 bg-black/40" @click="closeEditModal"></div>
+      <div class="relative bg-white rounded-xl shadow-xl w-full max-w-md mx-4 p-6">
+        <h3 class="text-lg font-semibold text-gray-800 mb-5">Sửa phòng {{ editForm.room_number }}</h3>
+        <form @submit.prevent="handleEditSubmit" class="space-y-4">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Giá thuê (VNĐ)</label>
+            <input v-model="editForm.price" type="number" min="0"
+              class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+          </div>
+          <div class="flex items-center gap-2">
+            <input v-model="editForm.is_available" type="checkbox" id="edit_is_available" class="w-4 h-4 rounded border-gray-300 text-blue-600" />
+            <label for="edit_is_available" class="text-sm font-medium text-gray-700">Phòng trống</label>
+          </div>
+          <p v-if="editError" class="text-xs text-red-500">{{ editError }}</p>
+          <div class="flex gap-3 pt-2">
+            <button type="button" @click="closeEditModal" class="flex-1 px-4 py-2 border border-gray-300 text-gray-700 text-sm font-medium rounded-lg hover:bg-gray-50 transition-colors">Hủy</button>
+            <button type="submit" :disabled="editSubmitting" class="flex-1 px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 disabled:opacity-50 transition-colors">
+              {{ editSubmitting ? 'Đang lưu...' : 'Lưu thay đổi' }}
             </button>
           </div>
         </form>
@@ -207,8 +318,33 @@ const formatPrice = (price: number) =>
             </div>
           </div>
 
+          <!-- Sub-form sửa chỉ số -->
+          <div v-if="editingMeter" class="bg-blue-50 border border-blue-200 rounded-xl p-4">
+            <p class="text-sm font-semibold text-blue-800 mb-3">Sửa chỉ số kỳ {{ editingMeter.period }}</p>
+            <div class="grid grid-cols-2 gap-3">
+              <div>
+                <label class="block text-xs font-medium text-gray-600 mb-1">Điện (kWh) <span class="text-red-500">*</span></label>
+                <input v-model="editMeterForm.electricity_reading" type="number" min="0" step="0.01"
+                  class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+              </div>
+              <div>
+                <label class="block text-xs font-medium text-gray-600 mb-1">Nước (m³) <span class="text-red-500">*</span></label>
+                <input v-model="editMeterForm.water_reading" type="number" min="0" step="0.01"
+                  class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+              </div>
+            </div>
+            <p v-if="editMeterError" class="mt-2 text-xs text-red-500">{{ editMeterError }}</p>
+            <div class="flex gap-2 mt-3">
+              <button @click="handleEditMeterReading" :disabled="editMeterSubmitting"
+                class="px-4 py-1.5 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 disabled:opacity-50 transition-colors">
+                {{ editMeterSubmitting ? 'Đang lưu...' : 'Lưu thay đổi' }}
+              </button>
+              <button @click="cancelEditMeter" class="px-4 py-1.5 border border-gray-300 text-gray-700 text-sm rounded-lg hover:bg-gray-50 transition-colors">Hủy</button>
+            </div>
+          </div>
+
           <!-- Nút thêm -->
-          <div v-if="!showAddForm" class="flex justify-end">
+          <div v-if="!showAddForm && !editingMeter" class="flex justify-end">
             <button @click="openAddForm" class="flex items-center gap-1.5 px-3 py-1.5 bg-green-600 text-white text-sm font-medium rounded-lg hover:bg-green-700 transition-colors">
               <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
               Thêm chỉ số
@@ -225,6 +361,7 @@ const formatPrice = (price: number) =>
                   <th class="px-4 py-3 text-left font-semibold text-gray-600">Kỳ</th>
                   <th class="px-4 py-3 text-left font-semibold text-gray-600">Điện (kWh)</th>
                   <th class="px-4 py-3 text-left font-semibold text-gray-600">Nước (m³)</th>
+                  <th class="px-4 py-3 text-right font-semibold text-gray-600">Thao tác</th>
                 </tr>
               </thead>
               <tbody>
@@ -235,6 +372,12 @@ const formatPrice = (price: number) =>
                   <td class="px-4 py-3 text-left font-medium text-gray-800">{{ r.period }}</td>
                   <td class="px-4 py-3 text-left text-gray-700">{{ r.electricity_reading }}</td>
                   <td class="px-4 py-3 text-left text-gray-700">{{ r.water_reading }}</td>
+                  <td class="px-4 py-3 text-right">
+                    <button @click="openEditMeter(r)"
+                      class="px-2.5 py-1 text-xs font-medium text-blue-600 bg-blue-50 hover:bg-blue-100 rounded-md transition-colors">
+                      Sửa
+                    </button>
+                  </td>
                 </tr>
               </tbody>
             </table>
@@ -243,6 +386,18 @@ const formatPrice = (price: number) =>
         </div>
       </div>
     </div>
+
+    <!-- Confirm xóa phòng -->
+    <ConfirmDialog
+      :show="showDeleteConfirm"
+      title="Xóa phòng"
+      :message="`Xóa phòng ${deletingRoom?.room_number} sẽ xóa toàn bộ chỉ số điện nước và tất cả hợp đồng, hóa đơn liên quan. Thao tác này không thể hoàn tác.`"
+      confirm-text="Xóa"
+      :danger="true"
+      :loading="deleteSubmitting"
+      @confirm="handleDelete"
+      @cancel="closeDeleteConfirm"
+    />
 
     <!-- Bảng phòng -->
     <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
@@ -254,7 +409,7 @@ const formatPrice = (price: number) =>
             <th class="px-6 py-3 text-left font-semibold text-gray-600">Số phòng</th>
             <th class="px-6 py-3 text-left font-semibold text-gray-600">Giá thuê</th>
             <th class="px-6 py-3 text-left font-semibold text-gray-600">Trạng thái</th>
-            <th class="px-6 py-3 text-left font-semibold text-gray-600">Hành động</th>
+            <th class="px-6 py-3 text-left font-semibold text-gray-600">Thao tác</th>
           </tr>
         </thead>
         <tbody>
@@ -277,13 +432,20 @@ const formatPrice = (price: number) =>
               </span>
             </td>
             <td class="px-6 py-4 text-left">
-              <button @click="openMeterModal(room)"
-                class="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors">
-                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
-                </svg>
-                Chỉ số
-              </button>
+              <div class="flex items-center gap-2">
+                <button @click="openMeterModal(room)"
+                  class="px-2.5 py-1 text-xs font-medium text-green-600 bg-green-50 hover:bg-green-100 rounded-md transition-colors">
+                  Chỉ số
+                </button>
+                <button @click="openEditModal(room)"
+                  class="px-2.5 py-1 text-xs font-medium text-blue-600 bg-blue-50 hover:bg-blue-100 rounded-md transition-colors">
+                  Sửa
+                </button>
+                <button @click="openDeleteConfirm(room)"
+                  class="px-2.5 py-1 text-xs font-medium text-red-600 bg-red-50 hover:bg-red-100 rounded-md transition-colors">
+                  Xóa
+                </button>
+              </div>
             </td>
           </tr>
         </tbody>

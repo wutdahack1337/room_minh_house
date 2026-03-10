@@ -40,6 +40,12 @@ func (s *MongoService) UpdateMeterReading(ctx context.Context, meterReading *typ
 	return nil
 }
 
+func (s *MongoService) DeleteMeterReadingsByRoomNumber(ctx context.Context, roomNumber int32) error {
+	collection := s.database.Collection(meterReadingCollection)
+	_, err := collection.DeleteMany(ctx, bson.M{"room_number": roomNumber})
+	return err
+}
+
 func (s *MongoService) GetMeterReading(ctx context.Context, roomNumber int32, period string) (*types.MeterReading, error) {
 	var meterReading types.MeterReading
 	collection := s.database.Collection(meterReadingCollection)

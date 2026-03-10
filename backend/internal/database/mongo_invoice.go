@@ -86,6 +86,19 @@ func (s *MongoService) ListInvoices(ctx context.Context, contractID string) ([]*
 	return res, cursor.Err()
 }
 
+func (s *MongoService) DeleteInvoicesByContractId(ctx context.Context, contractID string) error {
+	invoices, err := s.ListInvoices(ctx, contractID)
+	if err != nil {
+		return err
+	}
+	for _, inv := range invoices {
+		if err := s.DeleteInvoice(ctx, contractID, inv.Period); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
 func (s *MongoService) UpdateInvoiceTotalAmount(ctx context.Context, contractID string, period string) error {
 	items, err := s.ListInvoiceItems(ctx, contractID, period)
 	if err != nil {

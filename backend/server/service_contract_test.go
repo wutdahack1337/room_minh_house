@@ -19,7 +19,6 @@ func TestCreateContract_HappyPath(t *testing.T) {
 		PhoneNumber: PHONE_NUMBER,
 		Role:        ROLE,
 		IdCard:      newTestIdCard(),
-		Account:     newTestAccount(),
 	}
 	room := &types.Room{
 		RoomNumber:  ROOM_NUMBER,
@@ -146,7 +145,6 @@ func TestCreateContract_RoomNotFound(t *testing.T) {
 		PhoneNumber: PHONE_NUMBER,
 		Role:        ROLE,
 		IdCard:      newTestIdCard(),
-		Account:     newTestAccount(),
 	}
 
 	_, err := service.CreateUser(ctx, &types.CreateUserRequest{
@@ -190,7 +188,6 @@ func TestUpdateContract_HappyPath(t *testing.T) {
 		PhoneNumber: PHONE_NUMBER,
 		Role:        ROLE,
 		IdCard:      newTestIdCard(),
-		Account:     newTestAccount(),
 	}
 	room := &types.Room{
 		RoomNumber:  ROOM_NUMBER,
@@ -259,7 +256,6 @@ func TestGetContract_HappyPath(t *testing.T) {
 		PhoneNumber: PHONE_NUMBER,
 		Role:        ROLE,
 		IdCard:      newTestIdCard(),
-		Account:     newTestAccount(),
 	}
 	room := &types.Room{
 		RoomNumber:  ROOM_NUMBER,
@@ -333,7 +329,6 @@ func TestDeleteContract_HappyPath(t *testing.T) {
 		PhoneNumber: PHONE_NUMBER,
 		Role:        ROLE,
 		IdCard:      newTestIdCard(),
-		Account:     newTestAccount(),
 	}
 	room := &types.Room{
 		RoomNumber:  ROOM_NUMBER,
@@ -393,9 +388,9 @@ func TestListContracts_HappyPath(t *testing.T) {
 	service := getServiceForContract()
 
 	users := []*types.User{
-		{Pid: "user1", PhoneNumber: "0111111111", Role: ROLE, IdCard: newTestIdCard(), Account: newTestAccount()},
-		{Pid: "user2", PhoneNumber: "0222222222", Role: ROLE, IdCard: newTestIdCard(), Account: newTestAccount()},
-		{Pid: "user3", PhoneNumber: "0333333333", Role: ROLE, IdCard: newTestIdCard(), Account: newTestAccount()},
+		{Pid: "user1", PhoneNumber: "0111111111", Role: ROLE, IdCard: newTestIdCard()},
+		{Pid: "user2", PhoneNumber: "0222222222", Role: ROLE, IdCard: newTestIdCard()},
+		{Pid: "user3", PhoneNumber: "0333333333", Role: ROLE, IdCard: newTestIdCard()},
 	}
 	for _, user := range users {
 		_, err := service.CreateUser(ctx, &types.CreateUserRequest{User: user})
@@ -467,6 +462,53 @@ func TestListContracts_Empty(t *testing.T) {
 	}
 	if len(response.Contracts) != 0 {
 		t.Fatalf("expected 0 contracts, got %d", len(response.Contracts))
+	}
+}
+
+// ─── Cascade Tests ───────────────────────────────────────────────────────────
+
+func TestDeleteContract_CascadesInvoices(t *testing.T) {
+	ctx := context.Background()
+	service := getServiceForInvoice()
+
+	contractID := seedInvoice(t, service)
+
+	// create invoice (auto-creates 3 invoice items)
+	_, err := service.CreateInvoice(ctx, &types.CreateInvoiceRequest{
+		ContractId: contractID, Period: INVOICE_PERIOD,
+		ElectricityUnitPrice: ELEC_UNIT_PRICE, WaterUnitPrice: WATER_UNIT_PRICE,
+	})
+	if err != nil {
+		t.Fatal("setup: CreateInvoice failed: " + err.Error())
+	}
+
+	// verify invoice exists before delete
+	_, err = service.GetInvoice(ctx, &types.GetInvoiceRequest{ContractId: contractID, Period: INVOICE_PERIOD})
+	if err != nil {
+		t.Fatal("setup: expected invoice to exist before contract deletion")
+	}
+
+	// delete contract
+	_, err = service.DeleteContract(ctx, &types.DeleteContractRequest{ContractId: contractID})
+	if err != nil {
+		t.Fatal("DeleteContract failed: " + err.Error())
+	}
+
+	// invoice must be gone
+	_, err = service.GetInvoice(ctx, &types.GetInvoiceRequest{ContractId: contractID, Period: INVOICE_PERIOD})
+	if err == nil {
+		t.Fatal("expected invoice to be deleted when contract is deleted, but it still exists")
+	}
+
+	// invoice items must also be gone
+	itemsResp, err := service.ListInvoiceItems(ctx, &types.ListInvoiceItemsRequest{
+		ContractId: contractID, Period: INVOICE_PERIOD,
+	})
+	if err != nil {
+		t.Fatal("ListInvoiceItems failed: " + err.Error())
+	}
+	if len(itemsResp.InvoiceItems) != 0 {
+		t.Fatalf("expected 0 invoice items after contract deletion, got %d", len(itemsResp.InvoiceItems))
 	}
 }
 

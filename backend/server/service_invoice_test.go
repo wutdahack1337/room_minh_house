@@ -33,7 +33,6 @@ func seedInvoice(t *testing.T, service *Service) string {
 			PhoneNumber: PHONE_NUMBER,
 			Role:        ROLE,
 			IdCard:      newTestIdCard(),
-			Account:     newTestAccount(),
 		},
 	})
 	if err != nil {
@@ -322,6 +321,56 @@ func TestDeleteInvoice_HappyPath(t *testing.T) {
 	})
 	if err != nil {
 		t.Fatal("DeleteInvoice failed: " + err.Error())
+	}
+}
+
+func TestDeleteInvoice_CascadesInvoiceItems(t *testing.T) {
+	ctx := context.Background()
+	service := getServiceForInvoice()
+
+	contractID := seedInvoice(t, service)
+
+	_, err := service.CreateInvoice(ctx, &types.CreateInvoiceRequest{
+		ContractId:           contractID,
+		Period:               INVOICE_PERIOD,
+		ElectricityUnitPrice: ELEC_UNIT_PRICE,
+		WaterUnitPrice:       WATER_UNIT_PRICE,
+	})
+	if err != nil {
+		t.Fatal("setup: CreateInvoice failed: " + err.Error())
+	}
+
+	// verify items were created
+	itemsResp, err := service.ListInvoiceItems(ctx, &types.ListInvoiceItemsRequest{
+		ContractId: contractID,
+		Period:     INVOICE_PERIOD,
+	})
+	if err != nil {
+		t.Fatal("setup: ListInvoiceItems failed: " + err.Error())
+	}
+	if len(itemsResp.InvoiceItems) == 0 {
+		t.Fatal("setup: expected invoice items to exist before deletion")
+	}
+
+	// delete the invoice
+	_, err = service.DeleteInvoice(ctx, &types.DeleteInvoiceRequest{
+		ContractId: contractID,
+		Period:     INVOICE_PERIOD,
+	})
+	if err != nil {
+		t.Fatal("DeleteInvoice failed: " + err.Error())
+	}
+
+	// items must be gone
+	itemsAfter, err := service.ListInvoiceItems(ctx, &types.ListInvoiceItemsRequest{
+		ContractId: contractID,
+		Period:     INVOICE_PERIOD,
+	})
+	if err != nil {
+		t.Fatal("ListInvoiceItems after delete failed: " + err.Error())
+	}
+	if len(itemsAfter.InvoiceItems) != 0 {
+		t.Fatalf("expected 0 invoice items after invoice deletion, got %d", len(itemsAfter.InvoiceItems))
 	}
 }
 

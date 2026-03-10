@@ -72,6 +72,13 @@ func (s *Service) UpdateContract(ctx context.Context, request *types.UpdateContr
 		return nil, fmt.Errorf("UpdateContract error: duration months must be greater than 0")
 	}
 
+	// recalculate end_date from start_date + duration_months
+	startDate, err := time.Parse(time.RFC3339, request.Contract.StartDate)
+	if err != nil {
+		return nil, fmt.Errorf("UpdateContract error: invalid start_date format, must be ISO 8601")
+	}
+	request.Contract.EndDate = startDate.AddDate(0, int(request.Contract.DurationMonths), 0).Format(time.RFC3339)
+
 	if err := s.dbService.UpdateContract(ctx, request.Contract); err != nil {
 		return nil, err
 	}
@@ -85,6 +92,11 @@ func (s *Service) DeleteContract(ctx context.Context, request *types.DeleteContr
 	}
 	if request.ContractId == "" {
 		return nil, fmt.Errorf("DeleteContract error: contract id is required")
+	}
+
+	// cascade: delete all invoices (each call also deletes invoice_items)
+	if err := s.dbService.DeleteInvoicesByContractId(ctx, request.ContractId); err != nil {
+		return nil, fmt.Errorf("DeleteContract error: failed to delete invoices: %w", err)
 	}
 
 	if err := s.dbService.DeleteContract(ctx, request.ContractId); err != nil {
