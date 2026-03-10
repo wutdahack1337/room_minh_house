@@ -252,6 +252,7 @@ const statusClass = (status?: string) => {
       :message="`Xóa hợp đồng này sẽ xóa toàn bộ hóa đơn liên quan. Thao tác này không thể hoàn tác.`"
       confirm-text="Xóa"
       :danger="true"
+      :loading="deleteSubmitting"
       @confirm="handleDelete"
       @cancel="closeDeleteConfirm"
     />

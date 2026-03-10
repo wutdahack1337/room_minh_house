@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	types "github.com/wutdahack1337/room_minh_house/backend/pkg/pb"
+	"go.mongodb.org/mongo-driver/mongo"
 )
 
 func (s *Service) CreateMeterReading(ctx context.Context, request *types.CreateMeterReadingRequest) (*types.CreateMeterReadingResponse, error) {
@@ -68,13 +69,19 @@ func (s *Service) UpdateMeterReading(ctx context.Context, request *types.UpdateM
 		// only cascade if an invoice exists for this period
 		_, err := s.dbService.GetInvoice(ctx, c.ContractId, period)
 		if err != nil {
-			continue // invoice doesn't exist for this period, skip
+			if err == mongo.ErrNoDocuments {
+				continue // no invoice for this period, nothing to cascade
+			}
+			return nil, fmt.Errorf("UpdateMeterReading error: failed to get invoice: %w", err)
 		}
 
 		// get previous meter reading for qty calculation
 		prevReading, err := s.dbService.GetMeterReading(ctx, request.MeterReading.RoomNumber, prev)
 		if err != nil {
-			continue // no previous reading, skip
+			if err == mongo.ErrNoDocuments {
+				continue // no previous reading yet, can't compute delta
+			}
+			return nil, fmt.Errorf("UpdateMeterReading error: failed to get previous meter reading: %w", err)
 		}
 
 		elecQty := request.MeterReading.ElectricityReading - prevReading.ElectricityReading
@@ -83,7 +90,7 @@ func (s *Service) UpdateMeterReading(ctx context.Context, request *types.UpdateM
 		// get existing items to preserve unit prices
 		items, err := s.dbService.ListInvoiceItems(ctx, c.ContractId, period)
 		if err != nil {
-			continue
+			return nil, fmt.Errorf("UpdateMeterReading error: failed to list invoice items: %w", err)
 		}
 
 		unitPrices := make(map[string]float64)

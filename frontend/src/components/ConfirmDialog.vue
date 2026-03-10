@@ -5,6 +5,7 @@ defineProps<{
   message: string
   confirmText?: string
   danger?: boolean
+  loading?: boolean
 }>()
 
 const emit = defineEmits<{
@@ -15,7 +16,7 @@ const emit = defineEmits<{
 
 <template>
   <div v-if="show" class="fixed inset-0 z-50 flex items-center justify-center">
-    <div class="absolute inset-0 bg-black/40" @click="emit('cancel')"></div>
+    <div class="absolute inset-0 bg-black/40" @click="!loading && emit('cancel')"></div>
     <div class="relative bg-white rounded-xl shadow-xl w-full max-w-sm mx-4 p-6">
       <div class="flex items-start gap-3 mb-4">
         <div v-if="danger" class="flex-shrink-0 w-9 h-9 rounded-full bg-red-100 flex items-center justify-center">
@@ -37,19 +38,21 @@ const emit = defineEmits<{
         <button
           type="button"
           @click="emit('cancel')"
-          class="px-4 py-2 border border-gray-300 text-gray-700 text-sm font-medium rounded-lg hover:bg-gray-50 transition-colors"
+          :disabled="loading"
+          class="px-4 py-2 border border-gray-300 text-gray-700 text-sm font-medium rounded-lg hover:bg-gray-50 disabled:opacity-50 transition-colors"
         >
           Hủy
         </button>
         <button
           type="button"
           @click="emit('confirm')"
+          :disabled="loading"
           :class="danger
             ? 'bg-red-600 hover:bg-red-700 text-white'
             : 'bg-blue-600 hover:bg-blue-700 text-white'"
-          class="px-4 py-2 text-sm font-medium rounded-lg transition-colors"
+          class="px-4 py-2 text-sm font-medium rounded-lg disabled:opacity-50 transition-colors"
         >
-          {{ confirmText ?? 'Xác nhận' }}
+          {{ loading ? 'Đang xử lý...' : (confirmText ?? 'Xác nhận') }}
         </button>
       </div>
     </div>

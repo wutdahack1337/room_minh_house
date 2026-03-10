@@ -394,6 +394,7 @@ const formatPrice = (price: number) =>
       :message="`Xóa phòng ${deletingRoom?.room_number} sẽ xóa toàn bộ chỉ số điện nước và tất cả hợp đồng, hóa đơn liên quan. Thao tác này không thể hoàn tác.`"
       confirm-text="Xóa"
       :danger="true"
+      :loading="deleteSubmitting"
       @confirm="handleDelete"
       @cancel="closeDeleteConfirm"
     />

@@ -72,6 +72,13 @@ func (s *Service) UpdateContract(ctx context.Context, request *types.UpdateContr
 		return nil, fmt.Errorf("UpdateContract error: duration months must be greater than 0")
 	}
 
+	// recalculate end_date from start_date + duration_months
+	startDate, err := time.Parse(time.RFC3339, request.Contract.StartDate)
+	if err != nil {
+		return nil, fmt.Errorf("UpdateContract error: invalid start_date format, must be ISO 8601")
+	}
+	request.Contract.EndDate = startDate.AddDate(0, int(request.Contract.DurationMonths), 0).Format(time.RFC3339)
+
 	if err := s.dbService.UpdateContract(ctx, request.Contract); err != nil {
 		return nil, err
 	}

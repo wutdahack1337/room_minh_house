@@ -167,7 +167,6 @@ const handleCreate = async () => {
 const showDeleteConfirm = ref(false)
 const deletingInvoice = ref<Invoice | null>(null)
 const deleteInvoiceSubmitting = ref(false)
-const deleteInvoiceError = ref('')
 
 const openDeleteInvoiceConfirm = (inv: Invoice) => { deletingInvoice.value = inv; showDeleteConfirm.value = true }
 const closeDeleteInvoiceConfirm = () => { showDeleteConfirm.value = false; deletingInvoice.value = null }
@@ -180,7 +179,7 @@ const handleDeleteInvoice = async () => {
     closeDeleteInvoiceConfirm()
     await fetchInvoices()
   } catch (e: any) {
-    deleteInvoiceError.value = e?.response?.data?.message ?? e?.message ?? 'Không thể xóa hóa đơn.'
+    error.value = e?.response?.data?.message ?? e?.message ?? 'Không thể xóa hóa đơn.'
     closeDeleteInvoiceConfirm()
   } finally {
     deleteInvoiceSubmitting.value = false
@@ -398,6 +397,7 @@ const saveItem = async (item: InvoiceItem) => {
     :message="`Xóa hóa đơn kỳ ${deletingInvoice?.period} sẽ xóa toàn bộ chi tiết hóa đơn. Thao tác này không thể hoàn tác.`"
     confirm-text="Xóa"
     :danger="true"
+    :loading="deleteInvoiceSubmitting"
     @confirm="handleDeleteInvoice"
     @cancel="closeDeleteInvoiceConfirm"
   />

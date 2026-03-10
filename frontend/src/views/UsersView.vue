@@ -266,6 +266,7 @@ const handleDelete = async () => {
       :message="`Xóa người thuê ${deletingUser?.id_card?.name || deletingUser?.pid} sẽ xóa toàn bộ hợp đồng và hóa đơn liên quan. Thao tác này không thể hoàn tác.`"
       confirm-text="Xóa"
       :danger="true"
+      :loading="deleteSubmitting"
       @confirm="handleDelete"
       @cancel="closeDeleteConfirm"
     />
