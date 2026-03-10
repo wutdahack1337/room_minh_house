@@ -87,6 +87,11 @@ func (s *Service) DeleteContract(ctx context.Context, request *types.DeleteContr
 		return nil, fmt.Errorf("DeleteContract error: contract id is required")
 	}
 
+	// cascade: delete all invoices (each call also deletes invoice_items)
+	if err := s.dbService.DeleteInvoicesByContractId(ctx, request.ContractId); err != nil {
+		return nil, fmt.Errorf("DeleteContract error: failed to delete invoices: %w", err)
+	}
+
 	if err := s.dbService.DeleteContract(ctx, request.ContractId); err != nil {
 		return nil, err
 	}

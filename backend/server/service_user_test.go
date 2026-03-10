@@ -6,7 +6,6 @@ import (
 
 	"github.com/wutdahack1337/room_minh_house/backend/internal/database"
 	types "github.com/wutdahack1337/room_minh_house/backend/pkg/pb"
-	"golang.org/x/crypto/bcrypt"
 )
 
 const (
@@ -24,13 +23,6 @@ func newTestIdCard() *types.IdCard {
 	}
 }
 
-func newTestAccount() *types.Account {
-	return &types.Account{
-		Username: "test_username",
-		Password: "test_password",
-	}
-}
-
 func TestCreateUser_HappyPath(t *testing.T) {
 	service := getUserService()
 
@@ -40,7 +32,6 @@ func TestCreateUser_HappyPath(t *testing.T) {
 			PhoneNumber: PHONE_NUMBER,
 			Role:        ROLE,
 			IdCard:      newTestIdCard(),
-			Account:     newTestAccount(),
 		},
 	})
 	if err != nil {
@@ -61,7 +52,6 @@ func TestCreateUser_DuplicatePid(t *testing.T) {
 		PhoneNumber: PHONE_NUMBER,
 		Role:        ROLE,
 		IdCard:      newTestIdCard(),
-		Account:     newTestAccount(),
 	}
 
 	_, _ = service.CreateUser(ctx, &types.CreateUserRequest{
@@ -88,7 +78,6 @@ func TestCreateUser_MissingPid(t *testing.T) {
 			PhoneNumber: PHONE_NUMBER,
 			Role:        ROLE,
 			IdCard:      newTestIdCard(),
-			Account:     newTestAccount(),
 		},
 	})
 
@@ -108,7 +97,6 @@ func TestCreateUser_MissingIdCard(t *testing.T) {
 			Pid:         P_ID,
 			PhoneNumber: PHONE_NUMBER,
 			Role:        ROLE,
-			Account:     newTestAccount(),
 		},
 	})
 
@@ -132,7 +120,6 @@ func TestCreateUser_IdCardMissingName(t *testing.T) {
 			PhoneNumber: PHONE_NUMBER,
 			Role:        ROLE,
 			IdCard:      idCard,
-			Account:     newTestAccount(),
 		},
 	})
 
@@ -156,7 +143,6 @@ func TestCreateUser_IdCardMissingSex(t *testing.T) {
 			PhoneNumber: PHONE_NUMBER,
 			Role:        ROLE,
 			IdCard:      idCard,
-			Account:     newTestAccount(),
 		},
 	})
 
@@ -180,7 +166,6 @@ func TestCreateUser_IdCardMissingDateOfBirth(t *testing.T) {
 			PhoneNumber: PHONE_NUMBER,
 			Role:        ROLE,
 			IdCard:      idCard,
-			Account:     newTestAccount(),
 		},
 	})
 
@@ -204,7 +189,6 @@ func TestCreateUser_IdCardMissingPlaceOfBirth(t *testing.T) {
 			PhoneNumber: PHONE_NUMBER,
 			Role:        ROLE,
 			IdCard:      idCard,
-			Account:     newTestAccount(),
 		},
 	})
 
@@ -227,7 +211,6 @@ func TestUpdateUser_HappyPath(t *testing.T) {
 			PhoneNumber: PHONE_NUMBER,
 			Role:        ROLE,
 			IdCard:      newTestIdCard(),
-			Account:     newTestAccount(),
 		},
 	})
 
@@ -236,7 +219,6 @@ func TestUpdateUser_HappyPath(t *testing.T) {
 		PhoneNumber: "0918441887",
 		Role:        ROLE,
 		IdCard:      newTestIdCard(),
-		Account:     newTestAccount(),
 	}
 
 	_, err := service.UpdateUser(ctx, &types.UpdateUserRequest{
@@ -265,7 +247,6 @@ func TestUpdateUser_MissingPid(t *testing.T) {
 			PhoneNumber: PHONE_NUMBER,
 			Role:        ROLE,
 			IdCard:      newTestIdCard(),
-			Account:     newTestAccount(),
 		},
 	})
 
@@ -286,7 +267,6 @@ func TestUpdateUser_NotFound(t *testing.T) {
 			PhoneNumber: PHONE_NUMBER,
 			Role:        ROLE,
 			IdCard:      newTestIdCard(),
-			Account:     newTestAccount(),
 		},
 	})
 
@@ -308,7 +288,6 @@ func TestUpdateUser_IdCardUpdated(t *testing.T) {
 		PhoneNumber: PHONE_NUMBER,
 		Role:        ROLE,
 		IdCard:      newTestIdCard(),
-		Account:     newTestAccount(),
 	}
 
 	_, _ = service.CreateUser(ctx, &types.CreateUserRequest{
@@ -351,7 +330,6 @@ func TestDeleteUser_HappyPath(t *testing.T) {
 		PhoneNumber: PHONE_NUMBER,
 		Role:        ROLE,
 		IdCard:      newTestIdCard(),
-		Account:     newTestAccount(),
 	}
 
 	_, _ = service.CreateUser(ctx, &types.CreateUserRequest{
@@ -399,7 +377,6 @@ func TestGetUser_HappyPath(t *testing.T) {
 		PhoneNumber: PHONE_NUMBER,
 		Role:        ROLE,
 		IdCard:      newTestIdCard(),
-		Account:     newTestAccount(),
 	}
 
 	_, _ = service.CreateUser(ctx, &types.CreateUserRequest{
@@ -446,14 +423,12 @@ func TestListUsers_HappyPath(t *testing.T) {
 			PhoneNumber: "0949447156",
 			Role:        ROLE,
 			IdCard:      newTestIdCard(),
-			Account:     newTestAccount(),
 		},
 		{
 			Pid:         "9876543210",
 			PhoneNumber: "0918441887",
 			Role:        ROLE,
 			IdCard:      newTestIdCard(),
-			Account:     newTestAccount(),
 		},
 	}
 	for _, user := range users {
@@ -504,7 +479,6 @@ func TestCreateUser_MissingRole(t *testing.T) {
 			Pid:         P_ID,
 			PhoneNumber: PHONE_NUMBER,
 			IdCard:      newTestIdCard(),
-			Account:     newTestAccount(),
 		},
 	})
 
@@ -513,171 +487,6 @@ func TestCreateUser_MissingRole(t *testing.T) {
 	}
 	if response != nil {
 		t.Fatal("expected nil response for missing role, got non-nil")
-	}
-}
-
-func TestCreateUser_MissingAccount(t *testing.T) {
-	service := getUserService()
-	response, err := service.CreateUser(context.Background(), &types.CreateUserRequest{
-		User: &types.User{
-			Pid:         P_ID,
-			PhoneNumber: PHONE_NUMBER,
-			Role:        ROLE,
-			IdCard:      newTestIdCard(),
-		},
-	})
-
-	if err == nil {
-		t.Fatal("expected error for missing account, got nil")
-	}
-	if response != nil {
-		t.Fatal("expected nil response for missing account, got non-nil")
-	}
-}
-
-func TestCreateUser_AccountMissingUsername(t *testing.T) {
-	service := getUserService()
-
-	account := newTestAccount()
-	account.Username = ""
-	response, err := service.CreateUser(context.Background(), &types.CreateUserRequest{
-		User: &types.User{
-			Pid:         P_ID,
-			PhoneNumber: PHONE_NUMBER,
-			Role:        ROLE,
-			IdCard:      newTestIdCard(),
-			Account:     account,
-		},
-	})
-
-	if err == nil {
-		t.Fatal("expected error for missing account username, got nil")
-	}
-	if response != nil {
-		t.Fatal("expected nil response for missing account username, got non-nil")
-	}
-}
-
-func TestCreateUser_AccountMissingPassword(t *testing.T) {
-	service := getUserService()
-
-	account := newTestAccount()
-	account.Password = ""
-	response, err := service.CreateUser(context.Background(), &types.CreateUserRequest{
-		User: &types.User{
-			Pid:         P_ID,
-			PhoneNumber: PHONE_NUMBER,
-			Role:        ROLE,
-			IdCard:      newTestIdCard(),
-			Account:     account,
-		},
-	})
-
-	if err == nil {
-		t.Fatal("expected error for missing account password, got nil")
-	}
-	if response != nil {
-		t.Fatal("expected nil response for missing account password, got non-nil")
-	}
-}
-
-func TestUpdateUser_MissingAccount(t *testing.T) {
-	ctx := context.Background()
-	service := getUserService()
-
-	_, _ = service.CreateUser(ctx, &types.CreateUserRequest{
-		User: &types.User{
-			Pid:         P_ID,
-			PhoneNumber: PHONE_NUMBER,
-			IdCard:      newTestIdCard(),
-			Account:     newTestAccount(),
-		},
-	})
-
-	response, err := service.UpdateUser(context.Background(), &types.UpdateUserRequest{
-		User: &types.User{
-			Pid:         P_ID,
-			PhoneNumber: PHONE_NUMBER,
-			IdCard:      newTestIdCard(),
-		},
-	})
-	if err == nil {
-		t.Fatal("expected error for missing account, got nil")
-	}
-
-	if response != nil {
-		t.Fatal("expected nil response for missing account, got non-nil")
-	}
-}
-
-func TestUpdateUser_AccountMissingUsername(t *testing.T) {
-	ctx := context.Background()
-	service := getUserService()
-
-	_, err := service.CreateUser(ctx, &types.CreateUserRequest{
-		User: &types.User{
-			Pid:         P_ID,
-			PhoneNumber: PHONE_NUMBER,
-			Role:        ROLE,
-			IdCard:      newTestIdCard(),
-			Account:     newTestAccount(),
-		},
-	})
-	if err != nil {
-		t.Fatal("CreateUser failed: " + err.Error())
-	}
-
-	account := newTestAccount()
-	account.Username = ""
-	response, err := service.UpdateUser(context.Background(), &types.UpdateUserRequest{
-		User: &types.User{
-			Pid:         P_ID,
-			PhoneNumber: PHONE_NUMBER,
-			Role:        ROLE,
-			IdCard:      newTestIdCard(),
-			Account:     account,
-		},
-	})
-
-	if err == nil {
-		t.Fatal("expected error for missing account username, got nil")
-	}
-	if response != nil {
-		t.Fatal("expected nil response for missing account username, got non-nil")
-	}
-}
-
-func TestUpdateUser_AccountMissingPassword(t *testing.T) {
-	ctx := context.Background()
-	service := getUserService()
-
-	_, _ = service.CreateUser(ctx, &types.CreateUserRequest{
-		User: &types.User{
-			Pid:         P_ID,
-			PhoneNumber: PHONE_NUMBER,
-			Role:        ROLE,
-			IdCard:      newTestIdCard(),
-			Account:     newTestAccount(),
-		},
-	})
-
-	account := newTestAccount()
-	account.Password = ""
-	response, err := service.UpdateUser(context.Background(), &types.UpdateUserRequest{
-		User: &types.User{
-			Pid:         P_ID,
-			PhoneNumber: PHONE_NUMBER,
-			Role:        ROLE,
-			IdCard:      newTestIdCard(),
-			Account:     account,
-		},
-	})
-
-	if err == nil {
-		t.Fatal("expected error for missing account password, got nil")
-	}
-	if response != nil {
-		t.Fatal("expected nil response for missing account password, got non-nil")
 	}
 }
 
@@ -691,7 +500,6 @@ func TestUpdateUser_MissingRole(t *testing.T) {
 			PhoneNumber: PHONE_NUMBER,
 			Role:        ROLE,
 			IdCard:      newTestIdCard(),
-			Account:     newTestAccount(),
 		},
 	})
 
@@ -700,7 +508,6 @@ func TestUpdateUser_MissingRole(t *testing.T) {
 			Pid:         P_ID,
 			PhoneNumber: PHONE_NUMBER,
 			IdCard:      newTestIdCard(),
-			Account:     newTestAccount(),
 		},
 	})
 	if err == nil {
@@ -712,101 +519,88 @@ func TestUpdateUser_MissingRole(t *testing.T) {
 	}
 }
 
-func TestGetUser_PasswordIsHashed(t *testing.T) {
+// ─── Cascade Tests ───────────────────────────────────────────────────────────
+
+func TestDeleteUser_CascadesContracts(t *testing.T) {
 	ctx := context.Background()
-	service := getUserService()
+	service := getServiceForInvoice() // drops all collections
 
-	plainPassword := "test_password_secure_123"
-	user := &types.User{
-		Pid:         P_ID,
-		PhoneNumber: PHONE_NUMBER,
-		Role:        ROLE,
-		IdCard:      newTestIdCard(),
-		Account: &types.Account{
-			Username: "test_user",
-			Password: plainPassword,
-		},
-	}
-
+	// create user, room, contract
 	_, err := service.CreateUser(ctx, &types.CreateUserRequest{
-		User: user,
+		User: &types.User{
+			Pid: P_ID, PhoneNumber: PHONE_NUMBER, Role: ROLE,
+			IdCard: newTestIdCard(),
+		},
 	})
 	if err != nil {
-		t.Fatal("CreateUser failed: " + err.Error())
+		t.Fatal("setup: CreateUser failed: " + err.Error())
 	}
-
-	response, err := service.GetUser(ctx, &types.GetUserRequest{
-		Pid: user.Pid,
+	_, err = service.CreateRoom(ctx, &types.CreateRoomRequest{
+		Room: &types.Room{RoomNumber: ROOM_NUMBER, Price: PRICE, IsAvailable: false},
 	})
 	if err != nil {
-		t.Fatal("GetUser failed: " + err.Error())
+		t.Fatal("setup: CreateRoom failed: " + err.Error())
+	}
+	contractResp, err := service.CreateContract(ctx, &types.CreateContractRequest{
+		Contract: &types.Contract{
+			UserPid: P_ID, RoomNumber: ROOM_NUMBER,
+			StartDate: "2026-01-01T00:00:00Z", DurationMonths: 3,
+		},
+	})
+	if err != nil {
+		t.Fatal("setup: CreateContract failed: " + err.Error())
+	}
+	contractID := contractResp.Contract.ContractId
+
+	// delete user
+	_, err = service.DeleteUser(ctx, &types.DeleteUserRequest{Pid: P_ID})
+	if err != nil {
+		t.Fatal("DeleteUser failed: " + err.Error())
 	}
 
-	if response.User.Account.Password == plainPassword {
-		t.Fatal("expected password to be hashed, but got plaintext")
-	}
-
-	// Verify the hash is valid bcrypt by comparing with plaintext
-	if err := bcrypt.CompareHashAndPassword([]byte(response.User.Account.Password), []byte(plainPassword)); err != nil {
-		t.Fatal("password hash does not match plaintext password: " + err.Error())
+	// contract must be gone
+	_, err = service.GetContract(ctx, &types.GetContractRequest{ContractId: contractID})
+	if err == nil {
+		t.Fatal("expected contract to be deleted when user is deleted, but it still exists")
 	}
 }
 
-func TestListUsers_PasswordsAreHashed(t *testing.T) {
+func TestDeleteUser_CascadesInvoices(t *testing.T) {
 	ctx := context.Background()
-	service := getUserService()
+	service := getServiceForInvoice()
 
-	plainPassword := "test_password_list_456"
-	users := []*types.User{
-		{
-			Pid:         "0111111111",
-			PhoneNumber: "0911111111",
-			Role:        ROLE,
-			IdCard:      newTestIdCard(),
-			Account: &types.Account{
-				Username: "user1_list",
-				Password: plainPassword,
-			},
-		},
-		{
-			Pid:         "0222222222",
-			PhoneNumber: "0922222222",
-			Role:        ROLE,
-			IdCard:      newTestIdCard(),
-			Account: &types.Account{
-				Username: "user2_list",
-				Password: plainPassword,
-			},
-		},
-	}
+	contractID := seedInvoice(t, service)
 
-	for _, user := range users {
-		_, err := service.CreateUser(ctx, &types.CreateUserRequest{
-			User: user,
-		})
-		if err != nil {
-			t.Fatal("CreateUser failed for user " + user.Pid + ": " + err.Error())
-		}
-	}
-
-	response, err := service.ListUsers(ctx, &types.ListUsersRequest{})
+	// create invoice
+	_, err := service.CreateInvoice(ctx, &types.CreateInvoiceRequest{
+		ContractId: contractID, Period: INVOICE_PERIOD,
+		ElectricityUnitPrice: ELEC_UNIT_PRICE, WaterUnitPrice: WATER_UNIT_PRICE,
+	})
 	if err != nil {
-		t.Fatal("ListUsers failed: " + err.Error())
+		t.Fatal("setup: CreateInvoice failed: " + err.Error())
 	}
 
-	if len(response.Users) == 0 {
-		t.Fatal("expected users in response, got empty list")
+	// delete user (P_ID is set in seedInvoice)
+	_, err = service.DeleteUser(ctx, &types.DeleteUserRequest{Pid: P_ID})
+	if err != nil {
+		t.Fatal("DeleteUser failed: " + err.Error())
 	}
 
-	for _, user := range response.Users {
-		if user.Account.Password == plainPassword {
-			t.Fatal("expected password to be hashed for user " + user.Pid + ", but got plaintext")
-		}
+	// invoice must be gone
+	_, err = service.GetInvoice(ctx, &types.GetInvoiceRequest{ContractId: contractID, Period: INVOICE_PERIOD})
+	if err == nil {
+		t.Fatal("expected invoice to be deleted when user is deleted, but it still exists")
+	}
 
-		// Verify the hash is valid bcrypt
-		if err := bcrypt.CompareHashAndPassword([]byte(user.Account.Password), []byte(plainPassword)); err != nil {
-			t.Fatal("password hash does not match plaintext password for user " + user.Pid + ": " + err.Error())
-		}
+	// invoice items must also be gone
+	itemsResp, err := service.ListInvoiceItems(ctx, &types.ListInvoiceItemsRequest{
+		ContractId: contractID, Period: INVOICE_PERIOD,
+	})
+	if err != nil {
+		t.Fatal("ListInvoiceItems failed: " + err.Error())
+	}
+	if len(itemsResp.InvoiceItems) != 0 {
+		t.Fatalf("expected 0 invoice items after user deletion, got %d", len(itemsResp.InvoiceItems))
 	}
 }
 

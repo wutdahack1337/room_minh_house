@@ -331,3 +331,138 @@ func getService() *Service {
 
 	return NewService(dbService)
 }
+
+// getServiceForCascade drops ALL collections so cascade tests start with a clean slate
+func getServiceForCascade() *Service {
+	ctx := context.Background()
+	db, err := connectDatabase("mongodb://localhost:27017/?directConnection=true", "room_minh_house")
+	if err != nil {
+		panic("Failed to connect to database: " + err.Error())
+	}
+	db.Collection("invoice_items").Drop(ctx)
+	db.Collection("invoices").Drop(ctx)
+	db.Collection("contracts").Drop(ctx)
+	db.Collection("meter_readings").Drop(ctx)
+	db.Collection("users").Drop(ctx)
+	db.Collection("rooms").Drop(ctx)
+
+	dbService, err := database.NewMongoService(db)
+	if err != nil {
+		panic("Failed to create database service: " + err.Error())
+	}
+	return NewService(dbService)
+}
+
+// ─── Cascade Tests ────────────────────────────────────────────────────────────
+
+func TestDeleteRoom_CascadesMeterReadings(t *testing.T) {
+	ctx := context.Background()
+	service := getServiceForCascade()
+
+	_, err := service.CreateRoom(ctx, &types.CreateRoomRequest{
+		Room: &types.Room{RoomNumber: ROOM_NUMBER, Price: PRICE, IsAvailable: true},
+	})
+	if err != nil {
+		t.Fatal("setup: CreateRoom failed: " + err.Error())
+	}
+
+	_, err = service.CreateMeterReading(ctx, &types.CreateMeterReadingRequest{
+		MeterReading: &types.MeterReading{RoomNumber: ROOM_NUMBER, Period: "01-2026", ElectricityReading: 100, WaterReading: 50},
+	})
+	if err != nil {
+		t.Fatal("setup: CreateMeterReading failed: " + err.Error())
+	}
+
+	_, err = service.DeleteRoom(ctx, &types.DeleteRoomRequest{RoomNumber: ROOM_NUMBER})
+	if err != nil {
+		t.Fatal("DeleteRoom failed: " + err.Error())
+	}
+
+	listResp, err := service.ListMeterReadings(ctx, &types.ListMeterReadingsRequest{RoomNumber: ROOM_NUMBER})
+	if err != nil {
+		t.Fatal("ListMeterReadings failed: " + err.Error())
+	}
+	if len(listResp.MeterReadings) != 0 {
+		t.Fatalf("expected 0 meter readings after room deletion, got %d", len(listResp.MeterReadings))
+	}
+}
+
+func TestDeleteRoom_CascadesContracts(t *testing.T) {
+	ctx := context.Background()
+	service := getServiceForCascade()
+
+	_, err := service.CreateUser(ctx, &types.CreateUserRequest{
+		User: &types.User{Pid: P_ID, PhoneNumber: PHONE_NUMBER, Role: ROLE, IdCard: newTestIdCard()},
+	})
+	if err != nil {
+		t.Fatal("setup: CreateUser failed: " + err.Error())
+	}
+	_, err = service.CreateRoom(ctx, &types.CreateRoomRequest{
+		Room: &types.Room{RoomNumber: ROOM_NUMBER, Price: PRICE, IsAvailable: true},
+	})
+	if err != nil {
+		t.Fatal("setup: CreateRoom failed: " + err.Error())
+	}
+
+	contractResp, err := service.CreateContract(ctx, &types.CreateContractRequest{
+		Contract: &types.Contract{UserPid: P_ID, RoomNumber: ROOM_NUMBER, StartDate: "2026-01-01T00:00:00Z", DurationMonths: 3},
+	})
+	if err != nil {
+		t.Fatal("setup: CreateContract failed: " + err.Error())
+	}
+	contractID := contractResp.Contract.ContractId
+
+	_, err = service.DeleteRoom(ctx, &types.DeleteRoomRequest{RoomNumber: ROOM_NUMBER})
+	if err != nil {
+		t.Fatal("DeleteRoom failed: " + err.Error())
+	}
+
+	getResp, err := service.GetContract(ctx, &types.GetContractRequest{ContractId: contractID})
+	if err == nil {
+		t.Fatal("expected error getting contract after room deletion, got nil")
+	}
+	if getResp != nil {
+		t.Fatal("expected nil response for deleted contract")
+	}
+}
+
+func TestDeleteRoom_CascadesInvoices(t *testing.T) {
+	ctx := context.Background()
+	service := getServiceForCascade()
+
+	contractID := seedInvoice(t, service)
+
+	_, err := service.CreateInvoice(ctx, &types.CreateInvoiceRequest{
+		ContractId:           contractID,
+		Period:               INVOICE_PERIOD,
+		ElectricityUnitPrice: ELEC_UNIT_PRICE,
+		WaterUnitPrice:       WATER_UNIT_PRICE,
+	})
+	if err != nil {
+		t.Fatal("setup: CreateInvoice failed: " + err.Error())
+	}
+
+	_, err = service.DeleteRoom(ctx, &types.DeleteRoomRequest{RoomNumber: ROOM_NUMBER})
+	if err != nil {
+		t.Fatal("DeleteRoom failed: " + err.Error())
+	}
+
+	listInvoicesResp, err := service.ListInvoices(ctx, &types.ListInvoicesRequest{ContractId: contractID})
+	if err != nil {
+		t.Fatal("ListInvoices failed: " + err.Error())
+	}
+	if len(listInvoicesResp.Invoices) != 0 {
+		t.Fatalf("expected 0 invoices after room deletion, got %d", len(listInvoicesResp.Invoices))
+	}
+
+	listItemsResp, err := service.ListInvoiceItems(ctx, &types.ListInvoiceItemsRequest{
+		ContractId: contractID,
+		Period:     INVOICE_PERIOD,
+	})
+	if err != nil {
+		t.Fatal("ListInvoiceItems failed: " + err.Error())
+	}
+	if len(listItemsResp.InvoiceItems) != 0 {
+		t.Fatalf("expected 0 invoice items after room deletion, got %d", len(listItemsResp.InvoiceItems))
+	}
+}

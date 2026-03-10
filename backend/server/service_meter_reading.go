@@ -52,6 +52,79 @@ func (s *Service) UpdateMeterReading(ctx context.Context, request *types.UpdateM
 		return nil, err
 	}
 
+	// cascade: recalculate invoice_items for any invoice in this period
+	contracts, err := s.dbService.ListContractsByRoomNumber(ctx, request.MeterReading.RoomNumber)
+	if err != nil {
+		return nil, fmt.Errorf("UpdateMeterReading error: failed to list contracts: %w", err)
+	}
+
+	period := request.MeterReading.Period
+	prev, err := prevPeriod(period)
+	if err != nil {
+		return nil, fmt.Errorf("UpdateMeterReading error: %v", err)
+	}
+
+	for _, c := range contracts {
+		// only cascade if an invoice exists for this period
+		_, err := s.dbService.GetInvoice(ctx, c.ContractId, period)
+		if err != nil {
+			continue // invoice doesn't exist for this period, skip
+		}
+
+		// get previous meter reading for qty calculation
+		prevReading, err := s.dbService.GetMeterReading(ctx, request.MeterReading.RoomNumber, prev)
+		if err != nil {
+			continue // no previous reading, skip
+		}
+
+		elecQty := request.MeterReading.ElectricityReading - prevReading.ElectricityReading
+		waterQty := request.MeterReading.WaterReading - prevReading.WaterReading
+
+		// get existing items to preserve unit prices
+		items, err := s.dbService.ListInvoiceItems(ctx, c.ContractId, period)
+		if err != nil {
+			continue
+		}
+
+		unitPrices := make(map[string]float64)
+		for _, item := range items {
+			unitPrices[item.ItemType] = item.UnitPrice
+		}
+
+		elecUnitPrice := unitPrices[ITEM_TYPE_ELECTRICITY]
+		waterUnitPrice := unitPrices[ITEM_TYPE_WATER]
+
+		if elecUnitPrice > 0 {
+			if err := s.dbService.UpdateInvoiceItem(ctx, &types.InvoiceItem{
+				ContractId: c.ContractId,
+				Period:     period,
+				ItemType:   ITEM_TYPE_ELECTRICITY,
+				Quantity:   elecQty,
+				UnitPrice:  elecUnitPrice,
+				Amount:     elecQty * elecUnitPrice,
+			}); err != nil {
+				return nil, fmt.Errorf("UpdateMeterReading error: failed to update electricity item: %w", err)
+			}
+		}
+
+		if waterUnitPrice > 0 {
+			if err := s.dbService.UpdateInvoiceItem(ctx, &types.InvoiceItem{
+				ContractId: c.ContractId,
+				Period:     period,
+				ItemType:   ITEM_TYPE_WATER,
+				Quantity:   waterQty,
+				UnitPrice:  waterUnitPrice,
+				Amount:     waterQty * waterUnitPrice,
+			}); err != nil {
+				return nil, fmt.Errorf("UpdateMeterReading error: failed to update water item: %w", err)
+			}
+		}
+
+		if err := s.dbService.UpdateInvoiceTotalAmount(ctx, c.ContractId, period); err != nil {
+			return nil, fmt.Errorf("UpdateMeterReading error: failed to update invoice total: %w", err)
+		}
+	}
+
 	return &types.UpdateMeterReadingResponse{MeterReading: request.MeterReading}, nil
 }
 

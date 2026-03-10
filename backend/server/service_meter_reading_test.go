@@ -518,3 +518,83 @@ func getServiceForMeterReading() *Service {
 func containsSubstring(str, substr string) bool {
 	return strings.Contains(str, substr)
 }
+
+// ─── Cascade Tests ───────────────────────────────────────────────────────────
+
+func TestUpdateMeterReading_CascadesInvoiceItems(t *testing.T) {
+	ctx := context.Background()
+	service := getServiceForInvoice() // drops all collections
+
+	// seed user, room, contract, prev & current meter readings
+	contractID := seedInvoice(t, service)
+
+	// create invoice for INVOICE_PERIOD
+	_, err := service.CreateInvoice(ctx, &types.CreateInvoiceRequest{
+		ContractId: contractID, Period: INVOICE_PERIOD,
+		ElectricityUnitPrice: ELEC_UNIT_PRICE, WaterUnitPrice: WATER_UNIT_PRICE,
+	})
+	if err != nil {
+		t.Fatal("setup: CreateInvoice failed: " + err.Error())
+	}
+
+	// original electricity qty = ELEC_READING_CURR - ELEC_READING_PREV = 50
+	// update current meter reading with higher values
+	newElecReading := ELEC_READING_CURR + 20  // 170
+	newWaterReading := WATER_READING_CURR + 5 // 75
+
+	_, err = service.UpdateMeterReading(ctx, &types.UpdateMeterReadingRequest{
+		MeterReading: &types.MeterReading{
+			RoomNumber: ROOM_NUMBER, Period: INVOICE_PERIOD,
+			ElectricityReading: newElecReading,
+			WaterReading:       newWaterReading,
+		},
+	})
+	if err != nil {
+		t.Fatal("UpdateMeterReading failed: " + err.Error())
+	}
+
+	// verify invoice items were updated
+	itemsResp, err := service.ListInvoiceItems(ctx, &types.ListInvoiceItemsRequest{
+		ContractId: contractID, Period: INVOICE_PERIOD,
+	})
+	if err != nil {
+		t.Fatal("ListInvoiceItems failed: " + err.Error())
+	}
+
+	newElecQty := newElecReading - ELEC_READING_PREV    // 70
+	newWaterQty := newWaterReading - WATER_READING_PREV // 25
+
+	for _, item := range itemsResp.InvoiceItems {
+		switch item.ItemType {
+		case ITEM_TYPE_ELECTRICITY:
+			if item.Quantity != newElecQty {
+				t.Fatalf("electricity qty: expected %.2f, got %.2f", newElecQty, item.Quantity)
+			}
+			expectedAmount := newElecQty * ELEC_UNIT_PRICE
+			if item.Amount != expectedAmount {
+				t.Fatalf("electricity amount: expected %.2f, got %.2f", expectedAmount, item.Amount)
+			}
+		case ITEM_TYPE_WATER:
+			if item.Quantity != newWaterQty {
+				t.Fatalf("water qty: expected %.2f, got %.2f", newWaterQty, item.Quantity)
+			}
+			expectedAmount := newWaterQty * WATER_UNIT_PRICE
+			if item.Amount != expectedAmount {
+				t.Fatalf("water amount: expected %.2f, got %.2f", expectedAmount, item.Amount)
+			}
+		}
+	}
+
+	// verify invoice total_amount was recalculated
+	invoiceResp, err := service.GetInvoice(ctx, &types.GetInvoiceRequest{
+		ContractId: contractID, Period: INVOICE_PERIOD,
+	})
+	if err != nil {
+		t.Fatal("GetInvoice failed: " + err.Error())
+	}
+
+	expectedTotal := PRICE + newElecQty*ELEC_UNIT_PRICE + newWaterQty*WATER_UNIT_PRICE
+	if invoiceResp.Invoice.TotalAmount != expectedTotal {
+		t.Fatalf("invoice total: expected %.2f, got %.2f", expectedTotal, invoiceResp.Invoice.TotalAmount)
+	}
+}

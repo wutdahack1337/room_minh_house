@@ -4,9 +4,12 @@ import {
   listContracts,
   listInvoices,
   createInvoice,
+  updateInvoice,
+  deleteInvoice,
   listInvoiceItems,
   updateInvoiceItem,
 } from '../services/api'
+import ConfirmDialog from '../components/ConfirmDialog.vue'
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 interface Contract {
@@ -157,6 +160,46 @@ const handleCreate = async () => {
     formError.value = e?.response?.data?.message ?? 'Tạo hóa đơn thất bại.'
   } finally {
     submitting.value = false
+  }
+}
+
+// ─── Delete Invoice ───────────────────────────────────────────────────────────
+const showDeleteConfirm = ref(false)
+const deletingInvoice = ref<Invoice | null>(null)
+const deleteInvoiceSubmitting = ref(false)
+const deleteInvoiceError = ref('')
+
+const openDeleteInvoiceConfirm = (inv: Invoice) => { deletingInvoice.value = inv; showDeleteConfirm.value = true }
+const closeDeleteInvoiceConfirm = () => { showDeleteConfirm.value = false; deletingInvoice.value = null }
+
+const handleDeleteInvoice = async () => {
+  if (!deletingInvoice.value) return
+  deleteInvoiceSubmitting.value = true
+  try {
+    await deleteInvoice(deletingInvoice.value.contract_id, deletingInvoice.value.period)
+    closeDeleteInvoiceConfirm()
+    await fetchInvoices()
+  } catch (e: any) {
+    deleteInvoiceError.value = e?.response?.data?.message ?? e?.message ?? 'Không thể xóa hóa đơn.'
+    closeDeleteInvoiceConfirm()
+  } finally {
+    deleteInvoiceSubmitting.value = false
+  }
+}
+
+// ─── Toggle Invoice Status ────────────────────────────────────────────────────
+const togglingInvoice = ref('')
+
+const toggleInvoiceStatus = async (inv: Invoice) => {
+  togglingInvoice.value = inv.period
+  try {
+    const newStatus = inv.status === 'paid' ? 'unpaid' : 'paid'
+    await updateInvoice({ contract_id: inv.contract_id, period: inv.period, status: newStatus, total_amount: inv.total_amount })
+    await fetchInvoices()
+  } catch (e: any) {
+    error.value = e?.response?.data?.message ?? e?.message ?? 'Không thể cập nhật trạng thái.'
+  } finally {
+    togglingInvoice.value = ''
   }
 }
 
@@ -324,6 +367,22 @@ const saveItem = async (item: InvoiceItem) => {
                 >
                   Xem
                 </button>
+                <button
+                  @click="toggleInvoiceStatus(inv)"
+                  :disabled="togglingInvoice === inv.period"
+                  :class="inv.status === 'paid'
+                    ? 'text-yellow-600 bg-yellow-50 hover:bg-yellow-100'
+                    : 'text-green-600 bg-green-50 hover:bg-green-100'"
+                  class="px-2.5 py-1 text-xs font-medium rounded-md transition-colors disabled:opacity-50"
+                >
+                  {{ inv.status === 'paid' ? 'Hủy TT' : 'Thanh toán' }}
+                </button>
+                <button
+                  @click="openDeleteInvoiceConfirm(inv)"
+                  class="px-2.5 py-1 text-xs font-medium text-red-600 bg-red-50 hover:bg-red-100 rounded-md transition-colors"
+                >
+                  Xóa
+                </button>
               </div>
             </td>
           </tr>
@@ -331,6 +390,17 @@ const saveItem = async (item: InvoiceItem) => {
       </table>
     </div>
   </div>
+
+  <!-- ══ Confirm xóa hóa đơn ═══════════════════════════════════════════ -->
+  <ConfirmDialog
+    :show="showDeleteConfirm"
+    title="Xóa hóa đơn"
+    :message="`Xóa hóa đơn kỳ ${deletingInvoice?.period} sẽ xóa toàn bộ chi tiết hóa đơn. Thao tác này không thể hoàn tác.`"
+    confirm-text="Xóa"
+    :danger="true"
+    @confirm="handleDeleteInvoice"
+    @cancel="closeDeleteInvoiceConfirm"
+  />
 
   <!-- ══ Create Invoice Modal ════════════════════════════════════════════ -->
   <div
