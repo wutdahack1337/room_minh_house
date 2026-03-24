@@ -1,0 +1,51 @@
+MO TA HE THONG QUAN LY NHA TRO
+
+Tong quan
+He thong quan ly nha tro cho phep chu tro quan ly tap trung toan bo du lieu van hanh, bao gom phong tro, nguoi thue, hop dong thue nha va hoa don theo tung thang. Muc tieu chinh cua he thong la giup viec theo doi thong tin thue tro tro nen ro rang, nhat quan va han che sai sot khi tinh tien dien nuoc dinh ky.
+
+Trong pham vi hien tai, nha tro chi tinh tien cho ba khoan chinh la tien phong, tien dien va tien nuoc. Moi phong chi du cho 1 nguoi o va moi nguoi thue chi duoc thue 1 phong tai mot thoi diem, tu do mo hinh du lieu duoc thiet ke theo huong don gian, de kiem soat va phu hop voi nghiep vu thuc te dang trien khai.
+
+Nguoi dung
+Moi nguoi dung trong he thong duoc xac dinh duy nhat bang so chung minh nhan dan (pid - personal ID). Day la dinh danh chinh de lien ket nguoi dung voi cac du lieu khac nhu hop dong va thong tin ca nhan. Nguoi dung co cac thong tin co ban gom pid, so dien thoai va role.
+
+He thong ho tro hai role la admin (chu tro) va tenant (nguoi thue). Ben canh do, moi nguoi dung deu co thong tin the can cuoc cong dan duoi dang du lieu ca nhan di kem, bao gom ho ten, gioi tinh, ngay thang nam sinh va que quan. Viec luu tru day du cac truong nay giup qua trinh tao hop dong va tra cuu thong tin nguoi thue duoc thuan tien hon.
+
+Phong tro
+Moi phong tro duoc dinh danh bang ma so phong va chua cac thong tin co ban gom gia thue hang thang va tinh trang hien tai (san sang cho thue hoac da duoc thue). Voi cau truc nay, chu tro co the theo doi nhanh tinh trang khai thac cua tung phong va de dang cap nhat khi co bien dong.
+
+He thong cho phep chu tro thuc hien day du cac thao tac them, sua va xoa phong. Khi du lieu phong thay doi, cac chuc nang lien quan den hop dong va hoa don van dua tren ma phong de dam bao tinh nhat quan giua cac nhom du lieu.
+
+De tinh toan hoa don chinh xac hang thang, he thong luu tru chi so cong to dien va nuoc cua tung phong theo tung ky (thang). Moi ban ghi ky duoc xac dinh bang ma phong va ky han theo dinh dang MM-YYYY, dong thoi ghi nhan hai gia tri la chi so dien va chi so nuoc tai thoi diem chot ky.
+
+Tu du lieu nay, he thong se tu dong tinh phan tieu thu dien nuoc cua ky hien tai bang cach lay hieu so giua ky hien tai va ky truoc. Cach tinh nay giup giam nhap lieu thu cong va han che sai lech trong qua trinh lap hoa don.
+
+Hop dong thue nha
+Hop dong la du lieu rang buoc giua mot nguoi thue va mot phong cu the. Moi hop dong duoc xac dinh bang ma hop dong duy nhat, dong thoi lien ket truc tiep voi pid cua nguoi thue va ma phong duoc thue. Nho do, he thong co the truy vet ro rang moi quan he nguoi thue - phong - ky hoa don.
+
+Thong tin hop dong bao gom ngay bat dau, ngay ket thuc (duoc tinh tu dong dua tren ky han) va trang thai hop dong (hoat dong, het han, bi cham dut). Viec tinh tu dong ngay ket thuc giup giam thao tac thu cong va dam bao logic thoi han luon thong nhat.
+
+Khi mot hop dong het han, neu nguoi thue muon tiep tuc o, ho phai ki hop dong moi.
+
+Cong to dien nuoc
+Hang thang, chu tro can nhap chi so dien va chi so nuoc cua tung phong theo dung ky han MM-YYYY. Day la du lieu dau vao quan trong de he thong tinh toan chi phi dien nuoc cho hoa don thang tuong ung.
+
+Sau khi co du du lieu cua ky hien tai va ky truoc, he thong tu dong tinh luong tieu thu thuc te bang hieu so giua hai ky. Ket qua nay sau do duoc dung truc tiep trong cac dong chi tiet hoa don.
+
+Hoa don
+Hoa don duoc tao theo tung thang cho moi phong dang co hop dong o trang thai hoat dong. Moi hoa don duoc xac dinh bang cap ma hop dong va ky han (composite key), thay vi dung mot ma hoa don doc lap. Cach dinh danh nay giup du lieu hoa don bam sat ngu canh hop dong va tranh trung lap theo ky.
+
+Hoa don chua tong so tien can thanh toan va trang thai thanh toan (chua thanh toan hoac da thanh toan). Trong do, tong tien duoc tong hop tu cac dong chi tiet theo tung loai dich vu.
+
+Chi tiet hoa don duoc chia thanh ba dong chuan: tien phong (co dinh theo gia phong), tien dien (so khoi dien nhan voi gia dien), va tien nuoc (so khoi nuoc nhan voi gia nuoc). Moi dong chi tiet luu loai dich vu, so luong tieu thu, don gia va thanh tien de dam bao de kiem tra va doi soat.
+
+Quy trinh tao hoa don gom ba buoc. Buoc mot, he thong tu dong tao khung hoa don cho ky han ke tiep khi hop dong con hoat dong. Buoc hai, chu tro nhap chi so dien va nuoc cua thang do. Buoc ba, he thong tu dong tinh toan luong tieu thu (hieu so cua hai thang lien tiep) va chi tiet tung dong.
+
+Quy trinh tren giup tach ro vai tro: chu tro chiu trach nhiem nhap so lieu cong to, con he thong chiu trach nhiem tinh toan va chuan hoa hoa don. Nho do, du lieu phat sinh theo thang co the duoc theo doi ro rang hon va giam rui ro sai cong thuc khi tinh tien.
+
+Giao dien nguoi dung
+Trong trang thai trien khai hien tai, giao dien tap trung vao nhom chuc nang quan tri cho admin de phuc vu van hanh. Cac man hinh va luong thao tac deu uu tien cho viec nhap lieu, kiem tra va cap nhat du lieu nghiep vu cot loi, bao gom phong, nguoi thue, hop dong va hoa don.
+
+Nhom chuc nang chinh danh cho admin bao gom: quan ly phong (them, sua, xoa), quan ly nguoi thue (them, sua, xoa), quan ly hop dong (tao, cap nhat, huy) va quan ly hoa don (tao hoa don hang thang, nhap chi so dien nuoc, cap nhat trang thai thanh toan).
+
+Cong nghe
+Frontend su dung Vue voi TypeScript. Backend su dung Go theo kien truc gRPC kem Gateway REST. Du lieu duoc luu tru tren MongoDB.

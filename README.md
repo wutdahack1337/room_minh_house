@@ -28,6 +28,8 @@ docker compose up -d
 cd backend/cmd && go run . api
 
 cd frontend && npm install && npm run dev
+
+go test ./backend/server -v -run TestUpdateInvoiceItem_HappyPath
 ```
 
 ---
