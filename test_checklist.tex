@@ -97,4 +97,59 @@ Mỗi bảng kiểm thử bao gồm các cột:
     \end{small}
 \end{table}
 
+\newpage
+
+\section{Quản Lý Người Thuê}
+
+\begin{table}[h!]
+    \centering
+    \caption{Bảng Kiểm Thử Quản Lý Người Thuê}
+    \label{tab:tenant_management}
+    \vspace{2mm}
+
+    \begin{small}
+    \begin{tabularx}{\textwidth}{|p{0.8cm}|p{2.5cm}|p{3cm}|p{3cm}|p{2.5cm}|}
+    \hline
+    \textbf{STT} & \textbf{Chức năng} & \textbf{Dữ liệu nhập} & \textbf{Kết quả mong đợi} & \textbf{Kết quả} \\ \hline
+
+    1 & Thêm người thuê & PID: 123456789, Tên: Nguyễn Văn A, SĐT: 0987654321 & Người thuê được tạo thành công & \\ \hline
+
+    2 & Thêm người thuê & PID: 123456789 (đã tồn tại) & Lỗi: Người thuê đã tồn tại & \\ \hline
+
+    3 & Thêm người thuê & PID: trống & Lỗi: PID không được để trống & \\ \hline
+
+    4 & Thêm người thuê & PID: 12345 (ít hơn 9 chữ số) & Lỗi: PID phải có đúng 9 chữ số & \\ \hline
+
+    5 & Thêm người thuê & Tên: trống & Lỗi: Tên người thuê không được để trống & \\ \hline
+
+    6 & Thêm người thuê & SĐT: không hợp lệ (123) & Lỗi: Số điện thoại không hợp lệ & \\ \hline
+
+    7 & Sửa thông tin người thuê & PID: 123456789, Tên mới: Nguyễn Văn B & Tên người thuê được cập nhật thành công & \\ \hline
+
+    8 & Sửa thông tin người thuê & PID không tồn tại & Lỗi: Người thuê không tìm thấy & \\ \hline
+
+    9 & Sửa thông tin người thuê & Tên mới: trống & Lỗi: Tên người thuê không được để trống & \\ \hline
+
+    10 & Sửa thông tin người thuê & SĐT mới: không hợp lệ & Lỗi: Số điện thoại không hợp lệ & \\ \hline
+
+    11 & Xóa người thuê & PID: 123456789 (chưa có hợp đồng) & Người thuê được xóa thành công & \\ \hline
+
+    12 & Xóa người thuê & PID: 123456789 (có hợp đồng hoạt động) & Lỗi: Không thể xóa người thuê đang có hợp đồng & \\ \hline
+
+    13 & Xóa người thuê & PID không tồn tại & Lỗi: Người thuê không tìm thấy & \\ \hline
+
+    14 & Xem danh sách người thuê & Không có điều kiện & Hiển thị tất cả người thuê với thông tin đầy đủ & \\ \hline
+
+    15 & Xem chi tiết người thuê & PID: 123456789 & Hiển thị đầy đủ thông tin (PID, tên, SĐT, vai trò, CMND) & \\ \hline
+
+    16 & Xem chi tiết người thuê & PID không tồn tại & Lỗi: Người thuê không tìm thấy & \\ \hline
+
+    17 & Cập nhật vai trò & PID: 123456789, Vai trò: admin & Vai trò được cập nhật thành công & \\ \hline
+
+    18 & Cập nhật vai trò & Vai trò: không hợp lệ & Lỗi: Vai trò không hợp lệ (chỉ admin/tenant) & \\ \hline
+
+    \end{tabularx}
+    \end{small}
+\end{table}
+
 \end{document}
