@@ -207,4 +207,63 @@ Mỗi bảng kiểm thử bao gồm các cột:
     \end{small}
 \end{table}
 
+\newpage
+
+\section{Quản Lý Hóa Đơn}
+
+\begin{table}[h!]
+    \centering
+    \caption{Bảng Kiểm Thử Quản Lý Hóa Đơn}
+    \label{tab:invoice_management}
+    \vspace{2mm}
+
+    \begin{small}
+    \begin{tabularx}{\textwidth}{|p{0.8cm}|p{2.5cm}|p{3cm}|p{3cm}|p{2.5cm}|}
+    \hline
+    \textbf{STT} & \textbf{Chức năng} & \textbf{Dữ liệu nhập} & \textbf{Kết quả mong đợi} & \textbf{Kết quả} \\ \hline
+
+    1 & Tạo hóa đơn & Mã hợp đồng: CT001, Kỳ hạn: 04-2026 & Hóa đơn được tạo thành công với 3 dòng chi tiết (phòng, điện, nước) & \\ \hline
+
+    2 & Tạo hóa đơn & Mã hợp đồng không tồn tại & Lỗi: Hợp đồng không tìm thấy & \\ \hline
+
+    3 & Tạo hóa đơn & Hợp đồng không ở trạng thái hoạt động & Lỗi: Chỉ có thể tạo hóa đơn cho hợp đồng đang hoạt động & \\ \hline
+
+    4 & Tạo hóa đơn & Hóa đơn đã tồn tại cho kỳ hạn này & Lỗi: Hóa đơn cho kỳ hạn này đã tồn tại & \\ \hline
+
+    5 & Nhập chỉ số điện nước & Phòng: P01, Kỳ: 04-2026, Điện: 150, Nước: 20 & Chỉ số được lưu, hóa đơn được cập nhật với tiêu thụ tính toán & \\ \hline
+
+    6 & Nhập chỉ số điện nước & Phòng không tồn tại & Lỗi: Phòng không tìm thấy & \\ \hline
+
+    7 & Nhập chỉ số điện nước & Chỉ số điện: âm (-10) & Lỗi: Chỉ số điện phải ≥ 0 & \\ \hline
+
+    8 & Nhập chỉ số điện nước & Chỉ số nước: âm (-5) & Lỗi: Chỉ số nước phải ≥ 0 & \\ \hline
+
+    9 & Nhập chỉ số điện nước & Chỉ số điện < chỳ số kỳ trước & Lỗi: Chỉ số hiện tại không thể nhỏ hơn kỳ trước & \\ \hline
+
+    10 & Cập nhật trạng thái thanh toán & Mã hóa đơn: INV001, Trạng thái: Đã thanh toán & Hóa đơn được đánh dấu đã thanh toán & \\ \hline
+
+    11 & Cập nhật trạng thái thanh toán & Mã hóa đơn không tồn tại & Lỗi: Hóa đơn không tìm thấy & \\ \hline
+
+    12 & Cập nhật trạng thái thanh toán & Trạng thái: không hợp lệ & Lỗi: Trạng thái không hợp lệ & \\ \hline
+
+    13 & Xem chi tiết hóa đơn & Mã hóa đơn: INV001 & Hiển thị: mã, kỳ hạn, 3 dòng chi tiết, tổng tiền, trạng thái & \\ \hline
+
+    14 & Xem chi tiết hóa đơn & Mã hóa đơn không tồn tại & Lỗi: Hóa đơn không tìm thấy & \\ \hline
+
+    15 & Xem danh sách hóa đơn & Bộ lọc: Trạng thái = Chưa thanh toán & Hiển thị chỉ hóa đơn chưa thanh toán & \\ \hline
+
+    16 & Xem danh sách hóa đơn & Bộ lọc: Kỳ hạn = 04-2026 & Hiển thị chỉ hóa đơn của tháng 04 năm 2026 & \\ \hline
+
+    17 & Xem danh sách hóa đơn & Bộ lọc: Phòng = P01 & Hiển thị chỉ hóa đơn liên quan đến phòng P01 & \\ \hline
+
+    18 & Tính toán tự động tiêu thụ & Chỉ số điện kỳ này: 200, Chỳ số kỳ trước: 150 & Tiêu thụ điện = 50 khối được cập nhật vào hóa đơn & \\ \hline
+
+    19 & Tính toán tự động tiêu thụ & Chỉ số nước kỳ này: 30, Chỳ số kỳ trước: 25 & Tiêu thụ nước = 5 khối được cập nhật vào hóa đơn & \\ \hline
+
+    20 & Xóa hóa đơn & Mã hóa đơn: INV001 (chưa thanh toán) & Hóa đơn được xóa thành công & \\ \hline
+
+    \end{tabularx}
+    \end{small}
+\end{table}
+
 \end{document}
