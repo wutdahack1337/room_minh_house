@@ -46,6 +46,55 @@ Mỗi bảng kiểm thử bao gồm các cột:
 
 \newpage
 
-% Placeholder for tables - will be added in subsequent tasks
+\section{Quản Lý Phòng}
+
+\begin{table}[h!]
+    \centering
+    \caption{Bảng Kiểm Thử Quản Lý Phòng}
+    \label{tab:room_management}
+    \vspace{2mm}
+
+    \begin{small}
+    \begin{tabularx}{\textwidth}{|p{0.8cm}|p{2.5cm}|p{3cm}|p{3cm}|p{2.5cm}|}
+    \hline
+    \textbf{STT} & \textbf{Chức năng} & \textbf{Dữ liệu nhập} & \textbf{Kết quả mong đợi} & \textbf{Kết quả} \\ \hline
+
+    1 & Thêm phòng mới & Mã phòng: P01, Giá: 2.000.000 & Phòng được tạo thành công, trạng thái: Sẵn sàng & \\ \hline
+
+    2 & Thêm phòng mới & Mã phòng: P01 (đã tồn tại) & Lỗi: Phòng đã tồn tại & \\ \hline
+
+    3 & Thêm phòng mới & Mã phòng: trống & Lỗi: Mã phòng không được để trống & \\ \hline
+
+    4 & Thêm phòng mới & Giá: âm (-1.000.000) & Lỗi: Giá phòng phải lớn hơn 0 & \\ \hline
+
+    5 & Thêm phòng mới & Giá: 0 & Lỗi: Giá phòng phải lớn hơn 0 & \\ \hline
+
+    6 & Sửa thông tin phòng & Mã P01, Giá mới: 2.500.000 & Giá phòng được cập nhật thành công & \\ \hline
+
+    7 & Sửa thông tin phòng & Mã phòng không tồn tại & Lỗi: Phòng không tìm thấy & \\ \hline
+
+    8 & Sửa thông tin phòng & Giá mới: trống & Lỗi: Giá phòng không được để trống & \\ \hline
+
+    9 & Sửa thông tin phòng & Giá mới: âm (-500.000) & Lỗi: Giá phòng phải lớn hơn 0 & \\ \hline
+
+    10 & Xóa phòng & Mã P01 (chưa có hợp đồng) & Phòng được xóa thành công & \\ \hline
+
+    11 & Xóa phòng & Mã P01 (có hợp đồng hoạt động) & Lỗi: Không thể xóa phòng đang có hợp đồng & \\ \hline
+
+    12 & Xóa phòng & Mã phòng không tồn tại & Lỗi: Phòng không tìm thấy & \\ \hline
+
+    13 & Xem danh sách phòng & Không có điều kiện & Hiển thị tất cả các phòng với thông tin đầy đủ & \\ \hline
+
+    14 & Xem danh sách phòng & Bộ lọc: Trạng thái = Sẵn sàng & Hiển thị chỉ các phòng có trạng thái Sẵn sàng & \\ \hline
+
+    15 & Xem danh sách phòng & Bộ lọc: Trạng thái = Đã cho thuê & Hiển thị chỉ các phòng có trạng thái Đã cho thuê & \\ \hline
+
+    16 & Cập nhật trạng thái phòng & Mã P01, Trạng thái: Đã cho thuê & Trạng thái phòng được cập nhật thành công & \\ \hline
+
+    17 & Cập nhật trạng thái phòng & Mã P01, Trạng thái không hợp lệ & Lỗi: Trạng thái không hợp lệ & \\ \hline
+
+    \end{tabularx}
+    \end{small}
+\end{table}
 
 \end{document}
