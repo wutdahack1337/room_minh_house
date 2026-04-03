@@ -152,4 +152,59 @@ Mỗi bảng kiểm thử bao gồm các cột:
     \end{small}
 \end{table}
 
+\newpage
+
+\section{Quản Lý Hợp Đồng}
+
+\begin{table}[h!]
+    \centering
+    \caption{Bảng Kiểm Thử Quản Lý Hợp Đồng}
+    \label{tab:contract_management}
+    \vspace{2mm}
+
+    \begin{small}
+    \begin{tabularx}{\textwidth}{|p{0.8cm}|p{2.5cm}|p{3cm}|p{3cm}|p{2.5cm}|}
+    \hline
+    \textbf{STT} & \textbf{Chức năng} & \textbf{Dữ liệu nhập} & \textbf{Kết quả mong đợi} & \textbf{Kết quả} \\ \hline
+
+    1 & Tạo hợp đồng & PID: 123456789, Phòng: P01, Ngày bắt đầu: 01/04/2026, Kỳ hạn: 12 tháng & Hợp đồng được tạo thành công, trạng thái: Hoạt động & \\ \hline
+
+    2 & Tạo hợp đồng & PID không tồn tại & Lỗi: Người thuê không tìm thấy & \\ \hline
+
+    3 & Tạo hợp đồng & Phòng không tồn tại & Lỗi: Phòng không tìm thấy & \\ \hline
+
+    4 & Tạo hợp đồng & Phòng đã được thuê (hợp đồng hoạt động) & Lỗi: Phòng đã được thuê, không thể tạo hợp đồng mới & \\ \hline
+
+    5 & Tạo hợp đồng & Kỳ hạn: 0 tháng & Lỗi: Kỳ hạn phải lớn hơn 0 & \\ \hline
+
+    6 & Tạo hợp đồng & Kỳ hạn: âm (-6 tháng) & Lỗi: Kỳ hạn không hợp lệ & \\ \hline
+
+    7 & Tạo hợp đồng & Ngày bắt đầu: trong quá khứ & Lỗi: Ngày bắt đầu phải từ hôm nay trở đi & \\ \hline
+
+    8 & Cập nhật hợp đồng & Mã hợp đồng: CT001, Trạng thái: Hết hạn & Hợp đồng được cập nhật, ngày kết thúc được tính tự động & \\ \hline
+
+    9 & Cập nhật hợp đồng & Mã hợp đồng không tồn tại & Lỗi: Hợp đồng không tìm thấy & \\ \hline
+
+    10 & Cập nhật hợp đồng & Cập nhật trạng thái thành: không hợp lệ & Lỗi: Trạng thái không hợp lệ & \\ \hline
+
+    11 & Hủy hợp đồng & Mã hợp đồng: CT001 (đang hoạt động) & Trạng thái hợp đồng thay đổi thành: Bị chấm dứt & \\ \hline
+
+    12 & Hủy hợp đồng & Mã hợp đồng: CT002 (đã hết hạn) & Lỗi: Không thể hủy hợp đồng đã hết hạn & \\ \hline
+
+    13 & Hủy hợp đồng & Mã hợp đồng không tồn tại & Lỗi: Hợp đồng không tìm thấy & \\ \hline
+
+    14 & Xem danh sách hợp đồng & Không có bộ lọc & Hiển thị tất cả hợp đồng với thông tin đầy đủ & \\ \hline
+
+    15 & Xem danh sách hợp đồng & Bộ lọc: Trạng thái = Hoạt động & Hiển thị chỉ hợp đồng hoạt động & \\ \hline
+
+    16 & Xem danh sách hợp đồng & Bộ lọc: Phòng = P01 & Hiển thị chỉ hợp đồng liên quan đến phòng P01 & \\ \hline
+
+    17 & Xem chi tiết hợp đồng & Mã hợp đồng: CT001 & Hiển thị đầy đủ: mã, PID, phòng, ngày bắt đầu, ngày kết thúc, kỳ hạn, trạng thái & \\ \hline
+
+    18 & Xem chi tiết hợp đồng & Mã hợp đồng không tồn tại & Lỗi: Hợp đồng không tìm thấy & \\ \hline
+
+    \end{tabularx}
+    \end{small}
+\end{table}
+
 \end{document}
