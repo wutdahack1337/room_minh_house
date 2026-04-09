@@ -48,6 +48,8 @@ Mỗi bảng kiểm thử bao gồm các cột:
 
 \section{Quản Lý Phòng}
 
+Module quản lý phòng cho phép chủ trọ thực hiện các thao tác thêm, sửa, xóa và xem danh sách phòng trọ. Bảng kiểm thử dưới đây bao gồm các trường hợp kiểm tra tính hợp lệ của dữ liệu đầu vào, các ràng buộc nghiệp vụ (không thể xóa phòng đang có hợp đồng), cũng như các chức năng lọc và cập nhật trạng thái phòng.
+
 \begin{table}[h!]
     \centering
     \caption{Bảng Kiểm Thử Quản Lý Phòng}
@@ -100,6 +102,8 @@ Mỗi bảng kiểm thử bao gồm các cột:
 \newpage
 
 \section{Quản Lý Người Thuê}
+
+Module quản lý người thuê hỗ trợ chủ trọ theo dõi thông tin cá nhân của từng người thuê, bao gồm số chứng minh nhân dân (PID), số điện thoại và vai trò trong hệ thống. Bảng kiểm thử bao gồm các trường hợp kiểm tra định dạng PID, số điện thoại, xử lý lỗi khi dữ liệu trùng lặp hoặc thiếu, và ràng buộc không cho phép xóa người thuê đang có hợp đồng hoạt động.
 
 \begin{table}[h!]
     \centering
@@ -156,6 +160,8 @@ Mỗi bảng kiểm thử bao gồm các cột:
 
 \section{Quản Lý Hợp Đồng}
 
+Module quản lý hợp đồng ràng buộc mối quan hệ giữa người thuê và phòng trọ trong một khoảng thời gian xác định. Bảng kiểm thử bao gồm các trường hợp tạo hợp đồng hợp lệ và không hợp lệ (phòng đã được thuê, kỳ hạn âm, ngày bắt đầu trong quá khứ), cập nhật trạng thái hợp đồng, hủy hợp đồng, cũng như các chức năng xem và lọc danh sách hợp đồng theo trạng thái hoặc phòng.
+
 \begin{table}[h!]
     \centering
     \caption{Bảng Kiểm Thử Quản Lý Hợp Đồng}
@@ -211,6 +217,8 @@ Mỗi bảng kiểm thử bao gồm các cột:
 
 \section{Quản Lý Hóa Đơn}
 
+Module quản lý hóa đơn chịu trách nhiệm tổng hợp chi phí hàng tháng cho từng phòng đang có hợp đồng hoạt động, bao gồm tiền phòng, tiền điện và tiền nước. Bảng kiểm thử bao gồm các trường hợp tạo hóa đơn, nhập chỉ số điện nước, tính toán tiêu thụ tự động dựa trên hiệu số giữa hai kỳ, cập nhật trạng thái thanh toán và xem danh sách hóa đơn theo nhiều bộ lọc khác nhau.
+
 \begin{table}[h!]
     \centering
     \caption{Bảng Kiểm Thử Quản Lý Hóa Đơn}
@@ -265,10 +273,12 @@ Mỗi bảng kiểm thử bao gồm các cột:
     \end{tabularx}
     \end{small}
 \end{table}
-
+    
 \newpage
 
 \section{Quản Lý Công Tơ Điện Nước}
+
+Module quản lý công tơ điện nước cho phép chủ trọ ghi nhận chỉ số điện và nước theo từng kỳ hàng tháng cho mỗi phòng. Hệ thống tự động tính lượng tiêu thụ thực tế bằng cách lấy hiệu số giữa chỉ số kỳ hiện tại và kỳ trước, từ đó làm cơ sở để tính toán chi tiết hóa đơn. Bảng kiểm thử bao gồm các trường hợp ghi chỉ số hợp lệ, kiểm tra ràng buộc (chỉ số không được âm, không được nhỏ hơn kỳ trước), cập nhật và xem lịch sử chỉ số theo phòng.
 
 \begin{table}[h!]
     \centering

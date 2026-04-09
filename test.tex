@@ -1,0 +1,140 @@
+\subsection{Kiểm thử các tính năng}
+\subsubsection{Kiểm thử module Quản lý Phòng}
+
+\begin{table}[H]
+    \centering
+    \caption{Bảng Kiểm Thử Quản Lý Phòng}
+    \label{tab:room_management_test}
+    \vspace{2mm}
+    \begin{small} 
+    \begin{tabularx}{\textwidth}{|c|l|X|X|c|} 
+    \hline
+    \textbf{STT} & \textbf{Chức năng} & \textbf{Dữ liệu nhập} & \textbf{Kết quả mong đợi} & \textbf{Kết quả} \\ \hline
+    1 & Thêm phòng mới & Mã phòng: P01, Giá: 2.000.000 & Phòng được tạo thành công, trạng thái: Sẵn sàng & Đạt \\ \hline
+    2 & Thêm phòng mới & Mã phòng: P01 (đã tồn tại) & Lỗi: Phòng đã tồn tại & Đạt \\ \hline
+    3 & Thêm phòng mới & Mã phòng: trống & Lỗi: Mã phòng không được để trống & Đạt \\ \hline
+    4 & Thêm phòng mới & Giá: âm (-1.000.000) & Lỗi: Giá phòng phải lớn hơn 0 & Đạt \\ \hline
+    5 & Thêm phòng mới & Giá: 0 & Lỗi: Giá phòng phải lớn hơn 0 & Đạt \\ \hline
+    6 & Sửa thông tin & Mã P01, Giá mới: 2.500.000 & Giá phòng được cập nhật thành công & Đạt \\ \hline
+    7 & Sửa thông tin & Giá mới: trống & Lỗi: Giá phòng không được để trống & Đạt \\ \hline
+    8 & Sửa thông tin & Giá mới: âm (-500.000) & Lỗi: Giá phòng phải lớn hơn 0 & Đạt \\ \hline
+    9 & Xóa phòng & Mã P01 & Phòng được xóa thành công & Đạt \\ \hline
+    10 & Cập nhật trạng thái & Mã P01, Trạng thái: Đã cho thuê & Trạng thái phòng được cập nhật thành công & Đạt \\ \hline
+        \end{tabularx}
+    \end{small}
+\end{table}
+
+Module quản lý phòng cho phép chủ trọ thực hiện các thao tác thêm, sửa, xóa và xem danh sách phòng trọ. Bảng kiểm thử \ref{tab:room_management_test} bao gồm các trường hợp kiểm tra tính hợp lệ của dữ liệu đầu vào, các ràng buộc nghiệp vụ cũng như cập nhật trạng thái phòng.
+
+\begin{table}[H]
+    \centering
+    \caption{Bảng Kiểm Thử Quản Lý Công Tơ Điện Nước}
+    \label{tab:meter_management_test}
+    \vspace{2mm}
+    \begin{small}
+    \begin{tabularx}{\textwidth}{|c|l|X|X|c|}
+    \hline
+    \textbf{STT} & \textbf{Chức năng} & \textbf{Dữ liệu nhập} & \textbf{Kết quả mong đợi} & \textbf{Kết quả} \\ \hline
+    1 & Ghi chỉ số & Phòng: P01, Kỳ: 04-2026, Điện: 250, Nước: 40 & Chỉ số điện nước được lưu thành công & Đạt \\ \hline
+    2 & Ghi chỉ số điện & Chỉ số điện: âm (-50) & Lỗi: Chỉ số điện phải $\ge$ 0 & Đạt \\ \hline
+    3 & Ghi chỉ số điện & Chỉ số điện: 0 & Chỉ số được lưu thành công (hợp lệ) & Đạt \\ \hline
+    4 & Ghi chỉ số điện & Chỉ số điện $<$ kỳ trước & Lỗi: Chỉ số hiện tại không thể nhỏ hơn kỳ trước & Đạt \\ \hline
+    5 & Ghi chỉ số nước & Chỉ số nước: âm (-20) & Lỗi: Chỉ số nước phải $\ge$ 0 & Đạt \\ \hline
+    6 & Ghi chỉ số nước & Chỉ số nước: 0 & Chỉ số được lưu thành công (hợp lệ) & Đạt \\ \hline
+    7 & Ghi chỉ số nước & Chỉ số nước $<$ kỳ trước & Lỗi: Chỉ số hiện tại không thể nhỏ hơn kỳ trước & Đạt \\ \hline
+    8 & Cập nhật chỉ số điện & Phòng: P01, Kỳ: 04-2026, Giá trị mới: 260 & Chỉ số được cập nhật thành công & Đạt \\ \hline
+    9 & Cập nhật chỉ số nước & Phòng: P01, Kỳ: 04-2026, Giá trị mới: 45 & Chỉ số được cập nhật thành công & Đạt \\ \hline
+    10 & Xem chỉ số công tơ & Phòng: P01, Kỳ: 04-2026 & Hiển thị: phòng, kỳ hạn, chỉ số điện, chỉ số nước & Đạt \\ \hline
+    11 & Xem lịch sử & Phòng: P01 & Hiển thị toàn bộ chỉ số theo các kỳ hạn & Đạt \\ \hline
+    12 & Ghi chỉ số & Kỳ sai định dạng (vd: "2025-08") & Lỗi: Kỳ phải theo định dạng MM-YYYY & Đạt \\ \hline
+    15 & Xem lịch sử & Phòng chưa có chỉ số nào & Trả về danh sách rỗng & Đạt \\ \hline
+    \end{tabularx}
+    \end{small}
+\end{table}
+
+Module quản lý công tơ điện nước cho phép chủ trọ ghi nhận chỉ số điện và nước theo từng kỳ hàng tháng cho mỗi phòng. Hệ thống tự động tính lượng tiêu thụ thực tế bằng cách lấy hiệu số giữa chỉ số kỳ hiện tại và kỳ trước, từ đó làm cơ sở để tính toán chi tiết hóa đơn. Bảng kiểm thử \ref{tab:meter_management_test} bao gồm các trường hợp ghi chỉ số hợp lệ, kiểm tra ràng buộc (chỉ số không được âm, không được nhỏ hơn kỳ trước), cập nhật và xem lịch sử chỉ số theo phòng.
+
+
+\subsubsection{Kiểm thử module Quản lý Người thuê}
+
+\begin{table}[H]
+    \centeringĐiện
+    \caption{Bảng Kiểm Thử Quản Lý Người Thuê}
+    \label{tab:tenant_management_test}
+    \vspace{2mm}
+    \begin{small}
+    \begin{tabularx}{\textwidth}{|c|l|X|X|c|}
+    \hline
+    \textbf{STT} & \textbf{Chức năng} & \textbf{Dữ liệu nhập} & \textbf{Kết quả mong đợi} & \textbf{Kết quả} \\ \hline
+    1 & Thêm người thuê & PID: 123456789, Tên: Nguyễn Văn A, SĐT: 0987654321 & Người thuê được tạo thành công & Đạt \\ \hline
+    2 & Thêm người thuê & PID: 123456789 (đã tồn tại) & Lỗi: Người thuê đã tồn tại & Đạt \\ \hline
+    3 & Thêm người thuê & PID: trống & Lỗi: PID không được để trống & Đạt \\ \hline
+    4 & Thêm người thuê & Tên: trống & Lỗi: Tên người thuê không được để trống & Đạt \\ \hline
+    5 & Sửa thông tin & PID: 123456789, Tên mới: Nguyễn Văn B & Tên người thuê được cập nhật thành công & Đạt \\ \hline
+    6 & Sửa thông tin & Tên mới: trống & Lỗi: Tên người thuê không được để trống & Đạt \\ \hline
+    7 & Xóa người thuê & PID: 123456789 & Người thuê được xóa thành công & Đạt \\ \hline
+    8 & Xem danh sách & Không có & Hiển thị tất cả người thuê với thông tin đầy đủ & Đạt \\ \hline
+    9 & Xem chi tiết & PID: 123456789 & Hiển thị đầy đủ thông tin (PID, tên, SĐT,...) & Đạt \\ \hline
+    10 & Cập nhật vai trò & PID: 123456789, Vai trò: admin & Vai trò được cập nhật thành công & Đạt \\ \hline
+    \end{tabularx}
+    \end{small}
+\end{table}
+
+Module quản lý người thuê hỗ trợ chủ trọ theo dõi thông tin cá nhân của từng người thuê, bao gồm số chứng minh nhân dân (PID), số điện thoại và vai trò trong hệ thống. Bảng kiểm thử \ref{tab:tenant_management_test} bao gồm các trường hợp kiểm tra định dạng PID, số điện thoại, xử lý lỗi khi dữ liệu trùng lặp hoặc thiếu.
+
+
+\subsubsection{Kiểm thử module Quản lý Hợp đồng}
+
+\begin{table}[H]
+    \centering
+    \caption{Bảng Kiểm Thử Quản Lý Hợp Đồng}
+    \label{tab:contract_management_test}
+    \vspace{2mm}
+    \begin{small}
+    \begin{tabularx}{\textwidth}{|c|l|X|X|c|}
+    \hline
+    \textbf{STT} & \textbf{Chức năng} & \textbf{Dữ liệu nhập} & \textbf{Kết quả mong đợi} & \textbf{Kết quả} \\ \hline
+    1 & Tạo hợp đồng & PID: 123456789, Phòng: P01, Ngày bắt đầu: 01/04/2026, Kỳ hạn: 12 tháng & Hợp đồng được tạo thành công, trạng thái: Hoạt động & Đạt \\ \hline
+    2 & Tạo hợp đồng & PID không tồn tại & Lỗi: Người thuê không tìm thấy & Đạt \\ \hline
+    3 & Tạo hợp đồng & Phòng không tồn tại & Lỗi: Phòng không tìm thấy & Đạt \\ \hline
+    4 & Tạo hợp đồng & Phòng đã được thuê & Lỗi: Phòng đã được thuê, không thể tạo hợp đồng mới & Đạt \\ \hline
+    5 & Tạo hợp đồng & Kỳ hạn: 0 tháng & Lỗi: Kỳ hạn phải lớn hơn 0 & Đạt \\ \hline
+    6 & Tạo hợp đồng & Kỳ hạn: âm (-6 tháng) & Lỗi: Kỳ hạn không hợp lệ & Đạt \\ \hline
+    7 & Cập nhật hợp đồng & Trạng thái: Hết hạn & Hợp đồng được cập nhật, ngày kết thúc tính tự động & Đạt \\ \hline
+    8 & Hủy hợp đồng & Hợp đồng đang có hiệu lực & Trạng thái thay đổi thành: Đã chấm dứt & Đạt \\ \hline
+    9 & Xem chi tiết & Mã hợp đồng & Hiển thị đầy đủ thông tin chi tiết hợp đồng & Đạt \\ \hline
+    11 & Xem danh sách & Không có hợp đồng nào & Trả về danh sách rỗng & Đạt \\ \hline
+    12 & Xóa hợp đồng & Mã hợp đồng hợp lệ & Xóa thành công, hóa đơn liên quan cũng bị xóa & Đạt \\ \hline
+    \end{tabularx}
+    \end{small}
+\end{table}
+
+Module quản lý hợp đồng ràng buộc mối quan hệ giữa người thuê và phòng trọ trong một khoảng thời gian xác định. Bảng kiểm thử \ref{tab:contract_management_test} bao gồm các trường hợp tạo hợp đồng hợp lệ và không hợp lệ (phòng đã được thuê, kỳ hạn âm), cập nhật trạng thái hợp đồng, hủy hợp đồng, cũng như các chức năng xem hợp đồng.
+
+\subsubsection{Kiểm thử module Quản lý Hóa đơn}
+
+\begin{table}[H]
+    \centering
+    \caption{Bảng Kiểm Thử Quản Lý Hóa Đơn}
+    \label{tab:invoice_management_test}
+    \vspace{2mm}
+    \begin{small}
+    \begin{tabularx}{\textwidth}{|c|l|X|X|c|}
+    \hline
+    \textbf{STT} & \textbf{Chức năng} & \textbf{Dữ liệu nhập} & \textbf{Kết quả mong đợi} & \textbf{Kết quả} \\ \hline
+    1 & Tạo hóa đơn & Mã hợp đồng, Kỳ hạn: 04-2026, Đơn giá điện: 3000, Đơn giá nước: 5000 & Hóa đơn được tạo thành công với 3 dòng chi tiết (phòng, điện, nước) & Đạt \\ \hline
+    2 & Tạo hóa đơn & Hóa đơn đã tồn tại & Lỗi: Hóa đơn cho kỳ hạn này đã tồn tại & Đạt \\ \hline
+    3 & Thanh toán & Kỳ hạn: 04-2026, Trạng thái: Đã thanh toán & Hóa đơn được đánh dấu đã thanh toán & Đạt \\ \hline
+    4 & Xem chi tiết & Kỳ hạn: 04-2026 & Hiển thị: kỳ hạn, chi tiết, tổng tiền, trạng thái & Đạt \\ \hline
+    5 & Xem danh sách & Phòng = P01 & Hiển thị chỉ hóa đơn liên quan đến phòng P01 & Đạt \\ \hline
+    6 & Tính tiêu thụ & Điện kỳ này: 200, Kỳ trước: 150 & Tiêu thụ = 50 khối được cập nhật vào hóa đơn & Đạt \\ \hline
+    7 & Tính tiêu thụ & Nước kỳ này: 30, Kỳ trước: 25 & Tiêu thụ = 5 khối được cập nhật vào hóa đơn & Đạt \\ \hline
+    8 & Xóa hóa đơn & Kỳ hạn: 04-2026 (chưa thanh toán) & Hóa đơn được xóa thành công & Đạt \\ \hline
+    10 & Tạo hóa đơn & Kỳ không có chỉ số công tơ & Lỗi: Không tìm thấy chỉ số công tơ cho kỳ này & Đạt \\ \hline
+    11 & Xem danh sách & Hợp đồng chưa có hóa đơn & Trả về danh sách rỗng & Đạt \\ \hline
+    12 & Xóa hóa đơn & Hóa đơn hợp lệ & Xóa thành công, các dòng chi tiết cũng bị xóa & Đạt \\ \hline
+    \end{tabularx}
+    \end{small}
+\end{table}
+
+Module quản lý hóa đơn chịu trách nhiệm tổng hợp chi phí hàng tháng cho từng phòng đang có hợp đồng hoạt động, bao gồm tiền phòng, tiền điện và tiền nước. Bảng kiểm thử \ref{tab:invoice_management_test} bao gồm các trường hợp tạo hóa đơn, nhập chỉ số điện nước, tính toán tiêu thụ tự động dựa trên hiệu số giữa hai kỳ, cập nhật trạng thái thanh toán và xem danh sách hóa đơn.

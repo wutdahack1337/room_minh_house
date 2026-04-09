@@ -188,6 +188,159 @@ func TestCreateMeterReading_InvalidPeriodFormat(t *testing.T) {
 	}
 }
 
+func TestCreateMeterReading_NegativeReadings(t *testing.T) {
+	ctx := context.Background()
+	service := getServiceForMeterReading()
+
+	_, err := service.CreateRoom(ctx, &types.CreateRoomRequest{
+		Room: &types.Room{RoomNumber: ROOM_NUMBER, Price: PRICE, IsAvailable: false},
+	})
+	if err != nil {
+		t.Fatal("Failed to create room: " + err.Error())
+	}
+
+	response, err := service.CreateMeterReading(ctx, &types.CreateMeterReadingRequest{
+		MeterReading: &types.MeterReading{
+			RoomNumber:         ROOM_NUMBER,
+			Period:             PERIOD,
+			ElectricityReading: -1,
+			WaterReading:       10,
+		},
+	})
+	if err == nil {
+		t.Fatal("expected error for negative electricity reading, got nil")
+	}
+	if !containsSubstring(err.Error(), "electricity reading must be greater than or equal to 0") {
+		t.Fatalf("unexpected error: %s", err.Error())
+	}
+	if response != nil {
+		t.Fatal("expected nil response for negative readings")
+	}
+}
+
+func TestCreateMeterReading_PeriodMustBeGreaterThanLatest(t *testing.T) {
+	ctx := context.Background()
+	service := getServiceForMeterReading()
+
+	_, err := service.CreateRoom(ctx, &types.CreateRoomRequest{
+		Room: &types.Room{RoomNumber: ROOM_NUMBER, Price: PRICE, IsAvailable: false},
+	})
+	if err != nil {
+		t.Fatal("Failed to create room: " + err.Error())
+	}
+
+	_, err = service.CreateMeterReading(ctx, &types.CreateMeterReadingRequest{
+		MeterReading: &types.MeterReading{
+			RoomNumber:         ROOM_NUMBER,
+			Period:             "02-2026",
+			ElectricityReading: 100,
+			WaterReading:       50,
+		},
+	})
+	if err != nil {
+		t.Fatal("Failed to create initial meter reading: " + err.Error())
+	}
+
+	response, err := service.CreateMeterReading(ctx, &types.CreateMeterReadingRequest{
+		MeterReading: &types.MeterReading{
+			RoomNumber:         ROOM_NUMBER,
+			Period:             "01-2026",
+			ElectricityReading: 110,
+			WaterReading:       60,
+		},
+	})
+	if err == nil {
+		t.Fatal("expected error for non-increasing period, got nil")
+	}
+	if !containsSubstring(err.Error(), "period must be greater than latest existing period") {
+		t.Fatalf("unexpected error: %s", err.Error())
+	}
+	if response != nil {
+		t.Fatal("expected nil response for non-increasing period")
+	}
+}
+
+func TestCreateMeterReading_ReadingCanBeEqualToLatestPeriod(t *testing.T) {
+	ctx := context.Background()
+	service := getServiceForMeterReading()
+
+	_, err := service.CreateRoom(ctx, &types.CreateRoomRequest{
+		Room: &types.Room{RoomNumber: ROOM_NUMBER, Price: PRICE, IsAvailable: false},
+	})
+	if err != nil {
+		t.Fatal("Failed to create room: " + err.Error())
+	}
+
+	_, err = service.CreateMeterReading(ctx, &types.CreateMeterReadingRequest{
+		MeterReading: &types.MeterReading{
+			RoomNumber:         ROOM_NUMBER,
+			Period:             "06-2026",
+			ElectricityReading: 250,
+			WaterReading:       50,
+		},
+	})
+	if err != nil {
+		t.Fatal("Failed to create initial meter reading: " + err.Error())
+	}
+
+	response, err := service.CreateMeterReading(ctx, &types.CreateMeterReadingRequest{
+		MeterReading: &types.MeterReading{
+			RoomNumber:         ROOM_NUMBER,
+			Period:             "07-2026",
+			ElectricityReading: 250,
+			WaterReading:       50,
+		},
+	})
+	if err != nil {
+		t.Fatalf("expected success when readings are equal to previous period, got error: %s", err.Error())
+	}
+	if response == nil {
+		t.Fatal("expected non-nil response when readings are equal to previous period")
+	}
+}
+
+func TestCreateMeterReading_ReadingCannotBeLowerThanLatestPeriod(t *testing.T) {
+	ctx := context.Background()
+	service := getServiceForMeterReading()
+
+	_, err := service.CreateRoom(ctx, &types.CreateRoomRequest{
+		Room: &types.Room{RoomNumber: ROOM_NUMBER, Price: PRICE, IsAvailable: false},
+	})
+	if err != nil {
+		t.Fatal("Failed to create room: " + err.Error())
+	}
+
+	_, err = service.CreateMeterReading(ctx, &types.CreateMeterReadingRequest{
+		MeterReading: &types.MeterReading{
+			RoomNumber:         ROOM_NUMBER,
+			Period:             "06-2026",
+			ElectricityReading: 250,
+			WaterReading:       50,
+		},
+	})
+	if err != nil {
+		t.Fatal("Failed to create initial meter reading: " + err.Error())
+	}
+
+	response, err := service.CreateMeterReading(ctx, &types.CreateMeterReadingRequest{
+		MeterReading: &types.MeterReading{
+			RoomNumber:         ROOM_NUMBER,
+			Period:             "07-2026",
+			ElectricityReading: 10,
+			WaterReading:       10,
+		},
+	})
+	if err == nil {
+		t.Fatal("expected error for lower reading values, got nil")
+	}
+	if !containsSubstring(err.Error(), "electricity reading of new period must be greater than or equal to previous period") {
+		t.Fatalf("unexpected error: %s", err.Error())
+	}
+	if response != nil {
+		t.Fatal("expected nil response for lower reading values")
+	}
+}
+
 func TestUpdateMeterReading_HappyPath(t *testing.T) {
 	ctx := context.Background()
 	service := getServiceForMeterReading()
@@ -320,6 +473,48 @@ func TestUpdateMeterReading_InvalidPeriodFormat(t *testing.T) {
 		if response != nil {
 			t.Fatal("expected nil response for invalid period format")
 		}
+	}
+}
+
+func TestUpdateMeterReading_NegativeReadings(t *testing.T) {
+	ctx := context.Background()
+	service := getServiceForMeterReading()
+
+	_, err := service.CreateRoom(ctx, &types.CreateRoomRequest{
+		Room: &types.Room{RoomNumber: ROOM_NUMBER, Price: PRICE, IsAvailable: false},
+	})
+	if err != nil {
+		t.Fatal("Failed to create room: " + err.Error())
+	}
+
+	_, err = service.CreateMeterReading(ctx, &types.CreateMeterReadingRequest{
+		MeterReading: &types.MeterReading{
+			RoomNumber:         ROOM_NUMBER,
+			Period:             PERIOD,
+			ElectricityReading: ELECTRICITY_READING,
+			WaterReading:       WATER_READING,
+		},
+	})
+	if err != nil {
+		t.Fatal("Failed to create meter reading: " + err.Error())
+	}
+
+	response, err := service.UpdateMeterReading(ctx, &types.UpdateMeterReadingRequest{
+		MeterReading: &types.MeterReading{
+			RoomNumber:         ROOM_NUMBER,
+			Period:             PERIOD,
+			ElectricityReading: -10,
+			WaterReading:       20,
+		},
+	})
+	if err == nil {
+		t.Fatal("expected error for negative electricity reading, got nil")
+	}
+	if !containsSubstring(err.Error(), "electricity reading must be greater than or equal to 0") {
+		t.Fatalf("unexpected error: %s", err.Error())
+	}
+	if response != nil {
+		t.Fatal("expected nil response for negative readings")
 	}
 }
 

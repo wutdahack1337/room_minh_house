@@ -41,15 +41,32 @@ onMounted(fetchContracts)
 const openModal = () => { resetForm(); showModal.value = true }
 const closeModal = () => { showModal.value = false }
 
+const contractIsActive = (status?: string) => {
+  const normalized = (status || '').trim().toLowerCase()
+  return normalized !== 'expired' && normalized !== 'terminated'
+}
+
+const hasAnotherActiveContractInRoom = (roomNumber: number, excludeContractId?: string) => {
+  return contracts.value.some((c) => {
+    if (excludeContractId && c.contract_id === excludeContractId) return false
+    return c.room_number === roomNumber && contractIsActive(c.status)
+  })
+}
+
 const handleSubmit = async () => {
   if (!form.user_pid || !form.room_number || !form.start_date || !form.duration_months) {
     formError.value = 'Vui lòng điền đầy đủ thông tin'; return
+  }
+  const roomNumber = Number(form.room_number)
+  if (hasAnotherActiveContractInRoom(roomNumber)) {
+    formError.value = `Phòng ${roomNumber} đã có người thuê`;
+    return
   }
   submitting.value = true; formError.value = ''
   try {
     await createContract({
       user_pid: form.user_pid,
-      room_number: Number(form.room_number),
+      room_number: roomNumber,
       start_date: `${form.start_date}T00:00:00Z`,
       duration_months: Number(form.duration_months),
     })
@@ -92,12 +109,17 @@ const handleEditSubmit = async () => {
   if (!editForm.user_pid || !editForm.room_number || !editForm.start_date || !editForm.duration_months) {
     editError.value = 'Vui lòng điền đầy đủ thông tin'; return
   }
+  const roomNumber = Number(editForm.room_number)
+  if (contractIsActive(editForm.status) && hasAnotherActiveContractInRoom(roomNumber, editForm.contract_id)) {
+    editError.value = `Phòng ${roomNumber} đã có người thuê`;
+    return
+  }
   editSubmitting.value = true; editError.value = ''
   try {
     await updateContract({
       contract_id: editForm.contract_id,
       user_pid: editForm.user_pid,
-      room_number: Number(editForm.room_number),
+      room_number: roomNumber,
       start_date: `${editForm.start_date}T00:00:00Z`,
       duration_months: Number(editForm.duration_months),
       status: editForm.status,

@@ -3,10 +3,62 @@ package server
 import (
 	"context"
 	"fmt"
+	"time"
 
 	types "github.com/wutdahack1337/room_minh_house/backend/pkg/pb"
 	"go.mongodb.org/mongo-driver/mongo"
 )
+
+func parsePeriod(period string) (time.Time, error) {
+	t, err := time.Parse("01-2006", period)
+	if err != nil {
+		return time.Time{}, fmt.Errorf("invalid period format, expected MM-YYYY: %s", period)
+	}
+	return t, nil
+}
+
+func (s *Service) validateCreateMeterReadingOrderAndValue(ctx context.Context, meterReading *types.MeterReading) error {
+	newPeriod, err := parsePeriod(meterReading.Period)
+	if err != nil {
+		return err
+	}
+
+	meterReadings, err := s.dbService.ListMeterReadings(ctx, meterReading.RoomNumber)
+	if err != nil {
+		return err
+	}
+	if len(meterReadings) == 0 {
+		return nil
+	}
+
+	latest := time.Time{}
+	var latestReading *types.MeterReading
+	for _, reading := range meterReadings {
+		t, err := parsePeriod(reading.Period)
+		if err != nil {
+			return err
+		}
+		if latest.IsZero() || t.After(latest) {
+			latest = t
+			latestReading = reading
+		}
+	}
+
+	if !newPeriod.After(latest) {
+		return fmt.Errorf("period must be greater than latest existing period (%s)", latest.Format("01-2006"))
+	}
+
+	if latestReading != nil {
+		if meterReading.ElectricityReading < latestReading.ElectricityReading {
+			return fmt.Errorf("electricity reading of new period must be greater than or equal to previous period (%s)", latestReading.Period)
+		}
+		if meterReading.WaterReading < latestReading.WaterReading {
+			return fmt.Errorf("water reading of new period must be greater than or equal to previous period (%s)", latestReading.Period)
+		}
+	}
+
+	return nil
+}
 
 func (s *Service) CreateMeterReading(ctx context.Context, request *types.CreateMeterReadingRequest) (*types.CreateMeterReadingResponse, error) {
 	if request == nil {
@@ -22,6 +74,15 @@ func (s *Service) CreateMeterReading(ctx context.Context, request *types.CreateM
 		return nil, fmt.Errorf("CreateMeterReading error: period is required")
 	}
 	if err := validatePeriod(request.MeterReading.Period); err != nil {
+		return nil, fmt.Errorf("CreateMeterReading error: %v", err)
+	}
+	if request.MeterReading.ElectricityReading < 0 {
+		return nil, fmt.Errorf("CreateMeterReading error: electricity reading must be greater than or equal to 0")
+	}
+	if request.MeterReading.WaterReading < 0 {
+		return nil, fmt.Errorf("CreateMeterReading error: water reading must be greater than or equal to 0")
+	}
+	if err := s.validateCreateMeterReadingOrderAndValue(ctx, request.MeterReading); err != nil {
 		return nil, fmt.Errorf("CreateMeterReading error: %v", err)
 	}
 
@@ -47,6 +108,12 @@ func (s *Service) UpdateMeterReading(ctx context.Context, request *types.UpdateM
 	}
 	if err := validatePeriod(request.MeterReading.Period); err != nil {
 		return nil, fmt.Errorf("UpdateMeterReading error: %v", err)
+	}
+	if request.MeterReading.ElectricityReading < 0 {
+		return nil, fmt.Errorf("UpdateMeterReading error: electricity reading must be greater than or equal to 0")
+	}
+	if request.MeterReading.WaterReading < 0 {
+		return nil, fmt.Errorf("UpdateMeterReading error: water reading must be greater than or equal to 0")
 	}
 
 	if err := s.dbService.UpdateMeterReading(ctx, request.MeterReading); err != nil {

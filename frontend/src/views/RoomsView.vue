@@ -145,6 +145,26 @@ const addError = ref('')
 const addForm = reactive({ period: '', electricity_reading: '' as number | '', water_reading: '' as number | '' })
 const PERIOD_REGEX = /^\d{2}-\d{4}$/
 
+const periodToComparableValue = (period: string): number | null => {
+  if (!PERIOD_REGEX.test(period)) return null
+  const [monthStr, yearStr] = period.split('-')
+  const month = Number(monthStr)
+  const year = Number(yearStr)
+  if (!Number.isInteger(month) || !Number.isInteger(year)) return null
+  return year * 12 + month
+}
+
+const findLatestMeterReading = (): MeterReading | null => {
+  return meterReadings.value.reduce<MeterReading | null>((latest, reading) => {
+    const current = periodToComparableValue(reading.period)
+    if (current === null) return latest
+    if (!latest) return reading
+    const latestValue = periodToComparableValue(latest.period)
+    if (latestValue === null || current > latestValue) return reading
+    return latest
+  }, null)
+}
+
 const resetAddForm = () => { addForm.period = ''; addForm.electricity_reading = ''; addForm.water_reading = ''; addError.value = '' }
 const openAddForm = () => { resetAddForm(); showAddForm.value = true; editingMeter.value = null }
 const cancelAddForm = () => { showAddForm.value = false }
@@ -152,13 +172,33 @@ const cancelAddForm = () => { showAddForm.value = false }
 const handleAddMeterReading = async () => {
   if (!PERIOD_REGEX.test(addForm.period)) { addError.value = 'Kỳ không hợp lệ, định dạng MM-YYYY (vd: 01-2026)'; return }
   if (addForm.electricity_reading === '' || addForm.water_reading === '') { addError.value = 'Vui lòng nhập đầy đủ chỉ số'; return }
+  const electricityReading = Number(addForm.electricity_reading)
+  const waterReading = Number(addForm.water_reading)
+  if (electricityReading < 0 || waterReading < 0) { addError.value = 'Chỉ số điện, nước không được nhỏ hơn 0'; return }
+  const nextPeriodValue = periodToComparableValue(addForm.period)
+  const latestReading = findLatestMeterReading()
+  const latestPeriodValue = latestReading ? periodToComparableValue(latestReading.period) : null
+  if (nextPeriodValue !== null && latestPeriodValue !== null && nextPeriodValue <= latestPeriodValue) {
+    addError.value = 'Kỳ mới phải lớn hơn kỳ gần nhất đã có'
+    return
+  }
+  if (latestReading) {
+    if (electricityReading < latestReading.electricity_reading) {
+      addError.value = `Chỉ số điện kỳ mới phải lớn hơn hoặc bằng kỳ trước (${latestReading.period})`
+      return
+    }
+    if (waterReading < latestReading.water_reading) {
+      addError.value = `Chỉ số nước kỳ mới phải lớn hơn hoặc bằng kỳ trước (${latestReading.period})`
+      return
+    }
+  }
   addSubmitting.value = true; addError.value = ''
   try {
     await createMeterReading({
       room_number: selectedRoom.value!,
       period: addForm.period,
-      electricity_reading: Number(addForm.electricity_reading),
-      water_reading: Number(addForm.water_reading),
+      electricity_reading: electricityReading,
+      water_reading: waterReading,
     })
     showAddForm.value = false
     await fetchMeterReadings(selectedRoom.value!)
@@ -186,13 +226,16 @@ const cancelEditMeter = () => { editingMeter.value = null }
 
 const handleEditMeterReading = async () => {
   if (!editingMeter.value) return
+  const electricityReading = Number(editMeterForm.electricity_reading)
+  const waterReading = Number(editMeterForm.water_reading)
+  if (electricityReading < 0 || waterReading < 0) { editMeterError.value = 'Chỉ số điện, nước không được nhỏ hơn 0'; return }
   editMeterSubmitting.value = true; editMeterError.value = ''
   try {
     await updateMeterReading({
       room_number: selectedRoom.value!,
       period: editingMeter.value.period,
-      electricity_reading: Number(editMeterForm.electricity_reading),
-      water_reading: Number(editMeterForm.water_reading),
+      electricity_reading: electricityReading,
+      water_reading: waterReading,
     })
     editingMeter.value = null
     await fetchMeterReadings(selectedRoom.value!)

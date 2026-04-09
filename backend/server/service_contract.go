@@ -3,11 +3,36 @@ package server
 import (
 	"context"
 	"fmt"
+	"strings"
 	"time"
 
 	"github.com/google/uuid"
 	types "github.com/wutdahack1337/room_minh_house/backend/pkg/pb"
 )
+
+func contractIsActive(status string) bool {
+	normalized := strings.ToLower(strings.TrimSpace(status))
+	// Only expired/terminated are considered not active; any other value blocks the room.
+	return normalized != "expired" && normalized != "terminated"
+}
+
+func (s *Service) validateSingleActiveContractPerRoom(ctx context.Context, roomNumber int32, excludeContractID string) error {
+	contracts, err := s.dbService.ListContractsByRoomNumber(ctx, roomNumber)
+	if err != nil {
+		return err
+	}
+
+	for _, c := range contracts {
+		if excludeContractID != "" && c.ContractId == excludeContractID {
+			continue
+		}
+		if contractIsActive(c.Status) {
+			return fmt.Errorf("room %d already has an active contract", roomNumber)
+		}
+	}
+
+	return nil
+}
 
 func (s *Service) CreateContract(ctx context.Context, request *types.CreateContractRequest) (*types.CreateContractResponse, error) {
 	if request == nil {
@@ -27,6 +52,9 @@ func (s *Service) CreateContract(ctx context.Context, request *types.CreateContr
 	}
 	if request.Contract.DurationMonths <= 0 {
 		return nil, fmt.Errorf("CreateContract error: duration months must be greater than 0")
+	}
+	if err := s.validateSingleActiveContractPerRoom(ctx, request.Contract.RoomNumber, ""); err != nil {
+		return nil, fmt.Errorf("CreateContract error: %v", err)
 	}
 
 	// generate UUID
@@ -70,6 +98,11 @@ func (s *Service) UpdateContract(ctx context.Context, request *types.UpdateContr
 	}
 	if request.Contract.DurationMonths <= 0 {
 		return nil, fmt.Errorf("UpdateContract error: duration months must be greater than 0")
+	}
+	if contractIsActive(request.Contract.Status) {
+		if err := s.validateSingleActiveContractPerRoom(ctx, request.Contract.RoomNumber, request.Contract.ContractId); err != nil {
+			return nil, fmt.Errorf("UpdateContract error: %v", err)
+		}
 	}
 
 	// recalculate end_date from start_date + duration_months

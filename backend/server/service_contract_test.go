@@ -177,6 +177,51 @@ func TestCreateContract_RoomNotFound(t *testing.T) {
 	}
 }
 
+func TestCreateContract_RoomAlreadyHasActiveContract(t *testing.T) {
+	ctx := context.Background()
+	service := getServiceForContract()
+
+	// users
+	_, err := service.CreateUser(ctx, &types.CreateUserRequest{User: &types.User{Pid: "tenant-1", PhoneNumber: "0900000001", Role: ROLE, IdCard: newTestIdCard()}})
+	if err != nil {
+		t.Fatal("Failed to create user tenant-1: " + err.Error())
+	}
+	_, err = service.CreateUser(ctx, &types.CreateUserRequest{User: &types.User{Pid: "tenant-2", PhoneNumber: "0900000002", Role: ROLE, IdCard: newTestIdCard()}})
+	if err != nil {
+		t.Fatal("Failed to create user tenant-2: " + err.Error())
+	}
+
+	// room
+	_, err = service.CreateRoom(ctx, &types.CreateRoomRequest{Room: &types.Room{RoomNumber: ROOM_NUMBER, Price: PRICE, IsAvailable: true}})
+	if err != nil {
+		t.Fatal("Failed to create room: " + err.Error())
+	}
+
+	startDate := time.Now().UTC().Format(time.RFC3339)
+	_, err = service.CreateContract(ctx, &types.CreateContractRequest{Contract: &types.Contract{
+		UserPid:        "tenant-1",
+		RoomNumber:     ROOM_NUMBER,
+		StartDate:      startDate,
+		DurationMonths: 6,
+	}})
+	if err != nil {
+		t.Fatal("Failed to create first contract: " + err.Error())
+	}
+
+	response, err := service.CreateContract(ctx, &types.CreateContractRequest{Contract: &types.Contract{
+		UserPid:        "tenant-2",
+		RoomNumber:     ROOM_NUMBER,
+		StartDate:      startDate,
+		DurationMonths: 6,
+	}})
+	if err == nil {
+		t.Fatal("expected error when creating second active contract for same room, got nil")
+	}
+	if response != nil {
+		t.Fatal("expected nil response when creating second active contract for same room")
+	}
+}
+
 func TestUpdateContract_HappyPath(t *testing.T) {
 	ctx := context.Background()
 
@@ -243,6 +288,78 @@ func TestUpdateContract_HappyPath(t *testing.T) {
 	}
 	if response.Contract.Status != "expired" {
 		t.Fatalf("expected status 'expired', got '%s'", response.Contract.Status)
+	}
+}
+
+func TestUpdateContract_MoveToOccupiedRoomBlocked(t *testing.T) {
+	ctx := context.Background()
+	service := getServiceForContract()
+
+	_, err := service.CreateUser(ctx, &types.CreateUserRequest{User: &types.User{Pid: "tenant-a", PhoneNumber: "0911111111", Role: ROLE, IdCard: newTestIdCard()}})
+	if err != nil {
+		t.Fatal("Failed to create user tenant-a: " + err.Error())
+	}
+	_, err = service.CreateUser(ctx, &types.CreateUserRequest{User: &types.User{Pid: "tenant-b", PhoneNumber: "0922222222", Role: ROLE, IdCard: newTestIdCard()}})
+	if err != nil {
+		t.Fatal("Failed to create user tenant-b: " + err.Error())
+	}
+
+	_, err = service.CreateRoom(ctx, &types.CreateRoomRequest{Room: &types.Room{RoomNumber: 101, Price: PRICE, IsAvailable: true}})
+	if err != nil {
+		t.Fatal("Failed to create room 101: " + err.Error())
+	}
+	_, err = service.CreateRoom(ctx, &types.CreateRoomRequest{Room: &types.Room{RoomNumber: 102, Price: PRICE, IsAvailable: true}})
+	if err != nil {
+		t.Fatal("Failed to create room 102: " + err.Error())
+	}
+
+	startDate := time.Now().UTC().Format(time.RFC3339)
+	firstResp, err := service.CreateContract(ctx, &types.CreateContractRequest{Contract: &types.Contract{
+		UserPid:        "tenant-a",
+		RoomNumber:     101,
+		StartDate:      startDate,
+		DurationMonths: 6,
+	}})
+	if err != nil {
+		t.Fatal("Failed to create contract for room 101: " + err.Error())
+	}
+
+	secondResp, err := service.CreateContract(ctx, &types.CreateContractRequest{Contract: &types.Contract{
+		UserPid:        "tenant-b",
+		RoomNumber:     102,
+		StartDate:      startDate,
+		DurationMonths: 6,
+	}})
+	if err != nil {
+		t.Fatal("Failed to create contract for room 102: " + err.Error())
+	}
+
+	updateResponse, err := service.UpdateContract(ctx, &types.UpdateContractRequest{Contract: &types.Contract{
+		ContractId:     secondResp.Contract.ContractId,
+		UserPid:        "tenant-b",
+		RoomNumber:     101,
+		StartDate:      startDate,
+		DurationMonths: 6,
+		Status:         "active",
+	}})
+	if err == nil {
+		t.Fatal("expected error when moving contract to occupied room, got nil")
+	}
+	if updateResponse != nil {
+		t.Fatal("expected nil response when moving contract to occupied room")
+	}
+
+	// still can update itself in the same occupied room
+	_, err = service.UpdateContract(ctx, &types.UpdateContractRequest{Contract: &types.Contract{
+		ContractId:     firstResp.Contract.ContractId,
+		UserPid:        "tenant-a",
+		RoomNumber:     101,
+		StartDate:      startDate,
+		DurationMonths: 12,
+		Status:         "active",
+	}})
+	if err != nil {
+		t.Fatal("expected updating existing active contract in same room to succeed: " + err.Error())
 	}
 }
 
