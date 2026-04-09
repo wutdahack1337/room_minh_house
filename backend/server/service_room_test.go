@@ -79,6 +79,25 @@ func TestCreateRoom_MissingRoomNumber(t *testing.T) {
 	}
 }
 
+func TestCreateRoom_ZeroPrice(t *testing.T) {
+	service := getService()
+	response, err := service.CreateRoom(context.Background(), &types.CreateRoomRequest{
+		Room: &types.Room{
+			RoomNumber:  ROOM_NUMBER,
+			Price:       0,
+			IsAvailable: true,
+		},
+	})
+
+	if err == nil {
+		t.Fatal("expected error for zero room price, got nil")
+	}
+
+	if response != nil {
+		t.Fatal("expected nil response for zero room price, got non-nil")
+	}
+}
+
 func TestUpdateRoom_HappyPath(t *testing.T) {
 	ctx := context.Background()
 	service := getService()
@@ -114,6 +133,35 @@ func TestUpdateRoom_HappyPath(t *testing.T) {
 	}
 	if response.Room.Price != room.Price || response.Room.IsAvailable != room.IsAvailable {
 		t.Fatalf("expected room price %f and isAvailable %t, got %f and %t", room.Price, room.IsAvailable, response.Room.Price, response.Room.IsAvailable)
+	}
+}
+
+func TestUpdateRoom_ZeroPrice(t *testing.T) {
+	ctx := context.Background()
+	service := getService()
+
+	_, _ = service.CreateRoom(ctx, &types.CreateRoomRequest{
+		Room: &types.Room{
+			RoomNumber:  ROOM_NUMBER,
+			Price:       PRICE,
+			IsAvailable: true,
+		},
+	})
+
+	response, err := service.UpdateRoom(ctx, &types.UpdateRoomRequest{
+		Room: &types.Room{
+			RoomNumber:  ROOM_NUMBER,
+			Price:       0,
+			IsAvailable: false,
+		},
+	})
+
+	if err == nil {
+		t.Fatal("expected error for zero room price, got nil")
+	}
+
+	if response != nil {
+		t.Fatal("expected nil response for zero room price, got non-nil")
 	}
 }
 

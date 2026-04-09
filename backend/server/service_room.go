@@ -17,6 +17,9 @@ func (s *Service) CreateRoom(ctx context.Context, request *types.CreateRoomReque
 	if request.Room.RoomNumber == 0 {
 		return nil, fmt.Errorf("CreateRoom error: room number is required")
 	}
+	if request.Room.Price <= 0 {
+		return nil, fmt.Errorf("CreateRoom error: room price must be greater than zero")
+	}
 
 	if err := s.dbService.CreateRoom(ctx, request.Room); err != nil {
 		return nil, err
@@ -36,6 +39,9 @@ func (s *Service) UpdateRoom(ctx context.Context, request *types.UpdateRoomReque
 	}
 	if request.Room.RoomNumber == 0 {
 		return nil, fmt.Errorf("UpdateRoom error: room number is required")
+	}
+	if request.Room.Price <= 0 {
+		return nil, fmt.Errorf("UpdateRoom error: room price must be greater than zero")
 	}
 
 	if err := s.dbService.UpdateRoom(ctx, request.Room); err != nil {

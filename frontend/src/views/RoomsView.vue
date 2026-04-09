@@ -47,9 +47,11 @@ const closeModal = () => { showModal.value = false }
 
 const handleSubmit = async () => {
   if (!form.room_number) { formError.value = 'Vui lòng nhập số phòng'; return }
+  const price = Number(form.price)
+  if (!Number.isFinite(price) || price <= 0) { formError.value = 'Giá phòng phải lớn hơn 0'; return }
   submitting.value = true; formError.value = ''
   try {
-    await createRoom({ room_number: Number(form.room_number), price: Number(form.price) || 0, is_available: form.is_available })
+    await createRoom({ room_number: Number(form.room_number), price, is_available: form.is_available })
     closeModal(); await fetchRooms()
   } catch (e: any) {
     formError.value = e.response?.data?.message || e.message || 'Không thể tạo phòng'
@@ -74,9 +76,11 @@ const openEditModal = (room: Room) => {
 const closeEditModal = () => { showEditModal.value = false }
 
 const handleEditSubmit = async () => {
+  const price = Number(editForm.price)
+  if (!Number.isFinite(price) || price <= 0) { editError.value = 'Giá phòng phải lớn hơn 0'; return }
   editSubmitting.value = true; editError.value = ''
   try {
-    await updateRoom({ room_number: editForm.room_number, price: Number(editForm.price), is_available: editForm.is_available })
+    await updateRoom({ room_number: editForm.room_number, price, is_available: editForm.is_available })
     closeEditModal(); await fetchRooms()
   } catch (e: any) {
     editError.value = e.response?.data?.message || e.message || 'Không thể cập nhật phòng'
@@ -225,7 +229,7 @@ const formatPrice = (price: number) =>
           </div>
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">Giá thuê (VNĐ)</label>
-            <input v-model="form.price" type="number" min="0" placeholder="999999"
+            <input v-model="form.price" type="number" min="1" step="1" placeholder="999999"
               class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
           </div>
           <div class="flex items-center gap-2">
@@ -251,7 +255,7 @@ const formatPrice = (price: number) =>
         <form @submit.prevent="handleEditSubmit" class="space-y-4">
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">Giá thuê (VNĐ)</label>
-            <input v-model="editForm.price" type="number" min="0"
+            <input v-model="editForm.price" type="number" min="1" step="1"
               class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
           </div>
           <div class="flex items-center gap-2">
